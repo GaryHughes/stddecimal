@@ -15,7 +15,8 @@ public:
     explicit decimal32(float r);
     explicit decimal32(double r); explicit decimal32(long double r);
 
-    // 3.2.2.3 conversion from integral type: decimal32(int z);
+    // 3.2.2.3 conversion from integral type: 
+    decimal32(int z);
     decimal32(unsigned int z);
     decimal32(long z);
     decimal32(unsigned long z); 
