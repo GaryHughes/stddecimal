@@ -47,22 +47,42 @@ public:
     decimal32& operator+=(decimal32 rhs);
     decimal32& operator+=(decimal64 rhs);
     decimal32& operator+=(decimal128 rhs);
-    // TODO - integral types
+    decimal32& operator+=(int z);
+    decimal32& operator+=(unsigned int z);
+    decimal32& operator+=(long z);
+    decimal32& operator+=(unsigned long z); 
+    decimal32& operator+=(long long z); 
+    decimal32& operator+=(unsigned long long z);
     
     decimal32& operator-=(decimal32 rhs);
     decimal32& operator-=(decimal64 rhs);
     decimal32& operator-=(decimal128 rhs);
-    // TODO - integral types
+    decimal32& operator-=(int z);
+    decimal32& operator-=(unsigned int z);
+    decimal32& operator-=(long z);
+    decimal32& operator-=(unsigned long z); 
+    decimal32& operator-=(long long z); 
+    decimal32& operator-=(unsigned long long z);
     
     decimal32& operator*=(decimal32 rhs);
     decimal32& operator*=(decimal64 rhs);
     decimal32& operator*=(decimal128 rhs);
-    // TODO - integral types
+    decimal32& operator*=(int z);
+    decimal32& operator*=(unsigned int z);
+    decimal32& operator*=(long z);
+    decimal32& operator*=(unsigned long z); 
+    decimal32& operator*=(long long z); 
+    decimal32& operator*=(unsigned long long z);
     
     decimal32& operator/=(decimal32 rhs);
     decimal32& operator/=(decimal64 rhs);
     decimal32& operator/=(decimal128 rhs);
-    // TODO - integral types
+    decimal32& operator/=(int z);
+    decimal32& operator/=(unsigned int z);
+    decimal32& operator/=(long z);
+    decimal32& operator/=(unsigned long z); 
+    decimal32& operator/=(long long z); 
+    decimal32& operator/=(unsigned long long z);
 
     const value_type value() const { return m_value; }
 
@@ -112,22 +132,42 @@ public:
     decimal64& operator+=(decimal32 rhs);
     decimal64& operator+=(decimal64 rhs);
     decimal64& operator+=(decimal128 rhs);
-    // TODO - integral types
+    decimal64& operator+=(int z);
+    decimal64& operator+=(unsigned int z);
+    decimal64& operator+=(long z);
+    decimal64& operator+=(unsigned long z); 
+    decimal64& operator+=(long long z); 
+    decimal64& operator+=(unsigned long long z);
 
     decimal64& operator-=(decimal32 rhs);
     decimal64& operator-=(decimal64 rhs);
     decimal64& operator-=(decimal128 rhs);
-    // TODO - integral types
+    decimal64& operator-=(int z);
+    decimal64& operator-=(unsigned int z);
+    decimal64& operator-=(long z);
+    decimal64& operator-=(unsigned long z); 
+    decimal64& operator-=(long long z); 
+    decimal64& operator-=(unsigned long long z);
 
     decimal64& operator*=(decimal32 rhs); 
     decimal64& operator*=(decimal64 rhs); 
     decimal64& operator*=(decimal128 rhs);
-    // TODO - integral types
+    decimal64& operator*=(int z);
+    decimal64& operator*=(unsigned int z);
+    decimal64& operator*=(long z);
+    decimal64& operator*=(unsigned long z); 
+    decimal64& operator*=(long long z); 
+    decimal64& operator*=(unsigned long long z);
     
     decimal64& operator/=(decimal32 rhs);
     decimal64& operator/=(decimal64 rhs);
     decimal64& operator/=(decimal128 rhs);
-    // TODO - integral types
+    decimal64& operator/=(int z);
+    decimal64& operator/=(unsigned int z);
+    decimal64& operator/=(long z);
+    decimal64& operator/=(unsigned long z); 
+    decimal64& operator/=(long long z); 
+    decimal64& operator/=(unsigned long long z);
 
     const value_type value() const { return m_value; }
 
@@ -177,22 +217,42 @@ public:
     decimal128& operator+=(decimal32 rhs);
     decimal128& operator+=(decimal64 rhs);
     decimal128& operator+=(decimal128 rhs);
-    // TODO - integral types
+    decimal128& operator+=(int z);
+    decimal128& operator+=(unsigned int z);
+    decimal128& operator+=(long z);
+    decimal128& operator+=(unsigned long z); 
+    decimal128& operator+=(long long z); 
+    decimal128& operator+=(unsigned long long z);
 
     decimal128& operator-=(decimal32 rhs);
     decimal128& operator-=(decimal64 rhs);
     decimal128& operator-=(decimal128 rhs);
-    // TODO - integral types
+    decimal128& operator-=(int z);
+    decimal128& operator-=(unsigned int z);
+    decimal128& operator-=(long z);
+    decimal128& operator-=(unsigned long z); 
+    decimal128& operator-=(long long z); 
+    decimal128& operator-=(unsigned long long z);
 
     decimal128& operator*=(decimal32 rhs); 
     decimal128& operator*=(decimal64 rhs); 
     decimal128& operator*=(decimal128 rhs);
-    // TODO - integral types
+    decimal128& operator*=(int z);
+    decimal128& operator*=(unsigned int z);
+    decimal128& operator*=(long z);
+    decimal128& operator*=(unsigned long z); 
+    decimal128& operator*=(long long z); 
+    decimal128& operator*=(unsigned long long z);
     
     decimal128& operator/=(decimal32 rhs);
     decimal128& operator/=(decimal64 rhs);
     decimal128& operator/=(decimal128 rhs);
-    // TODO - integral types
+    decimal128& operator/=(int z);
+    decimal128& operator/=(unsigned int z);
+    decimal128& operator/=(long z);
+    decimal128& operator/=(unsigned long z); 
+    decimal128& operator/=(long long z); 
+    decimal128& operator/=(unsigned long long z);
 
     explicit decimal128(value_type value)
     :   m_value(value)

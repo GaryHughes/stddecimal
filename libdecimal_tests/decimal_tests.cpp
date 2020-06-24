@@ -3,7 +3,7 @@
 
 using namespace std::decimal;
 
-TEST_CASE("decimal32", "decimal32") 
+TEST_CASE("decimal", "decimal") 
 {
     SECTION("constructors")
     {
@@ -613,5 +613,138 @@ TEST_CASE("decimal32", "decimal32")
         // REQUIRE(1ll >= decimal128(0));
         // REQUIRE(1llu >= decimal128(0));
     }
+
+    SECTION("compound assignment addition")
+    {
+        decimal32(0) += decimal32(0);
+        decimal32(0) += decimal64(0);
+        decimal32(0) += decimal128(0);
+        decimal32(0) += 0;
+        decimal32(0) += 0u;
+        decimal32(0) += 0l;
+        decimal32(0) += 0lu;
+        decimal32(0) += 0ll;
+        decimal32(0) += 0llu;
+
+        decimal64(0) += decimal32(0);
+        decimal64(0) += decimal64(0);
+        decimal64(0) += decimal128(0);
+        decimal64(0) += 0;
+        decimal64(0) += 0u;
+        decimal64(0) += 0l;
+        decimal64(0) += 0lu;
+        decimal64(0) += 0ll;
+        decimal64(0) += 0llu;
+
+        decimal128(0) += decimal32(0);
+        decimal128(0) += decimal64(0);
+        decimal128(0) += decimal128(0);
+        decimal128(0) += 0;
+        decimal128(0) += 0u;
+        decimal128(0) += 0l;
+        decimal128(0) += 0lu;
+        decimal128(0) += 0ll;
+        decimal128(0) += 0llu;
+    }
+
+    SECTION("compound assignment subtraction")
+    {
+        decimal32(0) -= decimal32(0);
+        decimal32(0) -= decimal64(0);
+        decimal32(0) -= decimal128(0);
+        decimal32(0) -= 0;
+        decimal32(0) -= 0u;
+        decimal32(0) -= 0l;
+        decimal32(0) -= 0lu;
+        decimal32(0) -= 0ll;
+        decimal32(0) -= 0llu;
+
+        decimal64(0) -= decimal32(0);
+        decimal64(0) -= decimal64(0);
+        decimal64(0) -= decimal128(0);
+        decimal64(0) -= 0;
+        decimal64(0) -= 0u;
+        decimal64(0) -= 0l;
+        decimal64(0) -= 0lu;
+        decimal64(0) -= 0ll;
+        decimal64(0) -= 0llu;
+
+        decimal128(0) -= decimal32(0);
+        decimal128(0) -= decimal64(0);
+        decimal128(0) -= decimal128(0);
+        decimal128(0) -= 0;
+        decimal128(0) -= 0u;
+        decimal128(0) -= 0l;
+        decimal128(0) -= 0lu;
+        decimal128(0) -= 0ll;
+        decimal128(0) -= 0llu;
+    }
+
+    SECTION("compound assignment multiplication")
+    {
+        decimal32(0) *= decimal32(0);
+        decimal32(0) *= decimal64(0);
+        decimal32(0) *= decimal128(0);
+        decimal32(0) *= 0;
+        decimal32(0) *= 0u;
+        decimal32(0) *= 0l;
+        decimal32(0) *= 0lu;
+        decimal32(0) *= 0ll;
+        decimal32(0) *= 0llu;
+
+        decimal64(0) *= decimal32(0);
+        decimal64(0) *= decimal64(0);
+        decimal64(0) *= decimal128(0);
+        decimal64(0) *= 0;
+        decimal64(0) *= 0u;
+        decimal64(0) *= 0l;
+        decimal64(0) *= 0lu;
+        decimal64(0) *= 0ll;
+        decimal64(0) *= 0llu;
+
+        decimal128(0) *= decimal32(0);
+        decimal128(0) *= decimal64(0);
+        decimal128(0) *= decimal128(0);
+        decimal128(0) *= 0;
+        decimal128(0) *= 0u;
+        decimal128(0) *= 0l;
+        decimal128(0) *= 0lu;
+        decimal128(0) *= 0ll;
+        decimal128(0) *= 0llu;
+    }
+
+    SECTION("compound assignment division")
+    {
+        decimal32(0) /= decimal32(0);
+        decimal32(0) /= decimal64(0);
+        decimal32(0) /= decimal128(0);
+        decimal32(0) /= 0;
+        decimal32(0) /= 0u;
+        decimal32(0) /= 0l;
+        decimal32(0) /= 0lu;
+        decimal32(0) /= 0ll;
+        decimal32(0) /= 0llu;
+
+        decimal64(0) /= decimal32(0);
+        decimal64(0) /= decimal64(0);
+        decimal64(0) /= decimal128(0);
+        decimal64(0) /= 0;
+        decimal64(0) /= 0u;
+        decimal64(0) /= 0l;
+        decimal64(0) /= 0lu;
+        decimal64(0) /= 0ll;
+        decimal64(0) /= 0llu;
+
+        decimal128(0) /= decimal32(0);
+        decimal128(0) /= decimal64(0);
+        decimal128(0) /= decimal128(0);
+        decimal128(0) /= 0;
+        decimal128(0) /= 0u;
+        decimal128(0) /= 0l;
+        decimal128(0) /= 0lu;
+        decimal128(0) /= 0ll;
+        decimal128(0) /= 0llu;
+    }
+
 
 }

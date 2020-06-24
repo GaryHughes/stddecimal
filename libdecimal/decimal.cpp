@@ -158,8 +158,8 @@ decimal32::decimal32(double r)
 }
 
 decimal32::decimal32(long double r)
+// : m_value(binary128_to_bid32(r, round_mode, &flags))
 {
-    // TODO
 }
 
 decimal32::decimal32(int z)
@@ -240,6 +240,42 @@ decimal32& decimal32::operator+=(decimal128 rhs)
     return *this;
 }
 
+decimal32& decimal32::operator+=(int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator+=(unsigned int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator+=(long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator+=(unsigned long z) 
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator+=(long long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator+=(unsigned long long z)
+{
+    // TODO
+    return *this;
+}
+
 decimal32& decimal32::operator-=(decimal32 rhs)
 {
     // TODO
@@ -253,6 +289,42 @@ decimal32& decimal32::operator-=(decimal64 rhs)
 }
 
 decimal32& decimal32::operator-=(decimal128 rhs)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator-=(int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator-=(unsigned int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator-=(long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator-=(unsigned long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator-=(long long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator-=(unsigned long long z)
 {
     // TODO
     return *this;
@@ -276,6 +348,43 @@ decimal32& decimal32::operator*=(decimal128 rhs)
     return *this;
 }
 
+decimal32& decimal32::operator*=(int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator*=(unsigned int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator*=(long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator*=(unsigned long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator*=(long long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator*=(unsigned long long z)
+{
+    // TODO
+    return *this;
+}
+
+
 decimal32& decimal32::operator/=(decimal32 rhs)
 {
     // TODO
@@ -289,6 +398,42 @@ decimal32& decimal32::operator/=(decimal64 rhs)
 }
 
 decimal32& decimal32::operator/=(decimal128 rhs)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator/=(int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator/=(unsigned int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator/=(long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator/=(unsigned long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator/=(long long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal32& decimal32::operator/=(unsigned long long z)
 {
     // TODO
     return *this;
@@ -404,6 +549,43 @@ decimal64& decimal64::operator+=(decimal128 rhs)
     return *this;
 }
 
+decimal64& decimal64::operator+=(int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator+=(unsigned int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator+=(long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator+=(unsigned long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator+=(long long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator+=(unsigned long long z)
+{
+    // TODO
+    return *this;
+}
+
+
 decimal64& decimal64::operator-=(decimal32 rhs)
 {
     // TODO
@@ -417,6 +599,42 @@ decimal64& decimal64::operator-=(decimal64 rhs)
 }
 
 decimal64& decimal64::operator-=(decimal128 rhs)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator-=(int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator-=(unsigned int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator-=(long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator-=(unsigned long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator-=(long long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator-=(unsigned long long z)
 {
     // TODO
     return *this;
@@ -440,6 +658,42 @@ decimal64& decimal64::operator*=(decimal128 rhs)
     return *this;
 }
 
+decimal64& decimal64::operator*=(int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator*=(unsigned int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator*=(long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator*=(unsigned long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator*=(long long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator*=(unsigned long long z)
+{
+    // TODO
+    return *this;
+}
+
 decimal64& decimal64::operator/=(decimal32 rhs)
 {
     // TODO
@@ -453,6 +707,42 @@ decimal64& decimal64::operator/=(decimal64 rhs)
 }
 
 decimal64& decimal64::operator/=(decimal128 rhs)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator/=(int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator/=(unsigned int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator/=(long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator/=(unsigned long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator/=(long long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal64& decimal64::operator/=(unsigned long long z)
 {
     // TODO
     return *this;
@@ -568,6 +858,42 @@ decimal128& decimal128::operator+=(decimal128 rhs)
     return *this;
 }
 
+decimal128& decimal128::operator+=(int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator+=(unsigned int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator+=(long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator+=(unsigned long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator+=(long long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator+=(unsigned long long z)
+{
+    // TODO
+    return *this;
+}
+
 decimal128& decimal128::operator-=(decimal32 rhs)
 {
     // TODO
@@ -581,6 +907,42 @@ decimal128& decimal128::operator-=(decimal64 rhs)
 }
 
 decimal128& decimal128::operator-=(decimal128 rhs)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator-=(int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator-=(unsigned int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator-=(long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator-=(unsigned long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator-=(long long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator-=(unsigned long long z)
 {
     // TODO
     return *this;
@@ -604,6 +966,42 @@ decimal128& decimal128::operator*=(decimal128 rhs)
     return *this;
 }
 
+decimal128& decimal128::operator*=(int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator*=(unsigned int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator*=(long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator*=(unsigned long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator*=(long long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator*=(unsigned long long z)
+{
+    // TODO
+    return *this;
+}
+
 decimal128& decimal128::operator/=(decimal32 rhs)
 {
     // TODO
@@ -617,6 +1015,42 @@ decimal128& decimal128::operator/=(decimal64 rhs)
 }
 
 decimal128& decimal128::operator/=(decimal128 rhs)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator/=(int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator/=(unsigned int z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator/=(long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator/=(unsigned long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator/=(long long z)
+{
+    // TODO
+    return *this;
+}
+
+decimal128& decimal128::operator/=(unsigned long long z)
 {
     // TODO
     return *this;
