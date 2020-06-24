@@ -43,6 +43,33 @@ TEST_CASE("decimal", "decimal")
         // decimal32 make_decimal32(unsigned long long coeff, int exponent);
     }
 
+    SECTION("unary arithmetic")
+    {
+        REQUIRE(+decimal32(1) == 1);
+        REQUIRE(+decimal64(1) == 1);
+        // REQUIRE(+decimal128(1) == 1);
+
+        REQUIRE(+decimal32(-1) == -1);
+        REQUIRE(+decimal64(-1) == -1);
+        // REQUIRE(+decimal128(-1) == -1);
+
+        REQUIRE(+decimal32(0) == 0);
+        REQUIRE(+decimal64(0) == 0);
+        // REQUIRE(+decimal128(0) == 0);
+
+        REQUIRE(-decimal32(1) == -1);
+        REQUIRE(-decimal64(1) == -1);
+        // REQUIRE(-decimal128(1) == -1);
+
+        REQUIRE(-decimal32(-1) == 1);
+        REQUIRE(-decimal64(-1) == 1);
+        // REQUIRE(-decimal128(-1) == 1);
+
+        REQUIRE(-decimal32(0) == 0);
+        REQUIRE(-decimal64(0) == 0);
+        // REQUIRE(-decimal128(0) == 0);
+    }
+
     SECTION("binary addition")
     {
         decimal32(0) + decimal32(0);

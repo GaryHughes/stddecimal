@@ -94,40 +94,49 @@ long double decimal_to_long_double(decimal128 d)
     return 0;
 }
 
+
+// 3.2.7 unary arithmetic operators: 
+
 decimal32 operator+(decimal32 rhs)
 {
-    // TODO
-    return rhs;
+    decimal32 result;
+    result.value(rhs.value());
+    return result;
 }
 
 decimal64 operator+(decimal64 rhs)
 {
-    // TODO
-    return rhs;
+    decimal64 result;
+    result.value(rhs.value());
+    return result;
 }
 
 decimal128 operator+(decimal128 rhs)
 {
-    // TODO
-    return rhs;
+    decimal128 result;
+    result.value(rhs.value());
+    return result;
 }
 
 decimal32 operator-(decimal32 rhs)
 {
-    // TODO
-    return rhs;
+    decimal32 result;
+    result.value(bid32_negate(rhs.value()));
+    return result;
 }
 
 decimal64 operator-(decimal64 rhs)
 {
-    // TODO
-    return rhs;
+    decimal64 result;
+    result.value(bid64_negate(rhs.value()));
+    return result;
 }
 
 decimal128 operator-(decimal128 rhs)
 {
-    // TODO
-    return rhs;
+    decimal128 result;
+    result.value(bid128_negate(rhs.value()));
+    return result;
 }
 
 // decimal32 ------------------------------------------------------------------

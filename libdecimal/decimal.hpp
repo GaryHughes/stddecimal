@@ -84,6 +84,7 @@ public:
     decimal32& operator/=(long long z); 
     decimal32& operator/=(unsigned long long z);
 
+    void value(value_type value) { m_value = value; }
     const value_type value() const { return m_value; }
 
 private:
@@ -169,6 +170,7 @@ public:
     decimal64& operator/=(long long z); 
     decimal64& operator/=(unsigned long long z);
 
+    void value(value_type value) { m_value = value; }
     const value_type value() const { return m_value; }
 
 private:
@@ -254,11 +256,7 @@ public:
     decimal128& operator/=(long long z); 
     decimal128& operator/=(unsigned long long z);
 
-    explicit decimal128(value_type value)
-    :   m_value(value)
-    {
-    }
-
+    void value(value_type value) { m_value = value; }
     const value_type value() const { return m_value; }
 
 private:
@@ -294,7 +292,6 @@ decimal128 operator+(decimal128 rhs);
 decimal32 operator-(decimal32 rhs); 
 decimal64 operator-(decimal64 rhs); 
 decimal128 operator-(decimal128 rhs);
-
 
 
 // - if one or both of the parameters of the overloaded operator is decimal128, then the return type is decimal128,
@@ -352,22 +349,30 @@ struct operator_32bit {
 
     static result_type add(BID_UINT32 lhs, BID_UINT32 rhs) {
         _IDEC_flags flags = 0;
-        return result_type(bid32_add(lhs, rhs, round_mode, &flags)); 
+        result_type result;
+        result.value(bid32_add(lhs, rhs, round_mode, &flags)); 
+        return result;
     }
 
     static result_type sub(BID_UINT32 lhs, BID_UINT32 rhs) {
         _IDEC_flags flags = 0;
-        return result_type(bid32_sub(lhs, rhs, round_mode, &flags)); 
+        result_type result;
+        result.value(bid32_sub(lhs, rhs, round_mode, &flags)); 
+        return result;
     }
 
     static result_type mul(BID_UINT32 lhs, BID_UINT32 rhs) {
         _IDEC_flags flags = 0;
-        return result_type(bid32_mul(lhs, rhs, round_mode, &flags)); 
+        result_type result;
+        result.value(bid32_mul(lhs, rhs, round_mode, &flags)); 
+        return result;
     }
 
     static result_type div(BID_UINT32 lhs, BID_UINT32 rhs) {
         _IDEC_flags flags = 0;
-        return result_type(bid32_div(lhs, rhs, round_mode, &flags)); 
+        result_type result;
+        result.value(bid32_div(lhs, rhs, round_mode, &flags)); 
+        return result;
     }
 
     static bool equal(BID_UINT32 lhs, BID_UINT32 rhs) {
@@ -440,22 +445,30 @@ struct operator_64bit {
 	
     static result_type add(BID_UINT64 lhs, BID_UINT64 rhs) {
         _IDEC_flags flags = 0;
-        return result_type(bid64_add(lhs, rhs, round_mode, &flags)); 
+        result_type result;
+        result.value(bid64_add(lhs, rhs, round_mode, &flags)); 
+        return result;
     }
 
     static result_type sub(BID_UINT64 lhs, BID_UINT64 rhs) {
         _IDEC_flags flags = 0;
-        return result_type(bid64_sub(lhs, rhs, round_mode, &flags)); 
+        result_type result;
+        result.value(bid64_sub(lhs, rhs, round_mode, &flags)); 
+        return result;
     }
 
     static result_type mul(BID_UINT64 lhs, BID_UINT64 rhs) {
         _IDEC_flags flags = 0;
-        return result_type(bid64_mul(lhs, rhs, round_mode, &flags)); 
+        result_type result;
+        result.value(bid64_mul(lhs, rhs, round_mode, &flags)); 
+        return result;
     }
 
     static result_type div(BID_UINT64 lhs, BID_UINT64 rhs) {
         _IDEC_flags flags = 0;
-        return result_type(bid64_div(lhs, rhs, round_mode, &flags)); 
+        result_type result;
+        result.value(bid64_div(lhs, rhs, round_mode, &flags)); 
+        return result;
     }
 
     static bool equal(BID_UINT64 lhs, BID_UINT64 rhs) {
@@ -531,22 +544,30 @@ struct operator_128bit {
 
     static result_type add(BID_UINT128 lhs, BID_UINT128 rhs) {
         _IDEC_flags flags = 0;
-        return result_type(bid128_add(lhs, rhs, round_mode, &flags)); 
+        result_type result;
+        result.value(bid128_add(lhs, rhs, round_mode, &flags)); 
+        return result;
     }
 
     static result_type sub(BID_UINT128 lhs, BID_UINT128 rhs) {
         _IDEC_flags flags = 0;
-        return result_type(bid128_sub(lhs, rhs, round_mode, &flags)); 
+        result_type result;
+        result.value(bid128_sub(lhs, rhs, round_mode, &flags)); 
+        return result;
     }
 
     static result_type mul(BID_UINT128 lhs, BID_UINT128 rhs) {
         _IDEC_flags flags = 0;
-        return result_type(bid128_mul(lhs, rhs, round_mode, &flags)); 
+        result_type result;
+        result.value(bid128_mul(lhs, rhs, round_mode, &flags)); 
+        return result;
     }
 
     static result_type div(BID_UINT128 lhs, BID_UINT128 rhs) {
         _IDEC_flags flags = 0;
-        return result_type(bid128_div(lhs, rhs, round_mode, &flags)); 
+        result_type result;
+        result.value(bid128_div(lhs, rhs, round_mode, &flags)); 
+        return result;
     }
 
     static bool equal(BID_UINT128 lhs, BID_UINT128 rhs) {
@@ -677,12 +698,36 @@ std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> 
 
 // 3.2.11 Formatted output:
 template <class charT, class traits>
-std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal32 d) { return os; }
+std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal32 d) 
+{ 
+    // TODO
+    char buffer[256];
+    _IDEC_flags flags = 0;
+    bid32_to_string(buffer, d.value(), &flags);
+    os << buffer;
+    return os; 
+}
 
 template <class charT, class traits>
-std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal64 d) { return os; };
+std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal64 d) 
+{ 
+    // TODO
+    char buffer[256];
+    _IDEC_flags flags = 0;
+    bid64_to_string(buffer, d.value(), &flags);
+    os << buffer;
+    return os; 
+};
 
 template <class charT, class traits>
-std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal128 d) { return os; }
+std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal128 d) 
+{ 
+    // TODO
+    char buffer[256];
+    _IDEC_flags flags = 0;
+    bid128_to_string(buffer, d.value(), &flags);
+    os << buffer;
+    return os; 
+}
 
 } // namespace std::decimal
