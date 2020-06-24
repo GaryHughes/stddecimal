@@ -309,6 +309,17 @@ struct operator_32bit {
         _IDEC_flags flags = 0;
         return result_type(bid32_div(lhs, rhs, round_mode, &flags)); 
     }
+
+    static bool equal(BID_UINT32 lhs, BID_UINT32 rhs) {
+        _IDEC_flags flags = 0;
+        return bid32_quiet_equal(lhs, rhs, &flags); 
+    }
+
+    static bool not_equal(BID_UINT32 lhs, BID_UINT32 rhs) {
+        _IDEC_flags flags = 0;
+        return bid32_quiet_not_equal(lhs, rhs, &flags); 
+    }
+
 };
 
 struct operator_64bit {
@@ -367,6 +378,17 @@ struct operator_64bit {
         _IDEC_flags flags = 0;
         return result_type(bid64_div(lhs, rhs, round_mode, &flags)); 
     }
+
+    static bool equal(BID_UINT64 lhs, BID_UINT64 rhs) {
+        _IDEC_flags flags = 0;
+        return bid64_quiet_equal(lhs, rhs, &flags); 
+    }
+
+    static bool not_equal(BID_UINT64 lhs, BID_UINT64 rhs) {
+        _IDEC_flags flags = 0;
+        return bid64_quiet_not_equal(lhs, rhs, &flags); 
+    }
+
 };
 
 struct operator_128bit {
@@ -428,6 +450,17 @@ struct operator_128bit {
         _IDEC_flags flags = 0;
         return result_type(bid128_div(lhs, rhs, round_mode, &flags)); 
     }
+
+    static bool equal(BID_UINT128 lhs, BID_UINT128 rhs) {
+        _IDEC_flags flags = 0;
+        return bid128_quiet_equal(lhs, rhs, &flags); 
+    }
+
+    static bool not_equal(BID_UINT128 lhs, BID_UINT128 rhs) {
+        _IDEC_flags flags = 0;
+        return bid128_quiet_not_equal(lhs, rhs, &flags); 
+    }
+
 };
 
 template<> struct operator_traits<32,  32>  : public operator_32bit {}; 
@@ -471,39 +504,24 @@ typename operator_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>
     return traits::div(traits::promote(lhs), traits::promote(rhs)); 
 }
 
-
-
-
 // 3.2.9 comparison operators:
-bool operator==(decimal32 lhs, decimal32 rhs); 
-bool operator==(decimal64 lhs, decimal32 rhs); 
-bool operator==(decimal128 lhs, decimal32 rhs); 
-// TODO - lhs can be integral types 
 
-bool operator==(decimal32 lhs, decimal64 rhs); 
-bool operator==(decimal64 lhs, decimal64 rhs); 
-bool operator==(decimal128 lhs, decimal64 rhs); 
-// TODO - lhs can be integral types 
+template<typename LHS, typename RHS>
+bool operator==(LHS lhs, RHS rhs)
+{ 
+    using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    return traits::equal(traits::promote(lhs), traits::promote(rhs)); 
+}
 
-bool operator==(decimal32 lhs, decimal128 rhs);
-bool operator==(decimal64 lhs, decimal128 rhs);
-bool operator==(decimal128 lhs, decimal128 rhs);
-// TODO - lhs can be integral types 
+template<typename LHS, typename RHS>
+bool operator!=(LHS lhs, RHS rhs)
+{ 
+    using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    return traits::not_equal(traits::promote(lhs), traits::promote(rhs)); 
+}
 
-bool operator!=(decimal32 lhs, decimal32 rhs); 
-bool operator!=(decimal64 lhs, decimal32 rhs); 
-bool operator!=(decimal128 lhs, decimal32 rhs); 
-// TODO - lhs can be integral types 
 
-bool operator!=(decimal32 lhs, decimal64 rhs); 
-bool operator!=(decimal64 lhs, decimal64 rhs); 
-bool operator!=(decimal128 lhs, decimal64 rhs); 
-// TODO - lhs can be integral types 
 
-bool operator!=(decimal32 lhs, decimal128 rhs);
-bool operator!=(decimal64 lhs, decimal128 rhs);
-bool operator!=(decimal128 lhs, decimal128 rhs);
-// TODO - lhs can be integral types 
 
 bool operator<(decimal32 lhs, decimal32 rhs); 
 bool operator<(decimal64 lhs, decimal32 rhs); 
@@ -568,22 +586,22 @@ bool operator>=(decimal128 lhs, decimal128 rhs);
 
 // 3.2.10 Formatted input:
 template <class charT, class traits>
-std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal32 & d);
+std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal32 & d) { return is; }
 
 template <class charT, class traits>
-std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal64 & d);
+std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal64 & d) { return is; }
 
 template <class charT, class traits>
-std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal128 & d);
+std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal128 & d) { return is; }
 
 // 3.2.11 Formatted output:
 template <class charT, class traits>
-std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal32 d);
+std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal32 d) { return os; }
 
 template <class charT, class traits>
-std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal64 d);
+std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal64 d) { return os; };
 
 template <class charT, class traits>
-std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal128 d);
+std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal128 d) { return os; }
 
 } // namespace std::decimal
