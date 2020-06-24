@@ -384,6 +384,63 @@ TEST_CASE("decimal32", "decimal32")
         // REQUIRE(0lu != decimal128(1));
         // REQUIRE(0ll != decimal128(1));
         // REQUIRE(0llu != decimal128(1));
+    }
+
+    SECTION("binary less")
+    {
+        REQUIRE(decimal32(0) < decimal32(1));
+        REQUIRE(decimal32(0) < decimal64(1));
+        // REQUIRE(decimal32(0) < decimal128(1));
+
+        REQUIRE(decimal64(0) < decimal32(1));
+        REQUIRE(decimal64(0) < decimal64(1));
+        // REQUIRE(decimal64(0) < decimal128(1));
+        
+        // REQUIRE(decimal128(0) < decimal32(1));
+        // REQUIRE(decimal128(0) < decimal64(1));
+        // REQUIRE(decimal128(0) < decimal128(1));
+
+        REQUIRE(decimal32(0) < 1);
+        REQUIRE(decimal32(0) < 1u);
+        REQUIRE(decimal32(0) < 1l);
+        REQUIRE(decimal32(0) < 1lu);
+        // REQUIRE(decimal32(0) < 1ll);
+        // REQUIRE(decimal32(0) < 1llu);
+
+        REQUIRE(0 < decimal32(1));
+        REQUIRE(0u < decimal32(1));
+        REQUIRE(0l < decimal32(1));
+        REQUIRE(0lu < decimal32(1));
+        // REQUIRE(0ll < decimal32(1));
+        // REQUIRE(0llu < decimal32(1));
+
+        REQUIRE(decimal64(0) < 1);
+        REQUIRE(decimal64(0) < 1u);
+        REQUIRE(decimal64(0) < 1l);
+        REQUIRE(decimal64(0) < 1lu);
+        // REQUIRE(decimal64(0) < 1ll);
+        // REQUIRE(decimal64(0) < 1llu);
+
+        REQUIRE(0 < decimal64(1));
+        REQUIRE(0u < decimal64(1));
+        REQUIRE(0l < decimal64(1));
+        REQUIRE(0lu < decimal64(1));
+        // REQUIRE(0ll < decimal64(1));
+        // REQUIRE(0llu < decimal64(1));
+
+        // REQUIRE(decimal128(0) < 1);
+        // REQUIRE(decimal128(0) < 1u);
+        // REQUIRE(decimal128(0) < 1l);
+        // REQUIRE(decimal128(0) < 1lu);
+        // REQUIRE(decimal128(0) < 1ll);
+        // REQUIRE(decimal128(0) < 1llu);
+
+        // REQUIRE(0 < decimal128(1));
+        // REQUIRE(0u < decimal128(1));
+        // REQUIRE(0l < decimal128(1));
+        // REQUIRE(0lu < decimal128(1));
+        // REQUIRE(0ll < decimal128(1));
+        // REQUIRE(0llu < decimal128(1));
 
 
     }
