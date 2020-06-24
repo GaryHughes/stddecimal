@@ -9,6 +9,12 @@ set(CMAKE_INSTALL_RPATH "")
 include_directories(
     ${CMAKE_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/thirdparty/catch2/include
+    # TODO - IntelRDFPMathLib20U2
+    ${CMAKE_SOURCE_DIR}/..
+)
+
+link_directories(
+    ${CMAKE_SOURCE_DIR}/../IntelRDFPMathLib20U2/LIBRARY
 )
 
 enable_testing()
