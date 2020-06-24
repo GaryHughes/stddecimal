@@ -330,6 +330,11 @@ struct operator_32bit {
         return bid32_quiet_less_equal(lhs, rhs, &flags); 
     }
 
+    static bool greater(BID_UINT32 lhs, BID_UINT32 rhs) {
+        _IDEC_flags flags = 0;
+        return bid32_quiet_greater(lhs, rhs, &flags); 
+    }
+
 };
 
 struct operator_64bit {
@@ -407,6 +412,11 @@ struct operator_64bit {
     static bool less_equal(BID_UINT64 lhs, BID_UINT64 rhs) {
         _IDEC_flags flags = 0;
         return bid64_quiet_less_equal(lhs, rhs, &flags); 
+    }
+
+    static bool greater(BID_UINT64 lhs, BID_UINT64 rhs) {
+        _IDEC_flags flags = 0;
+        return bid64_quiet_greater(lhs, rhs, &flags); 
     }
 
 };
@@ -491,6 +501,11 @@ struct operator_128bit {
         return bid128_quiet_less_equal(lhs, rhs, &flags); 
     }
 
+    static bool greater(BID_UINT128 lhs, BID_UINT128 rhs) {
+        _IDEC_flags flags = 0;
+        return bid128_quiet_greater(lhs, rhs, &flags); 
+    }
+
 };
 
 template<> struct operator_traits<32,  32>  : public operator_32bit {}; 
@@ -564,21 +579,13 @@ bool operator<=(LHS lhs, RHS rhs)
     return traits::less_equal(traits::promote(lhs), traits::promote(rhs)); 
 }
 
+template<typename LHS, typename RHS>
+bool operator>(LHS lhs, RHS rhs)
+{ 
+    using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    return traits::greater(traits::promote(lhs), traits::promote(rhs)); 
+}
 
-bool operator>(decimal32 lhs, decimal32 rhs); 
-bool operator>(decimal64 lhs, decimal32 rhs); 
-bool operator>(decimal128 lhs, decimal32 rhs); 
-// TODO - lhs can be integral types 
-
-bool operator>(decimal32 lhs, decimal64 rhs); 
-bool operator>(decimal64 lhs, decimal64 rhs); 
-bool operator>(decimal128 lhs, decimal64 rhs); 
-// TODO - lhs can be integral types 
-
-bool operator>(decimal32 lhs, decimal128 rhs);
-bool operator>(decimal64 lhs, decimal128 rhs);
-bool operator>(decimal128 lhs, decimal128 rhs);
-// TODO - lhs can be integral types 
 
 bool operator>=(decimal32 lhs, decimal32 rhs); 
 bool operator>=(decimal64 lhs, decimal32 rhs); 
