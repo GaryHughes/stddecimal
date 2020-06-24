@@ -557,5 +557,61 @@ TEST_CASE("decimal32", "decimal32")
         // REQUIRE(1llu > decimal128(0));
     }
 
+    SECTION("binary greater than or equal")
+    {
+        REQUIRE(decimal32(1) >= decimal32(0));
+        REQUIRE(decimal32(1) >= decimal64(0));
+        // REQUIRE(decimal32(1) >= decimal128(0));
+
+        REQUIRE(decimal64(1) >= decimal32(0));
+        REQUIRE(decimal64(1) >= decimal64(0));
+        // REQUIRE(decimal64(1) >= decimal128(0));
+        
+        // REQUIRE(decimal128(1) >= decimal32(0));
+        // REQUIRE(decimal128(1) >= decimal64(0));
+        // REQUIRE(decimal128(1) >= decimal128(0));
+
+        REQUIRE(decimal32(1) >= 0);
+        REQUIRE(decimal32(1) >= 0u);
+        REQUIRE(decimal32(1) >= 0l);
+        REQUIRE(decimal32(1) >= 0lu);
+        REQUIRE(decimal32(1) >= 0ll);
+        REQUIRE(decimal32(1) >= 0llu);
+
+        REQUIRE(1 >= decimal32(0));
+        REQUIRE(1u >= decimal32(0));
+        REQUIRE(1l >= decimal32(0));
+        REQUIRE(1lu >= decimal32(0));
+        // REQUIRE(1ll >= decimal32(0));
+        // REQUIRE(1llu >= decimal32(0));
+
+        REQUIRE(decimal64(1) >= 0);
+        REQUIRE(decimal64(1) >= 0u);
+        REQUIRE(decimal64(1) >= 0l);
+        REQUIRE(decimal64(1) >= 0lu);
+        REQUIRE(decimal64(1) >= 0ll);
+        REQUIRE(decimal64(1) >= 0llu);
+
+        REQUIRE(1 >= decimal64(0));
+        REQUIRE(1u >= decimal64(0));
+        REQUIRE(1l >= decimal64(0));
+        REQUIRE(1lu >= decimal64(0));
+        // REQUIRE(1ll >= decimal64(0));
+        // REQUIRE(1llu >= decimal64(0));
+
+        // REQUIRE(decimal128(1) >= 0);
+        // REQUIRE(decimal128(1) >= 0u);
+        // REQUIRE(decimal128(1) >= 0l);
+        // REQUIRE(decimal128(1) >= 0lu);
+        // REQUIRE(decimal128(1) >= 0ll);
+        // REQUIRE(decimal128(1) >= 0llu);
+
+        // REQUIRE(1 >= decimal128(0));
+        // REQUIRE(1u >= decimal128(0));
+        // REQUIRE(1l >= decimal128(0));
+        // REQUIRE(1lu >= decimal128(0));
+        // REQUIRE(1ll >= decimal128(0));
+        // REQUIRE(1llu >= decimal128(0));
+    }
 
 }

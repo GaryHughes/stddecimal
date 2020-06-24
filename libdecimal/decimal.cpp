@@ -3,9 +3,7 @@
 namespace std::decimal
 {
 
-// const _IDEC_round round_mode = BID_ROUNDING_TO_NEAREST;
 _IDEC_flags flags = 0;
-
 
 template<typename DecimalType, typename CoefficientType>
 DecimalType make_decimal(CoefficientType coeff, int exponent)
