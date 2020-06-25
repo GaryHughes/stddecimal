@@ -1,5 +1,6 @@
 ![Build](https://github.com/GaryHughes/stddecimal/workflows/Build/badge.svg)
 
+
 # stddecimal
 An implementation of the proposed C++ std::decimal
 
