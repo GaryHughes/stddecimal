@@ -53,6 +53,9 @@ public:
     decimal32& operator+=(unsigned long z); 
     decimal32& operator+=(long long z); 
     decimal32& operator+=(unsigned long long z);
+    decimal32& operator+=(float z);
+    decimal32& operator+=(double z);
+    decimal32& operator+=(long double z);
     
     decimal32& operator-=(decimal32 rhs);
     decimal32& operator-=(decimal64 rhs);
@@ -63,6 +66,9 @@ public:
     decimal32& operator-=(unsigned long z); 
     decimal32& operator-=(long long z); 
     decimal32& operator-=(unsigned long long z);
+    decimal32& operator-=(float z);
+    decimal32& operator-=(double z);
+    decimal32& operator-=(long double z);
     
     decimal32& operator*=(decimal32 rhs);
     decimal32& operator*=(decimal64 rhs);
@@ -73,7 +79,10 @@ public:
     decimal32& operator*=(unsigned long z); 
     decimal32& operator*=(long long z); 
     decimal32& operator*=(unsigned long long z);
-    
+    decimal32& operator*=(float z);
+    decimal32& operator*=(double z);
+    decimal32& operator*=(long double z);
+
     decimal32& operator/=(decimal32 rhs);
     decimal32& operator/=(decimal64 rhs);
     decimal32& operator/=(decimal128 rhs);
@@ -83,6 +92,9 @@ public:
     decimal32& operator/=(unsigned long z); 
     decimal32& operator/=(long long z); 
     decimal32& operator/=(unsigned long long z);
+    decimal32& operator/=(float z);
+    decimal32& operator/=(double z);
+    decimal32& operator/=(long double z);
 
     void value(value_type value) { m_value = value; }
     const value_type value() const { return m_value; }
@@ -139,6 +151,9 @@ public:
     decimal64& operator+=(unsigned long z); 
     decimal64& operator+=(long long z); 
     decimal64& operator+=(unsigned long long z);
+    decimal64& operator+=(float z);
+    decimal64& operator+=(double z);
+    decimal64& operator+=(long double z);
 
     decimal64& operator-=(decimal32 rhs);
     decimal64& operator-=(decimal64 rhs);
@@ -149,6 +164,9 @@ public:
     decimal64& operator-=(unsigned long z); 
     decimal64& operator-=(long long z); 
     decimal64& operator-=(unsigned long long z);
+    decimal64& operator-=(float z);
+    decimal64& operator-=(double z);
+    decimal64& operator-=(long double z);
 
     decimal64& operator*=(decimal32 rhs); 
     decimal64& operator*=(decimal64 rhs); 
@@ -159,6 +177,9 @@ public:
     decimal64& operator*=(unsigned long z); 
     decimal64& operator*=(long long z); 
     decimal64& operator*=(unsigned long long z);
+    decimal64& operator*=(float z);
+    decimal64& operator*=(double z);
+    decimal64& operator*=(long double z);
     
     decimal64& operator/=(decimal32 rhs);
     decimal64& operator/=(decimal64 rhs);
@@ -169,6 +190,9 @@ public:
     decimal64& operator/=(unsigned long z); 
     decimal64& operator/=(long long z); 
     decimal64& operator/=(unsigned long long z);
+    decimal64& operator/=(float z);
+    decimal64& operator/=(double z);
+    decimal64& operator/=(long double z);
 
     void value(value_type value) { m_value = value; }
     const value_type value() const { return m_value; }
@@ -225,6 +249,9 @@ public:
     decimal128& operator+=(unsigned long z); 
     decimal128& operator+=(long long z); 
     decimal128& operator+=(unsigned long long z);
+    decimal128& operator+=(float z);
+    decimal128& operator+=(double z);
+    decimal128& operator+=(long double z);
 
     decimal128& operator-=(decimal32 rhs);
     decimal128& operator-=(decimal64 rhs);
@@ -235,6 +262,9 @@ public:
     decimal128& operator-=(unsigned long z); 
     decimal128& operator-=(long long z); 
     decimal128& operator-=(unsigned long long z);
+    decimal128& operator-=(float z);
+    decimal128& operator-=(double z);
+    decimal128& operator-=(long double z);
 
     decimal128& operator*=(decimal32 rhs); 
     decimal128& operator*=(decimal64 rhs); 
@@ -245,6 +275,9 @@ public:
     decimal128& operator*=(unsigned long z); 
     decimal128& operator*=(long long z); 
     decimal128& operator*=(unsigned long long z);
+    decimal128& operator*=(float z);
+    decimal128& operator*=(double z);
+    decimal128& operator*=(long double z);
     
     decimal128& operator/=(decimal32 rhs);
     decimal128& operator/=(decimal64 rhs);
@@ -255,6 +288,9 @@ public:
     decimal128& operator/=(unsigned long z); 
     decimal128& operator/=(long long z); 
     decimal128& operator/=(unsigned long long z);
+    decimal128& operator/=(float z);
+    decimal128& operator/=(double z);
+    decimal128& operator/=(long double z);
 
     void value(value_type value) { m_value = value; }
     const value_type value() const { return m_value; }

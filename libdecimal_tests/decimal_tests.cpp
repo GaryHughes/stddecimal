@@ -7,33 +7,9 @@ TEST_CASE("decimal", "decimal")
 {
     SECTION("constructors")
     {
-       // REQUIRE(static_cast<long long>(decimal32()) == 0);
-
-
-        // explicit decimal32(decimal64 d64);
-        // explicit decimal32(decimal128 d128);
-        // explicit decimal32(float r);
-        // explicit decimal32(double r); 
-        // explicit decimal32(long double r);
-
-        // // 3.2.2.3 conversion from integral type: 
-        // explicit decimal32(int z);
-        // REQUIRE(static_cast<long long>(decimal32(0)) == 0);
-        // REQUIRE(static_cast<long long>(decimal32(1)) == 1);
-        // REQUIRE(static_cast<long long>(decimal32(std::numeric_limits<int>::min())) == -2147483648);
-        // REQUIRE(static_cast<long long>(decimal32(std::numeric_limits<int>::max())) == 2147483647);
-
-        // REQUIRE(static_cast<long long>(decimal32(std::numeric_limits<unsigned int>::min())) == 0);
-        // REQUIRE(static_cast<long long>(decimal32(std::numeric_limits<unsigned int>::max())) == 4294967296);
-
-        // explicit decimal32(unsigned int z);
-        // explicit decimal32(long z);
-        // explicit decimal32(unsigned long z); 
-        // explicit decimal32(long long z); 
-        // explicit decimal32(unsigned long long z);
-        
-        // // 3.2.2.4 conversion to integral type: 
-        // explicit operator long long() const;   
+       REQUIRE(decimal32() == 0);
+    
+      
     
     }
 
@@ -652,6 +628,9 @@ TEST_CASE("decimal", "decimal")
         decimal32(0) += 0lu;
         decimal32(0) += 0ll;
         decimal32(0) += 0llu;
+        decimal32(0) += 0.0f;
+        decimal32(0) += 0.0;
+        decimal32(0) += 0.0l;
 
         decimal64(0) += decimal32(0);
         decimal64(0) += decimal64(0);
@@ -662,6 +641,9 @@ TEST_CASE("decimal", "decimal")
         decimal64(0) += 0lu;
         decimal64(0) += 0ll;
         decimal64(0) += 0llu;
+        decimal64(0) += 0.0f;
+        decimal64(0) += 0.0;
+        decimal64(0) += 0.0l;
 
         decimal128(0) += decimal32(0);
         decimal128(0) += decimal64(0);
@@ -672,6 +654,9 @@ TEST_CASE("decimal", "decimal")
         decimal128(0) += 0lu;
         decimal128(0) += 0ll;
         decimal128(0) += 0llu;
+        decimal128(0) += 0.0f;
+        decimal128(0) += 0.0;
+        decimal128(0) += 0.0l;
     }
 
     SECTION("compound assignment subtraction")
@@ -685,6 +670,9 @@ TEST_CASE("decimal", "decimal")
         decimal32(0) -= 0lu;
         decimal32(0) -= 0ll;
         decimal32(0) -= 0llu;
+        decimal32(0) -= 0.0f;
+        decimal32(0) -= 0.0;
+        decimal32(0) -= 0.0l;
 
         decimal64(0) -= decimal32(0);
         decimal64(0) -= decimal64(0);
@@ -695,6 +683,9 @@ TEST_CASE("decimal", "decimal")
         decimal64(0) -= 0lu;
         decimal64(0) -= 0ll;
         decimal64(0) -= 0llu;
+        decimal64(0) -= 0.0f;
+        decimal64(0) -= 0.0;
+        decimal64(0) -= 0.0l;
 
         decimal128(0) -= decimal32(0);
         decimal128(0) -= decimal64(0);
@@ -705,6 +696,9 @@ TEST_CASE("decimal", "decimal")
         decimal128(0) -= 0lu;
         decimal128(0) -= 0ll;
         decimal128(0) -= 0llu;
+        decimal128(0) -= 0.0f;
+        decimal128(0) -= 0.0;
+        decimal128(0) -= 0.0l;
     }
 
     SECTION("compound assignment multiplication")
@@ -718,6 +712,9 @@ TEST_CASE("decimal", "decimal")
         decimal32(0) *= 0lu;
         decimal32(0) *= 0ll;
         decimal32(0) *= 0llu;
+        decimal32(0) *= 0.0f;
+        decimal32(0) *= 0.0;
+        decimal32(0) *= 0.0l;
 
         decimal64(0) *= decimal32(0);
         decimal64(0) *= decimal64(0);
@@ -728,6 +725,9 @@ TEST_CASE("decimal", "decimal")
         decimal64(0) *= 0lu;
         decimal64(0) *= 0ll;
         decimal64(0) *= 0llu;
+        decimal64(0) *= 0.0f;
+        decimal64(0) *= 0.0;
+        decimal64(0) *= 0.0l;
 
         decimal128(0) *= decimal32(0);
         decimal128(0) *= decimal64(0);
@@ -738,7 +738,10 @@ TEST_CASE("decimal", "decimal")
         decimal128(0) *= 0lu;
         decimal128(0) *= 0ll;
         decimal128(0) *= 0llu;
-    }
+        decimal128(0) *= 0.0f;
+        decimal128(0) *= 0.0;
+        decimal128(0) *= 0.0l;
+}
 
     SECTION("compound assignment division")
     {
@@ -751,6 +754,9 @@ TEST_CASE("decimal", "decimal")
         decimal32(0) /= 0lu;
         decimal32(0) /= 0ll;
         decimal32(0) /= 0llu;
+        decimal32(0) /= 0.0f;
+        decimal32(0) /= 0.0;
+        decimal32(0) /= 0.0l;
 
         decimal64(0) /= decimal32(0);
         decimal64(0) /= decimal64(0);
@@ -761,6 +767,9 @@ TEST_CASE("decimal", "decimal")
         decimal64(0) /= 0lu;
         decimal64(0) /= 0ll;
         decimal64(0) /= 0llu;
+        decimal64(0) /= 0.0f;
+        decimal64(0) /= 0.0;
+        decimal64(0) /= 0.0l;
 
         decimal128(0) /= decimal32(0);
         decimal128(0) /= decimal64(0);
@@ -771,7 +780,8 @@ TEST_CASE("decimal", "decimal")
         decimal128(0) /= 0lu;
         decimal128(0) /= 0ll;
         decimal128(0) /= 0llu;
+        decimal128(0) /= 0.0f;
+        decimal128(0) /= 0.0;
+        decimal128(0) /= 0.0l;
     }
-
-
 }
