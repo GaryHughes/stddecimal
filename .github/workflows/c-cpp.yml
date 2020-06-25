@@ -1,0 +1,16 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: garyedwardhughes/ubuntu-stddecimal
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build Clang
+      run: LD_LIBRARY_PATH=/usr/local/lib ./build_clang.sh all test
