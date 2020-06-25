@@ -13,4 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build Clang
-      run: ln -s /IntelRDFPMathLib20U2 .. && LD_LIBRARY_PATH=/usr/local/lib ./build_clang.sh all test
+      run: |
+        ln -s /IntelRDFPMathLib20U2 .. 
+        ln -s /IntelRDFPMathLib20U2/LIBRARY/gcc000libbid.a /IntelRDFPMathLib20U2/LIBRARY/libbid.a 
+        LD_LIBRARY_PATH=/usr/local/lib ./build_clang.sh all test
