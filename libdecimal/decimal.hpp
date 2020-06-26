@@ -9,6 +9,22 @@ class decimal32;
 class decimal64;
 class decimal128;
 
+// - if one or both of the parameters of the overloaded operator is decimal128, then the return type is decimal128,
+// - otherwise, if one or both of the parameters is decimal64, then the return type is decimal64,
+// - otherwise, the return type is decimal32.
+
+template<typename T> struct value_traits;
+template<> struct value_traits<decimal32> { static constexpr int width() { return 4 * 8; }  };
+template<> struct value_traits<decimal64> { static constexpr int width() { return 8 * 8; }  };
+template<> struct value_traits<decimal128> { static constexpr int width() { return 16 * 8; }  };
+template<> struct value_traits<int> { static constexpr int width() { return sizeof(int) * 8; }  };
+template<> struct value_traits<unsigned int> { static constexpr int width() { return sizeof(unsigned int) * 8; }  };
+template<> struct value_traits<long> { static constexpr int width() { return sizeof(long) * 8; }  };
+template<> struct value_traits<unsigned long> { static constexpr int width() { return sizeof(unsigned long) * 8; }  };
+template<> struct value_traits<long long> { static constexpr int width() { return sizeof(long long) * 8; }  };
+template<> struct value_traits<unsigned long long> { static constexpr int width() { return sizeof(unsigned long long) * 8; }  };
+
+
 template<typename TargetType, typename SourceType>
 TargetType resize(SourceType value);
 template<> BID_UINT32 resize(BID_UINT32 value);
@@ -344,20 +360,6 @@ decimal64 operator-(decimal64 rhs);
 decimal128 operator-(decimal128 rhs);
 
 
-// - if one or both of the parameters of the overloaded operator is decimal128, then the return type is decimal128,
-// - otherwise, if one or both of the parameters is decimal64, then the return type is decimal64,
-// - otherwise, the return type is decimal32.
-
-template<typename T> struct value_traits;
-template<> struct value_traits<decimal32> { static constexpr int width() { return sizeof(decimal32::value_type) * 8; }  };
-template<> struct value_traits<decimal64> { static constexpr int width() { return sizeof(decimal64::value_type) * 8; }  };
-template<> struct value_traits<decimal128> { static constexpr int width() { return sizeof(decimal128::value_type) * 8; }  };
-template<> struct value_traits<int> { static constexpr int width() { return sizeof(int) * 8; }  };
-template<> struct value_traits<unsigned int> { static constexpr int width() { return sizeof(unsigned int) * 8; }  };
-template<> struct value_traits<long> { static constexpr int width() { return sizeof(long) * 8; }  };
-template<> struct value_traits<unsigned long> { static constexpr int width() { return sizeof(unsigned long) * 8; }  };
-template<> struct value_traits<long long> { static constexpr int width() { return sizeof(long long) * 8; }  };
-template<> struct value_traits<unsigned long long> { static constexpr int width() { return sizeof(unsigned long long) * 8; }  };
 
 const _IDEC_round round_mode = BID_ROUNDING_TO_NEAREST;
 
