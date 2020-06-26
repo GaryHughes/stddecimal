@@ -31,40 +31,6 @@ template<> struct value_traits<long double> { static constexpr int width() { ret
 
 template<typename TargetType, typename SourceType>
 TargetType resize(SourceType value);
-template<> BID_UINT32 resize(BID_UINT32 value);
-template<> BID_UINT32 resize(BID_UINT64 value);
-template<> BID_UINT32 resize(BID_UINT128 value);
-template<> BID_UINT32 resize(int value);
-template<> BID_UINT32 resize(long value);
-template<> BID_UINT32 resize(unsigned long value);
-template<> BID_UINT32 resize(long long value);
-template<> BID_UINT32 resize(decimal32 value);
-template<> BID_UINT32 resize(float value);
-
-template<> BID_UINT128 resize(unsigned long long value);
-template<> BID_UINT128 resize(long long value);
-template<> BID_UINT128 resize(unsigned long value);
-template<> BID_UINT128 resize(long value);
-template<> BID_UINT128 resize(unsigned int value);
-template<> BID_UINT128 resize(int value);
-template<> BID_UINT128 resize(decimal64 value);
-template<> BID_UINT128 resize(decimal32 value);
-template<> BID_UINT128 resize(decimal128 value);
-template<> BID_UINT128 resize(float value);
-template<> BID_UINT128 resize(double value);
-template<> BID_UINT128 resize(long double value);
-
-template<> BID_UINT64 resize(unsigned long long);
-template<> BID_UINT64 resize(long long);
-template<> BID_UINT64 resize(unsigned long);
-template<> BID_UINT64 resize(long);
-template<> BID_UINT64 resize(unsigned int);
-template<> BID_UINT64 resize(int);
-template<> BID_UINT64 resize(decimal64);
-template<> BID_UINT64 resize(decimal32);
-template<> BID_UINT64 resize(float);
-template<> BID_UINT64 resize(double);
-template<> BID_UINT64 resize(BID_UINT128);
 
 
 const _IDEC_round round_mode = BID_ROUNDING_TO_NEAREST;
