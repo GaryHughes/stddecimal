@@ -219,59 +219,59 @@ TEST_CASE("decimal", "decimal")
 
     SECTION("binary division")
     {
-        decimal32(0) / decimal32(0);
-        decimal32(0) / decimal64(0);
-        decimal32(0) / decimal128(0);
+        REQUIRE(decimal32(6) / decimal32(2) == decimal32(3));
+        REQUIRE(decimal32(6) / decimal64(2) == decimal64(3));
+        REQUIRE(decimal32(6) / decimal128(2) == decimal128(3));
 
-        decimal64(0) / decimal32(0);
-        decimal64(0) / decimal64(0);
-        decimal64(0) / decimal128(0);
+        REQUIRE(decimal64(6) / decimal32(2) == decimal64(3));
+        REQUIRE(decimal64(6) / decimal64(2) == decimal64(3));
+        REQUIRE(decimal64(6) / decimal128(2) == decimal128(3));
         
-        decimal128(0) / decimal32(0);
-        decimal128(0) / decimal64(0);
-        decimal128(0) / decimal128(0);
+        REQUIRE(decimal128(6) / decimal32(2) == decimal128(3));
+        REQUIRE(decimal128(6) / decimal64(2) == decimal128(3));
+        REQUIRE(decimal128(6) / decimal128(2) == decimal128(3));
 
-        decimal32(0) / 0;
-        decimal32(0) / 0u;
-        decimal32(0) / 0l;
-        decimal32(0) / 0lu;
-        decimal32(0) / 0ll;
-        decimal32(0) / 0llu;
+        REQUIRE(decimal32(6) / 2 == decimal32(3));
+        REQUIRE(decimal32(6) / 2u == decimal32(3));
+        REQUIRE(decimal32(6) / 2l == decimal64(3));
+        REQUIRE(decimal32(6) / 2lu == decimal64(3));
+        REQUIRE(decimal32(6) / 2ll == decimal128(3));
+        REQUIRE(decimal32(6) / 2llu == decimal128(3));
 
-        0 / decimal32(0);
-        0u / decimal32(0);
-        0l / decimal32(0);
-        0lu / decimal32(0);
-        0ll / decimal32(0);
-        0llu / decimal32(0);
+        REQUIRE(6 / decimal32(2) == decimal32(3));
+        REQUIRE(6u / decimal32(2) == decimal32(3));
+        REQUIRE(6l / decimal32(2) == decimal64(3));
+        REQUIRE(6lu / decimal32(2) == decimal64(3));
+        REQUIRE(6ll / decimal32(2) == decimal128(3));
+        REQUIRE(6llu / decimal32(2) == decimal128(3));
 
-        decimal64(0) / 0;
-        decimal64(0) / 0u;
-        decimal64(0) / 0l;
-        decimal64(0) / 0lu;
-        decimal64(0) / 0ll;
-        decimal64(0) / 0llu;
+        REQUIRE(decimal64(6) / 2 == decimal64(3));
+        REQUIRE(decimal64(6) / 2u == decimal64(3));
+        REQUIRE(decimal64(6) / 2l == decimal64(3));
+        REQUIRE(decimal64(6) / 2lu == decimal64(3));
+        REQUIRE(decimal64(6) / 2ll == decimal128(3));
+        REQUIRE(decimal64(6) / 2llu == decimal128(3));
 
-        0 / decimal64(0);
-        0u / decimal64(0);
-        0l / decimal64(0);
-        0lu / decimal64(0);
-        0ll / decimal64(0);
-        0llu / decimal64(0);
+        REQUIRE(6 / decimal64(2) == decimal64(3));
+        REQUIRE(6u / decimal64(2) == decimal64(3));
+        REQUIRE(6l / decimal64(2) == decimal64(3));
+        REQUIRE(6lu / decimal64(2) == decimal64(3));
+        REQUIRE(6ll / decimal64(2) == decimal128(3));
+        REQUIRE(6llu / decimal64(2) == decimal128(3));
 
-        decimal128(0) / 0;
-        decimal128(0) / 0u;
-        decimal128(0) / 0l;
-        decimal128(0) / 0lu;
-        decimal128(0) / 0ll;
-        decimal128(0) / 0llu;
+        REQUIRE(decimal128(6) / 2 == decimal128(3));
+        REQUIRE(decimal128(6) / 2u == decimal128(3));
+        REQUIRE(decimal128(6) / 2l == decimal128(3));
+        REQUIRE(decimal128(6) / 2lu == decimal128(3));
+        REQUIRE(decimal128(6) / 2ll == decimal128(3));
+        REQUIRE(decimal128(6) / 2llu == decimal128(3));
 
-        0 / decimal128(0);
-        0u / decimal128(0);
-        0l / decimal128(0);
-        0lu / decimal128(0);
-        0ll / decimal128(0);
-        0llu / decimal128(0);
+        REQUIRE(6 / decimal128(2) == decimal128(3));
+        REQUIRE(6u / decimal128(2) == decimal128(3));
+        REQUIRE(6l / decimal128(2) == decimal128(3));
+        REQUIRE(6lu / decimal128(2) == decimal128(3));
+        REQUIRE(6ll / decimal128(2) == decimal128(3));
+        REQUIRE(6llu / decimal128(2) == decimal128(3));
     }
 
     SECTION("binary equal")
