@@ -14,10 +14,10 @@ class decimal128;
 // - otherwise, the return type is decimal32.
 
 template<typename T> struct value_traits;
-template<> struct value_traits<decimal32> { static constexpr int width() { return 4 * 8; }  };
-template<> struct value_traits<decimal64> { static constexpr int width() { return 8 * 8; }  };
-template<> struct value_traits<decimal128> { static constexpr int width() { return 16 * 8; }  };
-template<> struct value_traits<BID_UINT128> { static constexpr int width() { return 16 * 8; }  };
+template<> struct value_traits<decimal32> { static constexpr int width() { return sizeof(BID_UINT32) * 8; }  };
+template<> struct value_traits<decimal64> { static constexpr int width() { return sizeof(BID_UINT64) * 8; }  };
+template<> struct value_traits<decimal128> { static constexpr int width() { return sizeof(BID_UINT128) * 8; }  };
+template<> struct value_traits<BID_UINT128> { static constexpr int width() { return sizeof(BID_UINT128) * 8; }  };
 template<> struct value_traits<int> { static constexpr int width() { return sizeof(int) * 8; }  };
 template<> struct value_traits<unsigned int> { static constexpr int width() { return sizeof(unsigned int) * 8; }  };
 template<> struct value_traits<long> { static constexpr int width() { return sizeof(long) * 8; }  };
