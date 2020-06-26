@@ -324,10 +324,7 @@ public:
 private:
 
     value_type m_value;
-
-    friend decimal64;
-    friend decimal128;
-
+   
 };
 
 class decimal64 
@@ -411,9 +408,6 @@ private:
 
     value_type m_value;
 
-    friend decimal32;
-    friend decimal128;
-
 };
 
 class decimal128 
@@ -496,9 +490,6 @@ public:
 private:
 
     value_type m_value;
-
-    friend decimal32;
-    friend decimal64;
 
 };
 
@@ -623,13 +614,25 @@ bool operator>=(LHS lhs, RHS rhs)
 
 // 3.2.10 Formatted input:
 template <class charT, class traits>
-std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal32 & d) { return is; }
+std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal32 & d) 
+{
+    // TODO 
+    return is; 
+}
 
 template <class charT, class traits>
-std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal64 & d) { return is; }
+std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal64 & d) 
+{
+    // TODO 
+    return is; 
+}
 
 template <class charT, class traits>
-std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal128 & d) { return is; }
+std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal128 & d) 
+{
+    // TODO 
+    return is; 
+}
 
 // 3.2.11 Formatted output:
 template <class charT, class traits>

@@ -313,12 +313,12 @@ decimal32::decimal32()
 }
 
 decimal32::decimal32(decimal64 d64)
-:   m_value(bid64_to_bid32(d64.m_value, round_mode, &flags))
+:   m_value(bid64_to_bid32(d64.value(), round_mode, &flags))
 {
 }
 
 decimal32::decimal32(decimal128 d128)
-:   m_value(bid128_to_bid32(d128.m_value, round_mode, &flags))
+:   m_value(bid128_to_bid32(d128.value(), round_mode, &flags))
 {
 }
 
@@ -405,12 +405,12 @@ decimal64::decimal64()
 }
     
 decimal64::decimal64(decimal32 d32)
-:   m_value(bid32_to_bid64(d32.m_value, &flags))
+:   m_value(bid32_to_bid64(d32.value(), &flags))
 {
 }
 
 decimal64::decimal64(decimal128 d128)
-:   m_value(bid128_to_bid64(d128.m_value, round_mode, &flags))
+:   m_value(bid128_to_bid64(d128.value(), round_mode, &flags))
 {
 } 
 
