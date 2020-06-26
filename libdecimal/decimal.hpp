@@ -9,6 +9,20 @@ class decimal32;
 class decimal64;
 class decimal128;
 
+template<typename TargetType, typename SourceType>
+TargetType resize(SourceType value);
+template<> BID_UINT32 resize(BID_UINT32 value);
+template<> BID_UINT32 resize(BID_UINT64 value);
+template<> BID_UINT32 resize(BID_UINT128 value);
+template<> BID_UINT32 resize(int value);
+// template<> BID_UINT32 resize(unsigned int value); same as BID_UINT32
+template<> BID_UINT32 resize(long value);
+template<> BID_UINT32 resize(unsigned long value);
+template<> BID_UINT32 resize(long long value);
+// template<> BID_UINT32 resize(unsigned long long value); same as BID_UINT64
+
+
+
 
 class decimal32 
 {
@@ -623,17 +637,7 @@ template<> struct operator_traits<128, 32>  : public operator_128bit {};
 template<> struct operator_traits<128, 64>  : public operator_128bit {};
 template<> struct operator_traits<128, 128> : public operator_128bit {}; 
 
-template<typename TargetType, typename SourceType>
-TargetType resize(SourceType value);
-template<> BID_UINT32 resize(BID_UINT32 value);
-template<> BID_UINT32 resize(BID_UINT64 value);
-template<> BID_UINT32 resize(BID_UINT128 value);
-template<> BID_UINT32 resize(int value);
-// template<> BID_UINT32 resize(unsigned int value); same as BID_UINT32
-template<> BID_UINT32 resize(long value);
-template<> BID_UINT32 resize(unsigned long value);
-template<> BID_UINT32 resize(long long value);
-// template<> BID_UINT32 resize(unsigned long long value); same as BID_UINT64
+
 
 // 3.2.8 binary arithmetic operators:
 
