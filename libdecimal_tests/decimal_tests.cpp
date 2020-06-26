@@ -162,60 +162,59 @@ TEST_CASE("decimal", "decimal")
 
     SECTION("binary multiplication")
     {
-        decimal32(0) * decimal32(0);
-        decimal32(0) * decimal64(0);
-        decimal32(0) * decimal128(0);
+        REQUIRE(decimal32(2) * decimal32(3) == decimal32(6));
+        REQUIRE(decimal32(2) * decimal64(3) == decimal64(6));
+        REQUIRE(decimal32(2) * decimal128(3) == decimal128(6));
 
-        decimal64(0) * decimal32(0);
-        decimal64(0) * decimal64(0);
-        decimal64(0) * decimal128(0);
+        REQUIRE(decimal64(2) * decimal32(3) == decimal64(6));
+        REQUIRE(decimal64(2) * decimal64(3) == decimal64(6));
+        REQUIRE(decimal64(2) * decimal128(3) == decimal128(6));
         
-        decimal128(0) * decimal32(0);
-        decimal128(0) * decimal64(0);
-        decimal128(0) * decimal128(0);
+        REQUIRE(decimal128(2) * decimal32(3) == decimal128(6));
+        REQUIRE(decimal128(2) * decimal64(3) == decimal128(6));
+        REQUIRE(decimal128(2) * decimal128(3) == decimal128(6));
     
-        decimal32(0) * 0;
-        decimal32(0) * 0u;
-        decimal32(0) * 0l;
-        decimal32(0) * 0lu;
-        decimal32(0) * 0ll;
-        decimal32(0) * 0llu;
+        REQUIRE(decimal32(2) * 3 == decimal32(6));
+        REQUIRE(decimal32(2) * 3u == decimal32(6));
+        REQUIRE(decimal32(2) * 3l == decimal64(6));
+        REQUIRE(decimal32(2) * 3lu == decimal64(6));
+        REQUIRE(decimal32(2) * 3ll == decimal128(6));
+        REQUIRE(decimal32(2) * 3llu == decimal128(6));
 
-        0 * decimal32(0);
-        0u * decimal32(0);
-        0l * decimal32(0);
-        0lu * decimal32(0);
-        0ll * decimal32(0);
-        0llu * decimal32(0);
+        REQUIRE(2 * decimal32(3) == decimal32(6));
+        REQUIRE(2u * decimal32(3) == decimal32(6));
+        REQUIRE(2l * decimal32(3) == decimal64(6));
+        REQUIRE(2lu * decimal32(3) == decimal64(6));
+        REQUIRE(2ll * decimal32(3) == decimal128(6));
+        REQUIRE(2llu * decimal32(3) == decimal128(6));
 
-        decimal64(0) * 0;
-        decimal64(0) * 0u;
-        decimal64(0) * 0l;
-        decimal64(0) * 0lu;
-        decimal64(0) * 0ll;
-        decimal64(0) * 0llu;
+        REQUIRE(decimal64(2) * 3 == decimal64(6));
+        REQUIRE(decimal64(2) * 3u == decimal64(6));
+        REQUIRE(decimal64(2) * 3l == decimal64(6));
+        REQUIRE(decimal64(2) * 3lu == decimal64(6));
+        REQUIRE(decimal64(2) * 3ll == decimal128(6));
+        REQUIRE(decimal64(2) * 3llu == decimal128(6));
 
-        0 * decimal64(0);
-        0u * decimal64(0);
-        0l * decimal64(0);
-        0lu * decimal64(0);
-        0ll * decimal64(0);
-        0llu * decimal64(0);
+        REQUIRE(2 * decimal64(3) == decimal64(6));
+        REQUIRE(2u * decimal64(3) == decimal64(6));
+        REQUIRE(2l * decimal64(3) == decimal64(6));
+        REQUIRE(2lu * decimal64(3) == decimal64(6));
+        REQUIRE(2ll * decimal64(3) == decimal128(6));
+        REQUIRE(2llu * decimal64(3) == decimal128(6));
 
-        decimal128(0) * 0;
-        decimal128(0) * 0u;
-        decimal128(0) * 0l;
-        decimal128(0) * 0lu;
-        decimal128(0) * 0ll;
-        decimal128(0) * 0llu;
+        REQUIRE(decimal128(2) * 3 == decimal128(6));
+        REQUIRE(decimal128(2) * 3u == decimal128(6));
+        REQUIRE(decimal128(2) * 3l == decimal128(6));
+        REQUIRE(decimal128(2) * 3lu == decimal128(6));
+        REQUIRE(decimal128(2) * 3ll == decimal128(6));
+        REQUIRE(decimal128(2) * 3llu == decimal128(6));
 
-        0 * decimal128(0);
-        0u * decimal128(0);
-        0l * decimal128(0);
-        0lu * decimal128(0);
-        0ll * decimal128(0);
-        0llu * decimal128(0);
-    
+        REQUIRE(2 * decimal128(3) == decimal128(6));
+        REQUIRE(2u * decimal128(3) == decimal128(6));
+        REQUIRE(2l * decimal128(3) == decimal128(6));
+        REQUIRE(2lu * decimal128(3) == decimal128(6));
+        REQUIRE(2ll * decimal128(3) == decimal128(6));
+        REQUIRE(2llu * decimal128(3) == decimal128(6));
     }
 
     SECTION("binary division")
