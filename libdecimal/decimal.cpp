@@ -3,7 +3,7 @@
 namespace std::decimal
 {
 
- template<> BID_UINT32 resize(decimal32 value) {
+template<> BID_UINT32 resize(decimal32 value) {
     return value.value();
 }
 
@@ -43,7 +43,8 @@ template<> BID_UINT32 resize(BID_UINT128 value) {
 }
 
 template<> BID_UINT32 resize(float value) {
-    return 0;
+    _IDEC_flags flags = 0;
+    return binary32_to_bid32(value, round_mode, &flags);
 }
 
 template<> BID_UINT64 resize(decimal32 value) {
@@ -89,77 +90,67 @@ template<> BID_UINT64 resize(double value) {
     return binary64_to_bid64(value, round_mode, &flags);
 }
 
-template<> BID_UINT64 resize(BID_UINT128) {
-    // TODO
-    return 0;
+template<> BID_UINT64 resize(BID_UINT128 value) {
+     _IDEC_flags flags = 0;
+    return bid128_to_bid64(value, round_mode, &flags);
 }
 
 template<> BID_UINT128 resize(decimal32 value) {
-    // TODO
-    return BID_UINT128();
+     _IDEC_flags flags = 0;
+    return bid32_to_bid128(value.value(), &flags);
 }
 
 template<> BID_UINT128 resize(decimal64 value) {
-    // TODO
-    return BID_UINT128();
+    _IDEC_flags flags = 0;
+    return bid64_to_bid128(value.value(), &flags);
 }
 
 template<> BID_UINT128 resize(decimal128 value) {
-    // TODO
-    return BID_UINT128();
+    return value.value();
 }
 
 template<> BID_UINT128 resize(int value) {
-    // TODO
-    return BID_UINT128();
+    return bid128_from_int32(value);
 }
 
 template<> BID_UINT128 resize(unsigned int value) {
-    // TODO
-    return BID_UINT128();
+    return bid128_from_uint32(value);
 }
 
 template<> BID_UINT128 resize(long value) {
-    // TODO
-    return BID_UINT128();
+    return bid128_from_int64(value);
 }
 
 template<> BID_UINT128 resize(unsigned long value) {
-    // TODO
-    return BID_UINT128();
+    return bid128_from_uint64(value);
 }
 
 template<> BID_UINT128 resize(long long value) {
-    // TODO
-    return BID_UINT128();
+    return bid128_from_int64(value);
 }
 
 template<> BID_UINT128 resize(unsigned long long value) {
-    // TODO
-    return BID_UINT128();
+    return bid128_from_uint64(value);
 }
 
 template<> BID_UINT128 resize(BID_UINT128 value) {
-    // TODO
-    return BID_UINT128();
+    return value;
 }
 
 template<> BID_UINT128 resize(float value) {
-    // TODO
-    return BID_UINT128();
+    _IDEC_flags flags = 0;
+    return binary32_to_bid128(value, round_mode, &flags);
 }
 
 template<> BID_UINT128 resize(double value) {
-    // TODO
-    return BID_UINT128();
+    _IDEC_flags flags = 0;
+    return binary64_to_bid128(value, round_mode, &flags);
 }
 
 template<> BID_UINT128 resize(long double value) {
-    // TODO
+    //return bid128_from_binary128(value);
     return BID_UINT128();
 }
-
-
 
 
 
