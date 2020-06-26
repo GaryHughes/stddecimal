@@ -217,7 +217,7 @@ public:
     
     // 3.2.4.2 conversion from floating-point type: 
     explicit decimal128(decimal32 d32);
-    explicit decimal128(decimal64 d64); 
+    explicit decimal128(decimal64 d64);
     explicit decimal128(float r);
     explicit decimal128(double r); 
     explicit decimal128(long double r);
@@ -381,34 +381,26 @@ struct operator_32bit {
 
     static BID_UINT32 promote(unsigned long long d) { 
         return 0; // TODO
-    }	
-
-    static result_type add(BID_UINT32 lhs, BID_UINT32 rhs) {
-        _IDEC_flags flags = 0;
-        result_type result;
-        result.value(bid32_add(lhs, rhs, round_mode, &flags)); 
-        return result;
     }
 
-    static result_type sub(BID_UINT32 lhs, BID_UINT32 rhs) {
+    static void add(BID_UINT32& lhs, BID_UINT32 rhs) {
         _IDEC_flags flags = 0;
-        result_type result;
-        result.value(bid32_sub(lhs, rhs, round_mode, &flags)); 
-        return result;
+        lhs = bid32_add(lhs, rhs, round_mode, &flags); 
     }
 
-    static result_type mul(BID_UINT32 lhs, BID_UINT32 rhs) {
+    static void sub(BID_UINT32& lhs, BID_UINT32 rhs) {
         _IDEC_flags flags = 0;
-        result_type result;
-        result.value(bid32_mul(lhs, rhs, round_mode, &flags)); 
-        return result;
+        lhs = bid32_sub(lhs, rhs, round_mode, &flags); 
     }
 
-    static result_type div(BID_UINT32 lhs, BID_UINT32 rhs) {
+    static void mul(BID_UINT32& lhs, BID_UINT32 rhs) {
         _IDEC_flags flags = 0;
-        result_type result;
-        result.value(bid32_div(lhs, rhs, round_mode, &flags)); 
-        return result;
+        lhs = bid32_mul(lhs, rhs, round_mode, &flags); 
+    }
+
+    static void div(BID_UINT32& lhs, BID_UINT32 rhs) {
+        _IDEC_flags flags = 0;
+        lhs = bid32_div(lhs, rhs, round_mode, &flags); 
     }
 
     static bool equal(BID_UINT32 lhs, BID_UINT32 rhs) {
@@ -477,34 +469,26 @@ struct operator_64bit {
 
     static BID_UINT64 promote(unsigned long long d) { 
         return 0; // TODO
-    }	
-	
-    static result_type add(BID_UINT64 lhs, BID_UINT64 rhs) {
-        _IDEC_flags flags = 0;
-        result_type result;
-        result.value(bid64_add(lhs, rhs, round_mode, &flags)); 
-        return result;
     }
 
-    static result_type sub(BID_UINT64 lhs, BID_UINT64 rhs) {
+    static void add(BID_UINT64& lhs, BID_UINT64 rhs) {
         _IDEC_flags flags = 0;
-        result_type result;
-        result.value(bid64_sub(lhs, rhs, round_mode, &flags)); 
-        return result;
+        lhs = bid64_add(lhs, rhs, round_mode, &flags); 
     }
 
-    static result_type mul(BID_UINT64 lhs, BID_UINT64 rhs) {
+    static void sub(BID_UINT64& lhs, BID_UINT64 rhs) {
         _IDEC_flags flags = 0;
-        result_type result;
-        result.value(bid64_mul(lhs, rhs, round_mode, &flags)); 
-        return result;
+        lhs = bid64_sub(lhs, rhs, round_mode, &flags); 
     }
 
-    static result_type div(BID_UINT64 lhs, BID_UINT64 rhs) {
+    static void mul(BID_UINT64& lhs, BID_UINT64 rhs) {
         _IDEC_flags flags = 0;
-        result_type result;
-        result.value(bid64_div(lhs, rhs, round_mode, &flags)); 
-        return result;
+        lhs = bid64_mul(lhs, rhs, round_mode, &flags); 
+    }
+
+    static void div(BID_UINT64& lhs, BID_UINT64 rhs) {
+        _IDEC_flags flags = 0;
+        lhs = bid64_div(lhs, rhs, round_mode, &flags); 
     }
 
     static bool equal(BID_UINT64 lhs, BID_UINT64 rhs) {
@@ -576,34 +560,26 @@ struct operator_128bit {
 
     static BID_UINT128 promote(unsigned long long d) { 
         return { 0, 0 }; // TODO
-    }	
-
-    static result_type add(BID_UINT128 lhs, BID_UINT128 rhs) {
-        _IDEC_flags flags = 0;
-        result_type result;
-        result.value(bid128_add(lhs, rhs, round_mode, &flags)); 
-        return result;
     }
 
-    static result_type sub(BID_UINT128 lhs, BID_UINT128 rhs) {
+    static void add(BID_UINT128& lhs, BID_UINT128 rhs) {
         _IDEC_flags flags = 0;
-        result_type result;
-        result.value(bid128_sub(lhs, rhs, round_mode, &flags)); 
-        return result;
+        lhs = bid128_add(lhs, rhs, round_mode, &flags); 
     }
 
-    static result_type mul(BID_UINT128 lhs, BID_UINT128 rhs) {
+    static void sub(BID_UINT128& lhs, BID_UINT128 rhs) {
         _IDEC_flags flags = 0;
-        result_type result;
-        result.value(bid128_mul(lhs, rhs, round_mode, &flags)); 
-        return result;
+        lhs = bid128_sub(lhs, rhs, round_mode, &flags); 
     }
 
-    static result_type div(BID_UINT128 lhs, BID_UINT128 rhs) {
+    static void mul(BID_UINT128& lhs, BID_UINT128 rhs) {
         _IDEC_flags flags = 0;
-        result_type result;
-        result.value(bid128_div(lhs, rhs, round_mode, &flags)); 
-        return result;
+        lhs = bid128_mul(lhs, rhs, round_mode, &flags); 
+    }
+
+    static void div(BID_UINT128& lhs, BID_UINT128 rhs) {
+        _IDEC_flags flags = 0;
+        lhs = bid128_div(lhs, rhs, round_mode, &flags); 
     }
 
     static bool equal(BID_UINT128 lhs, BID_UINT128 rhs) {
@@ -647,6 +623,17 @@ template<> struct operator_traits<128, 32>  : public operator_128bit {};
 template<> struct operator_traits<128, 64>  : public operator_128bit {};
 template<> struct operator_traits<128, 128> : public operator_128bit {}; 
 
+template<typename TargetType, typename SourceType>
+TargetType resize(SourceType value);
+template<> BID_UINT32 resize(BID_UINT32 value);
+template<> BID_UINT32 resize(BID_UINT64 value);
+template<> BID_UINT32 resize(BID_UINT128 value);
+template<> BID_UINT32 resize(int value);
+// template<> BID_UINT32 resize(unsigned int value); same as BID_UINT32
+template<> BID_UINT32 resize(long value);
+template<> BID_UINT32 resize(unsigned long value);
+template<> BID_UINT32 resize(long long value);
+// template<> BID_UINT32 resize(unsigned long long value); same as BID_UINT64
 
 // 3.2.8 binary arithmetic operators:
 
@@ -654,28 +641,44 @@ template<typename LHS, typename RHS>
 typename operator_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>::result_type operator+(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    return traits::add(traits::promote(lhs), traits::promote(rhs)); 
+    auto promoted_lhs = traits::promote(lhs);
+    traits::add(promoted_lhs, traits::promote(rhs)); 
+    typename operator_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>::result_type result;
+    result.value(promoted_lhs);
+    return result;
 }
 
 template<typename LHS, typename RHS>
 typename operator_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>::result_type operator-(LHS lhs, RHS rhs)
 { 
-    using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>; 
-    return traits::sub(traits::promote(lhs), traits::promote(rhs)); 
+    using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto promoted_lhs = traits::promote(lhs);
+    traits::sub(promoted_lhs, traits::promote(rhs)); 
+    typename operator_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>::result_type result;
+    result.value(promoted_lhs);
+    return result;
 }
 
 template<typename LHS, typename RHS>
 typename operator_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>::result_type operator*(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    return traits::mul(traits::promote(lhs), traits::promote(rhs)); 
+    auto promoted_lhs = traits::promote(lhs);
+    traits::mul(promoted_lhs, traits::promote(rhs)); 
+    typename operator_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>::result_type result;
+    result.value(promoted_lhs);
+    return result;
 }
 
 template<typename LHS, typename RHS>
 typename operator_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>::result_type operator/(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    return traits::div(traits::promote(lhs), traits::promote(rhs)); 
+    auto promoted_lhs = traits::promote(lhs);
+    traits::div(promoted_lhs, traits::promote(rhs)); 
+    typename operator_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>::result_type result;
+    result.value(promoted_lhs);
+    return result;
 }
 
 // 3.2.9 comparison operators:

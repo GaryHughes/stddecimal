@@ -3,6 +3,54 @@
 namespace std::decimal
 {
 
+template<> BID_UINT32 resize(BID_UINT32 value) {
+    return value;
+}
+
+template<> BID_UINT32 resize(BID_UINT64 value) {
+    _IDEC_flags flags = 0;
+    return bid64_to_bid32(value, round_mode, &flags);    
+}
+
+template<> BID_UINT32 resize(BID_UINT128 value) {
+    _IDEC_flags flags = 0;
+    return bid128_to_bid32(value, round_mode, &flags);    
+}
+
+template<> BID_UINT32 resize(int value) {
+    _IDEC_flags flags = 0;
+    return bid32_from_int32(value, round_mode, &flags);    
+}
+
+// template<> BID_UINT32 resize(unsigned int value) {
+//     _IDEC_flags flags = 0;
+//     return bid32_from_uint32(value, round_mode, &flags);    
+// }
+
+template<> BID_UINT32 resize(long value) {
+    _IDEC_flags flags = 0;
+    return bid32_from_int64(value, round_mode, &flags);    
+}
+
+template<> BID_UINT32 resize(unsigned long value) {
+    _IDEC_flags flags = 0;
+    return bid32_from_uint64(value, round_mode, &flags);    
+}
+
+template<> BID_UINT32 resize(long long value) {
+    //_IDEC_flags flags = 0;
+    //return bid32_from_int128(value, round_mode, &flags);    
+    return 0;
+}
+
+// template<> BID_UINT32 resize(unsigned long long value) {
+//     _IDEC_flags flags = 0;
+//     //return bid32_from_int128(value, round_mode, &flags);    
+//     return 0;
+// }
+
+
+
 _IDEC_flags flags = 0;
 
 template<typename DecimalType, typename CoefficientType>
@@ -231,57 +279,87 @@ decimal32 decimal32::operator--(int)
     return *this;
 }
 
+
+
+
 decimal32& decimal32::operator+=(decimal32 rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)::value_type>(result));
     return *this;
 }
 
 decimal32& decimal32::operator+=(decimal64 rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)::value_type>(result));
     return *this;
 }
 
 decimal32& decimal32::operator+=(decimal128 rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)::value_type>(result));
     return *this;
 }
 
-decimal32& decimal32::operator+=(int z)
+decimal32& decimal32::operator+=(int rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator+=(unsigned int z)
+decimal32& decimal32::operator+=(unsigned int rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator+=(long z)
+decimal32& decimal32::operator+=(long rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator+=(unsigned long z) 
+decimal32& decimal32::operator+=(unsigned long rhs) 
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator+=(long long z)
+decimal32& decimal32::operator+=(long long rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator+=(unsigned long long z)
+decimal32& decimal32::operator+=(unsigned long long rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
@@ -305,55 +383,82 @@ decimal32& decimal32::operator+=(long double z)
 
 decimal32& decimal32::operator-=(decimal32 rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)::value_type>(result));
     return *this;
 }
 
 decimal32& decimal32::operator-=(decimal64 rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)::value_type>(result));
     return *this;
 }
 
 decimal32& decimal32::operator-=(decimal128 rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)::value_type>(result));
     return *this;
 }
 
-decimal32& decimal32::operator-=(int z)
+decimal32& decimal32::operator-=(int rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator-=(unsigned int z)
+decimal32& decimal32::operator-=(unsigned int rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator-=(long z)
+decimal32& decimal32::operator-=(long rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator-=(unsigned long z)
+decimal32& decimal32::operator-=(unsigned long rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator-=(long long z)
+decimal32& decimal32::operator-=(long long rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator-=(unsigned long long z)
+decimal32& decimal32::operator-=(unsigned long long rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::add(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
@@ -377,55 +482,81 @@ decimal32& decimal32::operator-=(long double z)
 
 decimal32& decimal32::operator*=(decimal32 rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::mul(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)::value_type>(result));
     return *this;
 }
 
 decimal32& decimal32::operator*=(decimal64 rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::mul(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)::value_type>(result));
     return *this;
 }
 
 decimal32& decimal32::operator*=(decimal128 rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::mul(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)::value_type>(result));
     return *this;
 }
 
-decimal32& decimal32::operator*=(int z)
+decimal32& decimal32::operator*=(int rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::mul(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator*=(unsigned int z)
+decimal32& decimal32::operator*=(unsigned int rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::mul(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
+    return *this;}
+
+decimal32& decimal32::operator*=(long rhs)
+{
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::mul(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator*=(long z)
+decimal32& decimal32::operator*=(unsigned long rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::mul(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator*=(unsigned long z)
+decimal32& decimal32::operator*=(long long rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::mul(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator*=(long long z)
+decimal32& decimal32::operator*=(unsigned long long rhs)
 {
-    // TODO
-    return *this;
-}
-
-decimal32& decimal32::operator*=(unsigned long long z)
-{
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::mul(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
@@ -449,55 +580,82 @@ decimal32& decimal32::operator*=(long double z)
 
 decimal32& decimal32::operator/=(decimal32 rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::div(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)::value_type>(result));
     return *this;
 }
 
 decimal32& decimal32::operator/=(decimal64 rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::div(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)::value_type>(result));
     return *this;
 }
 
 decimal32& decimal32::operator/=(decimal128 rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::div(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)::value_type>(result));
     return *this;
 }
 
-decimal32& decimal32::operator/=(int z)
+decimal32& decimal32::operator/=(int rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::div(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator/=(unsigned int z)
+decimal32& decimal32::operator/=(unsigned int rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::div(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator/=(long z)
+decimal32& decimal32::operator/=(long rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::div(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator/=(unsigned long z)
+decimal32& decimal32::operator/=(unsigned long rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::div(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator/=(long long z)
+decimal32& decimal32::operator/=(long long rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::div(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
-decimal32& decimal32::operator/=(unsigned long long z)
+decimal32& decimal32::operator/=(unsigned long long rhs)
 {
-    // TODO
+    using traits = operator_traits<value_traits<decltype(rhs)>::width(), value_traits<decltype(rhs)>::width()>;
+    auto result = traits::promote(m_value);
+    traits::div(result, traits::promote(rhs)); 
+    value(resize<value_type, decltype(rhs)>(result));
     return *this;
 }
 
