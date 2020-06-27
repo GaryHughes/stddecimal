@@ -3,7 +3,60 @@
 namespace std::decimal
 {
 
+const _IDEC_round round_mode = BID_ROUNDING_TO_NEAREST;
+
+
 // 32 ------------------------------------------------
+
+void operator_32bit::add(BID_UINT32& lhs, BID_UINT32 rhs) {
+    _IDEC_flags flags = 0;
+    lhs = bid32_add(lhs, rhs, round_mode, &flags); 
+}
+
+void operator_32bit::sub(BID_UINT32& lhs, BID_UINT32 rhs) {
+    _IDEC_flags flags = 0;
+    lhs = bid32_sub(lhs, rhs, round_mode, &flags); 
+}
+
+void operator_32bit::mul(BID_UINT32& lhs, BID_UINT32 rhs) {
+    _IDEC_flags flags = 0;
+    lhs = bid32_mul(lhs, rhs, round_mode, &flags); 
+}
+
+void operator_32bit::div(BID_UINT32& lhs, BID_UINT32 rhs) {
+    _IDEC_flags flags = 0;
+    lhs = bid32_div(lhs, rhs, round_mode, &flags); 
+}
+
+bool operator_32bit::equal(BID_UINT32 lhs, BID_UINT32 rhs) {
+    _IDEC_flags flags = 0;
+    return bid32_quiet_equal(lhs, rhs, &flags); 
+}
+
+bool operator_32bit::not_equal(BID_UINT32 lhs, BID_UINT32 rhs) {
+    _IDEC_flags flags = 0;
+    return bid32_quiet_not_equal(lhs, rhs, &flags); 
+}
+
+bool operator_32bit::less(BID_UINT32 lhs, BID_UINT32 rhs) {
+    _IDEC_flags flags = 0;
+    return bid32_quiet_less(lhs, rhs, &flags); 
+}
+
+bool operator_32bit::less_equal(BID_UINT32 lhs, BID_UINT32 rhs) {
+    _IDEC_flags flags = 0;
+    return bid32_quiet_less_equal(lhs, rhs, &flags); 
+}
+
+bool operator_32bit::greater(BID_UINT32 lhs, BID_UINT32 rhs) {
+    _IDEC_flags flags = 0;
+    return bid32_quiet_greater(lhs, rhs, &flags); 
+}
+
+bool operator_32bit::greater_equal(BID_UINT32 lhs, BID_UINT32 rhs) {
+    _IDEC_flags flags = 0;
+    return bid32_quiet_greater_equal(lhs, rhs, &flags); 
+}
 
 BID_UINT32 operator_32bit::resize(decimal32 value) {
     return value.value();
@@ -19,7 +72,92 @@ BID_UINT32 operator_32bit::resize(decimal128 value) {
     return bid128_to_bid32(value.value(), round_mode, &flags);
 }
 
+BID_UINT32 operator_32bit::resize(int value) {
+    _IDEC_flags flags = 0;
+    return bid32_from_int32(value, round_mode, &flags);    
+}
+
+BID_UINT32 operator_32bit::resize(unsigned int value) {
+    _IDEC_flags flags = 0;
+    return bid32_from_uint32(value, round_mode, &flags);    
+}
+
+BID_UINT32 operator_32bit::resize(long value) {
+    _IDEC_flags flags = 0;
+    return bid32_from_int64(value, round_mode, &flags);    
+}
+
+BID_UINT32 operator_32bit::resize(unsigned long value) {
+    _IDEC_flags flags = 0;
+    return bid32_from_uint64(value, round_mode, &flags);    
+}
+
+BID_UINT32 operator_32bit::resize(long long value) {
+    _IDEC_flags flags = 0;
+    return bid32_from_int64(value, round_mode, &flags);    
+}
+
+BID_UINT32 operator_32bit::resize(unsigned long long value) {
+    _IDEC_flags flags = 0;
+    return bid64_to_bid32(value, round_mode, &flags);    
+}
+
+BID_UINT32 operator_32bit::resize(float value) {
+    _IDEC_flags flags = 0;
+    return binary32_to_bid32(value, round_mode, &flags);
+}
+
 // 64 ------------------------------------------------
+
+void operator_64bit::add(BID_UINT64& lhs, BID_UINT64 rhs) {
+    _IDEC_flags flags = 0;
+    lhs = bid64_add(lhs, rhs, round_mode, &flags); 
+}
+
+void operator_64bit::sub(BID_UINT64& lhs, BID_UINT64 rhs) {
+    _IDEC_flags flags = 0;
+    lhs = bid64_sub(lhs, rhs, round_mode, &flags); 
+}
+
+void operator_64bit::mul(BID_UINT64& lhs, BID_UINT64 rhs) {
+    _IDEC_flags flags = 0;
+    lhs = bid64_mul(lhs, rhs, round_mode, &flags); 
+}
+
+void operator_64bit::div(BID_UINT64& lhs, BID_UINT64 rhs) {
+    _IDEC_flags flags = 0;
+    lhs = bid64_div(lhs, rhs, round_mode, &flags); 
+}
+
+bool operator_64bit::equal(BID_UINT64 lhs, BID_UINT64 rhs) {
+    _IDEC_flags flags = 0;
+    return bid64_quiet_equal(lhs, rhs, &flags); 
+}
+
+bool operator_64bit::not_equal(BID_UINT64 lhs, BID_UINT64 rhs) {
+    _IDEC_flags flags = 0;
+    return bid64_quiet_not_equal(lhs, rhs, &flags); 
+}
+
+bool operator_64bit::less(BID_UINT64 lhs, BID_UINT64 rhs) {
+    _IDEC_flags flags = 0;
+    return bid64_quiet_less(lhs, rhs, &flags); 
+}
+
+bool operator_64bit::less_equal(BID_UINT64 lhs, BID_UINT64 rhs) {
+    _IDEC_flags flags = 0;
+    return bid64_quiet_less_equal(lhs, rhs, &flags); 
+}
+
+bool operator_64bit::greater(BID_UINT64 lhs, BID_UINT64 rhs) {
+    _IDEC_flags flags = 0;
+    return bid64_quiet_greater(lhs, rhs, &flags); 
+}
+
+bool operator_64bit::greater_equal(BID_UINT64 lhs, BID_UINT64 rhs) {
+    _IDEC_flags flags = 0;
+    return bid64_quiet_greater_equal(lhs, rhs, &flags); 
+}
 
 BID_UINT64 operator_64bit::resize(decimal32 value) {
     _IDEC_flags flags = 0;
@@ -35,7 +173,91 @@ BID_UINT64 operator_64bit::resize(decimal128 value) {
     return bid128_to_bid64(value.value(), round_mode, &flags);
 }
 
+BID_UINT64 operator_64bit::resize(int value) {
+    return bid64_from_int32(value);
+}
+
+BID_UINT64 operator_64bit::resize(unsigned int value) {
+    return bid64_from_uint32(value);
+}
+
+BID_UINT64 operator_64bit::resize(long value) {
+    return bid64_from_int32(value);
+}
+
+BID_UINT64 operator_64bit::resize(unsigned long value) {
+    return bid64_from_uint32(value);
+}
+
+BID_UINT64 operator_64bit::resize(long long value) {
+    return bid64_from_int32(value);
+}
+
+BID_UINT64 operator_64bit::resize(unsigned long long value) {
+    return bid64_from_uint32(value);
+}
+
+BID_UINT64 operator_64bit::resize(float value) {
+    _IDEC_flags flags = 0;
+    return binary32_to_bid64(value, round_mode, &flags);
+}
+
+BID_UINT64 operator_64bit::resize(double value) {
+    _IDEC_flags flags = 0;
+    return binary64_to_bid64(value, round_mode, &flags);
+}
+
 // 128 -----------------------------------------------
+
+void operator_128bit::add(BID_UINT128& lhs, BID_UINT128 rhs) {
+    _IDEC_flags flags = 0;
+    lhs = bid128_add(lhs, rhs, round_mode, &flags); 
+}
+
+void operator_128bit::sub(BID_UINT128& lhs, BID_UINT128 rhs) {
+    _IDEC_flags flags = 0;
+    lhs = bid128_sub(lhs, rhs, round_mode, &flags); 
+}
+
+void operator_128bit::mul(BID_UINT128& lhs, BID_UINT128 rhs) {
+    _IDEC_flags flags = 0;
+    lhs = bid128_mul(lhs, rhs, round_mode, &flags); 
+}
+
+void operator_128bit::div(BID_UINT128& lhs, BID_UINT128 rhs) {
+    _IDEC_flags flags = 0;
+    lhs = bid128_div(lhs, rhs, round_mode, &flags); 
+}
+
+bool operator_128bit::equal(BID_UINT128 lhs, BID_UINT128 rhs) {
+    _IDEC_flags flags = 0;
+    return bid128_quiet_equal(lhs, rhs, &flags); 
+}
+
+bool operator_128bit::not_equal(BID_UINT128 lhs, BID_UINT128 rhs) {
+    _IDEC_flags flags = 0;
+    return bid128_quiet_not_equal(lhs, rhs, &flags); 
+}
+
+bool operator_128bit::less(BID_UINT128 lhs, BID_UINT128 rhs) {
+    _IDEC_flags flags = 0;
+    return bid128_quiet_less(lhs, rhs, &flags); 
+}
+
+bool operator_128bit::less_equal(BID_UINT128 lhs, BID_UINT128 rhs) {
+    _IDEC_flags flags = 0;
+    return bid128_quiet_less_equal(lhs, rhs, &flags); 
+}
+
+bool operator_128bit::greater(BID_UINT128 lhs, BID_UINT128 rhs) {
+    _IDEC_flags flags = 0;
+    return bid128_quiet_greater(lhs, rhs, &flags); 
+}
+
+bool operator_128bit::greater_equal(BID_UINT128 lhs, BID_UINT128 rhs) {
+    _IDEC_flags flags = 0;
+    return bid128_quiet_greater_equal(lhs, rhs, &flags); 
+}
 
 BID_UINT128 operator_128bit::resize(decimal32 value) {
     _IDEC_flags flags = 0;
@@ -51,6 +273,90 @@ BID_UINT128 operator_128bit::resize(decimal128 value) {
     return value.value();
 }
 
+BID_UINT128 operator_128bit::resize(int value) {
+    return bid128_from_int32(value);
+}
+
+BID_UINT128 operator_128bit::resize(unsigned int value) {
+    return bid128_from_uint32(value);
+}
+
+BID_UINT128 operator_128bit::resize(long value) {
+    return bid128_from_int64(value);
+}
+
+BID_UINT128 operator_128bit::resize(unsigned long value) {
+    return bid128_from_uint64(value);
+}
+
+BID_UINT128 operator_128bit::resize(long long value) {
+    return bid128_from_int64(value);
+}
+
+BID_UINT128 operator_128bit::resize(unsigned long long value) {
+    return bid128_from_uint64(value);
+}
+
+BID_UINT128 operator_128bit::resize(float value) {
+    _IDEC_flags flags = 0;
+    return binary32_to_bid128(value, round_mode, &flags);
+}
+
+BID_UINT128 operator_128bit::resize(double value) {
+    _IDEC_flags flags = 0;
+    return binary64_to_bid128(value, round_mode, &flags);
+}
+
+BID_UINT128 operator_128bit::resize(long double value) {
+    //return bid128_from_binary128(value);
+    return BID_UINT128();
+}
+
+// ---------------------------------------------------------
+
+BID_UINT32 compound_result_traits_32::resize(BID_UINT32 value) {
+    return value;
+}
+
+BID_UINT32 compound_result_traits_32::resize(BID_UINT64 value) {
+    _IDEC_flags flags = 0;
+    return bid64_to_bid32(value, round_mode, &flags);
+}
+
+BID_UINT32 compound_result_traits_32::resize(BID_UINT128 value) {
+    _IDEC_flags flags = 0;
+    return bid128_to_bid32(value, round_mode, &flags);
+}
+
+BID_UINT64 compound_result_traits_64::resize(BID_UINT32 value) {
+    _IDEC_flags flags = 0;
+    return bid32_to_bid64(value, &flags);
+}
+
+BID_UINT64 compound_result_traits_64::resize(BID_UINT64 value) {
+    return value;
+}
+
+BID_UINT64 compound_result_traits_64::resize(BID_UINT128 value) {
+    _IDEC_flags flags = 0;
+    return bid128_to_bid64(value, round_mode, &flags);
+}
+
+BID_UINT128 compound_result_traits_128::resize(BID_UINT32 value) {
+    _IDEC_flags flags = 0;
+    return bid32_to_bid128(value, &flags);
+}
+
+BID_UINT128 compound_result_traits_128::resize(BID_UINT64 value) {
+    _IDEC_flags flags = 0;
+    return bid64_to_bid128(value, &flags);
+}
+
+BID_UINT128 compound_result_traits_128::resize(BID_UINT128 value) {
+    return value;
+}
+
+// ---------------------------------------------------------
 
 _IDEC_flags flags = 0;
 

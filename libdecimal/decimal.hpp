@@ -2,16 +2,12 @@
 #include <IntelRDFPMathLib20U2/LIBRARY/src/bid_conf.h>
 #include <IntelRDFPMathLib20U2/LIBRARY/src/bid_functions.h>
 
-#include <iostream>
-
 namespace std::decimal
 {
 
 class decimal32;
 class decimal64;
 class decimal128;
-
-void print(decimal32& value);
 
 // - if one or both of the parameters of the overloaded operator is decimal128, then the return type is decimal128,
 // - otherwise, if one or both of the parameters is decimal64, then the return type is decimal64,
@@ -32,292 +28,85 @@ template<> struct value_traits<float> { static constexpr int width() { return si
 template<> struct value_traits<double> { static constexpr int width() { return sizeof(double) * 8; }  };
 template<> struct value_traits<long double> { static constexpr int width() { return sizeof(long double) * 8; }  };
 
-
-const _IDEC_round round_mode = BID_ROUNDING_TO_NEAREST;
-
 struct operator_32bit {
 
     using result_type = BID_UINT32;
 
-    static void add(BID_UINT32& lhs, BID_UINT32 rhs) {
-        _IDEC_flags flags = 0;
-        lhs = bid32_add(lhs, rhs, round_mode, &flags); 
-    }
-
-    static void sub(BID_UINT32& lhs, BID_UINT32 rhs) {
-        _IDEC_flags flags = 0;
-        lhs = bid32_sub(lhs, rhs, round_mode, &flags); 
-    }
-
-    static void mul(BID_UINT32& lhs, BID_UINT32 rhs) {
-        _IDEC_flags flags = 0;
-        lhs = bid32_mul(lhs, rhs, round_mode, &flags); 
-    }
-
-    static void div(BID_UINT32& lhs, BID_UINT32 rhs) {
-        _IDEC_flags flags = 0;
-        lhs = bid32_div(lhs, rhs, round_mode, &flags); 
-    }
-
-    static bool equal(BID_UINT32 lhs, BID_UINT32 rhs) {
-        _IDEC_flags flags = 0;
-        return bid32_quiet_equal(lhs, rhs, &flags); 
-    }
-
-    static bool not_equal(BID_UINT32 lhs, BID_UINT32 rhs) {
-        _IDEC_flags flags = 0;
-        return bid32_quiet_not_equal(lhs, rhs, &flags); 
-    }
-
-    static bool less(BID_UINT32 lhs, BID_UINT32 rhs) {
-        _IDEC_flags flags = 0;
-        return bid32_quiet_less(lhs, rhs, &flags); 
-    }
-
-    static bool less_equal(BID_UINT32 lhs, BID_UINT32 rhs) {
-        _IDEC_flags flags = 0;
-        return bid32_quiet_less_equal(lhs, rhs, &flags); 
-    }
-
-    static bool greater(BID_UINT32 lhs, BID_UINT32 rhs) {
-        _IDEC_flags flags = 0;
-        return bid32_quiet_greater(lhs, rhs, &flags); 
-    }
-
-    static bool greater_equal(BID_UINT32 lhs, BID_UINT32 rhs) {
-        _IDEC_flags flags = 0;
-        return bid32_quiet_greater_equal(lhs, rhs, &flags); 
-    }
-
+    static void add(BID_UINT32& lhs, BID_UINT32 rhs);
+    static void sub(BID_UINT32& lhs, BID_UINT32 rhs);
+    static void mul(BID_UINT32& lhs, BID_UINT32 rhs);
+    static void div(BID_UINT32& lhs, BID_UINT32 rhs);
+    static bool equal(BID_UINT32 lhs, BID_UINT32 rhs);
+    static bool not_equal(BID_UINT32 lhs, BID_UINT32 rhs);
+    static bool less(BID_UINT32 lhs, BID_UINT32 rhs);
+    static bool less_equal(BID_UINT32 lhs, BID_UINT32 rhs);
+    static bool greater(BID_UINT32 lhs, BID_UINT32 rhs);
+    static bool greater_equal(BID_UINT32 lhs, BID_UINT32 rhs);
     static BID_UINT32 resize(decimal32 value);
     static BID_UINT32 resize(decimal64 value);
     static BID_UINT32 resize(decimal128 value);
-
-    static BID_UINT32 resize(int value) {
-        _IDEC_flags flags = 0;
-        return bid32_from_int32(value, round_mode, &flags);    
-    }
-
-    static BID_UINT32 resize(unsigned int value) {
-        _IDEC_flags flags = 0;
-        return bid32_from_uint32(value, round_mode, &flags);    
-    }
-
-    static BID_UINT32 resize(long value) {
-        _IDEC_flags flags = 0;
-        return bid32_from_int64(value, round_mode, &flags);    
-    }
-
-    static BID_UINT32 resize(unsigned long value) {
-        _IDEC_flags flags = 0;
-        return bid32_from_uint64(value, round_mode, &flags);    
-    }
-
-    static BID_UINT32 resize(long long value) {
-        _IDEC_flags flags = 0;
-        return bid32_from_int64(value, round_mode, &flags);    
-    }
-
-    static BID_UINT32 resize(unsigned long long value) {
-        _IDEC_flags flags = 0;
-        return bid64_to_bid32(value, round_mode, &flags);    
-    }
-
-    static BID_UINT32 resize(float value) {
-        _IDEC_flags flags = 0;
-        return binary32_to_bid32(value, round_mode, &flags);
-    }
+    static BID_UINT32 resize(int value);
+    static BID_UINT32 resize(unsigned int value);
+    static BID_UINT32 resize(long value);
+    static BID_UINT32 resize(unsigned long value);
+    static BID_UINT32 resize(long long value);
+    static BID_UINT32 resize(unsigned long long value);
+    static BID_UINT32 resize(float value);
 };
 
 struct operator_64bit {
 
     using result_type = BID_UINT64;
 
-    static void add(BID_UINT64& lhs, BID_UINT64 rhs) {
-        _IDEC_flags flags = 0;
-        lhs = bid64_add(lhs, rhs, round_mode, &flags); 
-    }
-
-    static void sub(BID_UINT64& lhs, BID_UINT64 rhs) {
-        _IDEC_flags flags = 0;
-        lhs = bid64_sub(lhs, rhs, round_mode, &flags); 
-    }
-
-    static void mul(BID_UINT64& lhs, BID_UINT64 rhs) {
-        _IDEC_flags flags = 0;
-        lhs = bid64_mul(lhs, rhs, round_mode, &flags); 
-    }
-
-    static void div(BID_UINT64& lhs, BID_UINT64 rhs) {
-        _IDEC_flags flags = 0;
-        lhs = bid64_div(lhs, rhs, round_mode, &flags); 
-    }
-
-    static bool equal(BID_UINT64 lhs, BID_UINT64 rhs) {
-        _IDEC_flags flags = 0;
-        return bid64_quiet_equal(lhs, rhs, &flags); 
-    }
-
-    static bool not_equal(BID_UINT64 lhs, BID_UINT64 rhs) {
-        _IDEC_flags flags = 0;
-        return bid64_quiet_not_equal(lhs, rhs, &flags); 
-    }
-
-    static bool less(BID_UINT64 lhs, BID_UINT64 rhs) {
-        _IDEC_flags flags = 0;
-        return bid64_quiet_less(lhs, rhs, &flags); 
-    }
-
-    static bool less_equal(BID_UINT64 lhs, BID_UINT64 rhs) {
-        _IDEC_flags flags = 0;
-        return bid64_quiet_less_equal(lhs, rhs, &flags); 
-    }
-
-    static bool greater(BID_UINT64 lhs, BID_UINT64 rhs) {
-        _IDEC_flags flags = 0;
-        return bid64_quiet_greater(lhs, rhs, &flags); 
-    }
-
-    static bool greater_equal(BID_UINT64 lhs, BID_UINT64 rhs) {
-        _IDEC_flags flags = 0;
-        return bid64_quiet_greater_equal(lhs, rhs, &flags); 
-    }
-
+    static void add(BID_UINT64& lhs, BID_UINT64 rhs);
+    static void sub(BID_UINT64& lhs, BID_UINT64 rhs);
+    static void mul(BID_UINT64& lhs, BID_UINT64 rhs);
+    static void div(BID_UINT64& lhs, BID_UINT64 rhs);
+    static bool equal(BID_UINT64 lhs, BID_UINT64 rhs);
+    static bool not_equal(BID_UINT64 lhs, BID_UINT64 rhs);
+    static bool less(BID_UINT64 lhs, BID_UINT64 rhs);
+    static bool less_equal(BID_UINT64 lhs, BID_UINT64 rhs);
+    static bool greater(BID_UINT64 lhs, BID_UINT64 rhs);
+    static bool greater_equal(BID_UINT64 lhs, BID_UINT64 rhs);
     static BID_UINT64 resize(decimal32 value);
     static BID_UINT64 resize(decimal64 value);
     static BID_UINT64 resize(decimal128 value);
-    
-    static BID_UINT64 resize(int value) {
-        return bid64_from_int32(value);
-    }
-
-    static BID_UINT64 resize(unsigned int value) {
-        return bid64_from_uint32(value);
-    }
-
-    static BID_UINT64 resize(long value) {
-        return bid64_from_int32(value);
-    }
-
-    static BID_UINT64 resize(unsigned long value) {
-        return bid64_from_uint32(value);
-    }
-
-    static BID_UINT64 resize(long long value) {
-        return bid64_from_int32(value);
-    }
-
-    static BID_UINT64 resize(unsigned long long value) {
-        return bid64_from_uint32(value);
-    }
-
-    static BID_UINT64 resize(float value) {
-        _IDEC_flags flags = 0;
-        return binary32_to_bid64(value, round_mode, &flags);
-    }
-
-    static BID_UINT64 resize(double value) {
-        _IDEC_flags flags = 0;
-        return binary64_to_bid64(value, round_mode, &flags);
-    }
+    static BID_UINT64 resize(int value);
+    static BID_UINT64 resize(unsigned int value);
+    static BID_UINT64 resize(long value);
+    static BID_UINT64 resize(unsigned long value);
+    static BID_UINT64 resize(long long value);
+    static BID_UINT64 resize(unsigned long long value);
+    static BID_UINT64 resize(float value);
+    static BID_UINT64 resize(double value);
 };
 
 struct operator_128bit {
 
     using result_type = BID_UINT128;
 
-    static void add(BID_UINT128& lhs, BID_UINT128 rhs) {
-        _IDEC_flags flags = 0;
-        lhs = bid128_add(lhs, rhs, round_mode, &flags); 
-    }
-
-    static void sub(BID_UINT128& lhs, BID_UINT128 rhs) {
-        _IDEC_flags flags = 0;
-        lhs = bid128_sub(lhs, rhs, round_mode, &flags); 
-    }
-
-    static void mul(BID_UINT128& lhs, BID_UINT128 rhs) {
-        _IDEC_flags flags = 0;
-        lhs = bid128_mul(lhs, rhs, round_mode, &flags); 
-    }
-
-    static void div(BID_UINT128& lhs, BID_UINT128 rhs) {
-        _IDEC_flags flags = 0;
-        lhs = bid128_div(lhs, rhs, round_mode, &flags); 
-    }
-
-    static bool equal(BID_UINT128 lhs, BID_UINT128 rhs) {
-        _IDEC_flags flags = 0;
-        return bid128_quiet_equal(lhs, rhs, &flags); 
-    }
-
-    static bool not_equal(BID_UINT128 lhs, BID_UINT128 rhs) {
-        _IDEC_flags flags = 0;
-        return bid128_quiet_not_equal(lhs, rhs, &flags); 
-    }
-
-    static bool less(BID_UINT128 lhs, BID_UINT128 rhs) {
-        _IDEC_flags flags = 0;
-        return bid128_quiet_less(lhs, rhs, &flags); 
-    }
-
-    static bool less_equal(BID_UINT128 lhs, BID_UINT128 rhs) {
-        _IDEC_flags flags = 0;
-        return bid128_quiet_less_equal(lhs, rhs, &flags); 
-    }
-
-    static bool greater(BID_UINT128 lhs, BID_UINT128 rhs) {
-        _IDEC_flags flags = 0;
-        return bid128_quiet_greater(lhs, rhs, &flags); 
-    }
-
-    static bool greater_equal(BID_UINT128 lhs, BID_UINT128 rhs) {
-        _IDEC_flags flags = 0;
-        return bid128_quiet_greater_equal(lhs, rhs, &flags); 
-    }
-
+    static void add(BID_UINT128& lhs, BID_UINT128 rhs);
+    static void sub(BID_UINT128& lhs, BID_UINT128 rhs);
+    static void mul(BID_UINT128& lhs, BID_UINT128 rhs);
+    static void div(BID_UINT128& lhs, BID_UINT128 rhs);
+    static bool equal(BID_UINT128 lhs, BID_UINT128 rhs);
+    static bool not_equal(BID_UINT128 lhs, BID_UINT128 rhs);
+    static bool less(BID_UINT128 lhs, BID_UINT128 rhs);
+    static bool less_equal(BID_UINT128 lhs, BID_UINT128 rhs);
+    static bool greater(BID_UINT128 lhs, BID_UINT128 rhs);
+    static bool greater_equal(BID_UINT128 lhs, BID_UINT128 rhs);
     static BID_UINT128 resize(decimal32 value);
     static BID_UINT128 resize(decimal64 value);
     static BID_UINT128 resize(decimal128 value);
-
-    static BID_UINT128 resize(int value) {
-        return bid128_from_int32(value);
-    }
-
-    static BID_UINT128 resize(unsigned int value) {
-        return bid128_from_uint32(value);
-    }
-
-    static BID_UINT128 resize(long value) {
-        return bid128_from_int64(value);
-    }
-
-    static BID_UINT128 resize(unsigned long value) {
-        return bid128_from_uint64(value);
-    }
-
-    static BID_UINT128 resize(long long value) {
-        return bid128_from_int64(value);
-    }
-
-    static BID_UINT128 resize(unsigned long long value) {
-        return bid128_from_uint64(value);
-    }
-
-    static BID_UINT128 resize(float value) {
-        _IDEC_flags flags = 0;
-        return binary32_to_bid128(value, round_mode, &flags);
-    }
-
-    static BID_UINT128 resize(double value) {
-        _IDEC_flags flags = 0;
-        return binary64_to_bid128(value, round_mode, &flags);
-    }
-
-    static BID_UINT128 resize(long double value) {
-        //return bid128_from_binary128(value);
-        return BID_UINT128();
-    }
+    static BID_UINT128 resize(int value);
+    static BID_UINT128 resize(unsigned int value);
+    static BID_UINT128 resize(long value);
+    static BID_UINT128 resize(unsigned long value);
+    static BID_UINT128 resize(long long value);
+    static BID_UINT128 resize(unsigned long long value);
+    static BID_UINT128 resize(float value);
+    static BID_UINT128 resize(double value);
+    static BID_UINT128 resize(long double value);
 };
 
 template<int lhs, int rhs> struct operator_traits;
@@ -334,53 +123,23 @@ template<> struct operator_traits<128, 128> : public operator_128bit {};
 
 struct compound_result_traits_32
 {
-    static BID_UINT32 resize(BID_UINT32 value) {
-        return value;
-    }
-
-    static BID_UINT32 resize(BID_UINT64 value) {
-        _IDEC_flags flags = 0;
-        return bid64_to_bid32(value, round_mode, &flags);
-    }
-
-    static BID_UINT32 resize(BID_UINT128 value) {
-        _IDEC_flags flags = 0;
-        return bid128_to_bid32(value, round_mode, &flags);
-    }
+    static BID_UINT32 resize(BID_UINT32 value);
+    static BID_UINT32 resize(BID_UINT64 value);
+    static BID_UINT32 resize(BID_UINT128 value);
 };
 
 struct compound_result_traits_64
 {
-    static BID_UINT64 resize(BID_UINT32 value) {
-        _IDEC_flags flags = 0;
-        return bid32_to_bid64(value, &flags);
-    }
-
-    static BID_UINT64 resize(BID_UINT64 value) {
-        return value;
-    }
-
-    static BID_UINT64 resize(BID_UINT128 value) {
-        _IDEC_flags flags = 0;
-        return bid128_to_bid64(value, round_mode, &flags);
-    }
+    static BID_UINT64 resize(BID_UINT32 value);
+    static BID_UINT64 resize(BID_UINT64 value);
+    static BID_UINT64 resize(BID_UINT128 value);
 };
 
 struct compound_result_traits_128
 {
-    static BID_UINT128 resize(BID_UINT32 value) {
-        _IDEC_flags flags = 0;
-        return bid32_to_bid128(value, &flags);
-    }
-
-    static BID_UINT128 resize(BID_UINT64 value) {
-        _IDEC_flags flags = 0;
-        return bid64_to_bid128(value, &flags);
-    }
-
-    static BID_UINT128 resize(BID_UINT128 value) {
-        return value;
-    }
+    static BID_UINT128 resize(BID_UINT32 value);
+    static BID_UINT128 resize(BID_UINT64 value);
+    static BID_UINT128 resize(BID_UINT128 value);
 };
 
 template<int result> struct compound_result_traits;
@@ -817,11 +576,6 @@ std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> 
     bid32_to_string(buffer, d.value(), &flags);
     os << buffer;
     return os; 
-}
-
-inline void print(decimal32& value)
-{
-    std::cout << value;
 }
 
 template <class charT, class traits>
