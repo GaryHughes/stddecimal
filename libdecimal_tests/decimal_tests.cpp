@@ -783,4 +783,45 @@ TEST_CASE("decimal", "decimal")
         REQUIRE((decimal128(6) /= 2.0) == decimal128(3));
         // REQUIRE((decimal128(6) /= 2.0l) == decimal128(3));
     }
+
+    SECTION("increment and decrement operators")
+    {
+        REQUIRE(++decimal32(1) == decimal32(2));
+        REQUIRE(++decimal64(1) == decimal64(2));
+        REQUIRE(++decimal128(1) == decimal128(2));
+
+        REQUIRE(--decimal32(3) == decimal32(2));
+        REQUIRE(--decimal64(3) == decimal64(2));
+        REQUIRE(--decimal128(3) == decimal128(2));
+
+        auto a32 = decimal32(1);
+        auto b32 = a32++;
+        REQUIRE(a32 == decimal32(2));
+        REQUIRE(b32 == decimal32(1));
+
+        a32 = decimal32(2);
+        b32 = a32--;
+        REQUIRE(a32 == decimal32(1));
+        REQUIRE(b32 == decimal32(2));
+
+        auto a64 = decimal64(1);
+        auto b64 = a64++;
+        REQUIRE(a64 == decimal64(2));
+        REQUIRE(b64 == decimal64(1));
+
+        a64 = decimal64(2);
+        b64 = a64--;
+        REQUIRE(a64 == decimal64(1));
+        REQUIRE(b64 == decimal64(2));
+
+        auto a128 = decimal128(1);
+        auto b128 = a128++;
+        REQUIRE(a128 == decimal128(2));
+        REQUIRE(b128 == decimal128(1));
+
+        a128 = decimal128(2);
+        b128 = a128--;
+        REQUIRE(a128 == decimal128(1));
+        REQUIRE(b128 == decimal128(2));
+    }
 }

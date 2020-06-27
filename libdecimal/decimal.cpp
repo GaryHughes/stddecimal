@@ -258,26 +258,28 @@ decimal32::operator long long() const
 
 decimal32& decimal32::operator++()
 {
-    // TODO
+    *this += 1;
     return *this;
 }
 
 decimal32 decimal32::operator++(int)
 {
-    // TODO
-    return *this;
+    auto result = *this;
+    *this += 1;
+    return result;
 }
 
 decimal32& decimal32::operator--()
 {
-    // TODO
+    *this -= 1;
     return *this;
 }
 
 decimal32 decimal32::operator--(int)
 {
-    // TODO
-    return *this;
+    auto result = *this;
+    *this -= 1;    
+    return result;
 }
 
 // decimal64 ------------------------------------------------------------------
@@ -350,26 +352,28 @@ decimal64::operator long long() const
 
 decimal64& decimal64::operator++()
 {
-    // TODO
+    *this += 1;
     return *this;
 }
 
 decimal64 decimal64::operator++(int)
 {
-    // TODO
-    return *this;
+    auto result = *this;
+    *this += 1;
+    return result;
 }
 
 decimal64& decimal64::operator--()
 {
-    // TODO
+    *this -= 1;
     return *this;
 }
 
 decimal64 decimal64::operator--(int)
 {
-    // TODO
-    return *this;
+    auto result = *this;
+    *this -= 1;
+    return result;
 }
 
 // decimal128 -----------------------------------------------------------------
@@ -442,26 +446,28 @@ decimal128::operator long long() const
 
 decimal128& decimal128::operator++()
 {
-    // TODO
+    *this += 1;
     return *this;
 }
 
 decimal128 decimal128::operator++(int)
 {
-    // TODO
-    return *this;
+    auto result = *this;
+    *this += 1;
+    return result;
 }
 
 decimal128& decimal128::operator--()
 {
-    // TODO
+    *this -= 1;
     return *this;
 }
 
 decimal128 decimal128::operator--(int)
 {
-    // TODO
-    return *this;
+    auto result = *this;
+    *this -= 1;
+    return result;
 }
 
 }
