@@ -16,6 +16,28 @@ TEST_CASE("decimal", "decimal")
         // decimal32 make_decimal32(unsigned long long coeff, int exponent);
     }
 
+    SECTION("convertion to integral type")
+    {
+        decimal32 a(5);
+        decimal64 b(5);
+        decimal128 c(5);
+
+        // operator long long() const;
+        REQUIRE(static_cast<float>(a) == 5.0f);
+        REQUIRE(static_cast<double>(a) == 5.0);
+        //REQUIRE(static_cast<long double>(a) == 5.0l);
+
+        // operator long long() const;
+        REQUIRE(static_cast<float>(b) == 5.0f);
+        REQUIRE(static_cast<double>(b) == 5.0);
+        //REQUIRE(static_cast<long double>(b) == 5.0l);
+
+        // operator long long() const;
+        // REQUIRE(static_cast<float>(c) == 5.0f);
+        // REQUIRE(static_cast<double>(c) == 5.0);
+        //REQUIRE(static_cast<long double>(c) == 5.0l);
+    }
+
     SECTION("decimal to long double")
     {
         REQUIRE(decimal32_to_float(decimal32(5)) == 5.0f); 

@@ -626,6 +626,21 @@ decimal32::operator long long() const
     return bid32_to_int32_floor(m_value, &flags);
 }
 
+decimal32::operator float() const
+{
+    return decimal_to_float(*this);
+}
+
+decimal32::operator double() const
+{
+    return decimal_to_double(*this);
+}
+
+decimal32::operator long double() const
+{
+    return decimal_to_long_double(*this);
+}
+
 decimal32& decimal32::operator++()
 {
     *this += 1;
@@ -720,6 +735,21 @@ decimal64::operator long long() const
     return bid32_to_int64_floor(m_value, 0);
 }
 
+decimal64::operator float() const
+{
+    return decimal_to_float(*this);
+}
+
+decimal64::operator double() const
+{
+    return decimal_to_double(*this);
+}
+
+decimal64::operator long double() const
+{
+    return decimal_to_long_double(*this);
+}
+
 decimal64& decimal64::operator++()
 {
     *this += 1;
@@ -811,6 +841,21 @@ decimal128::decimal128(unsigned long long z)
 decimal128::operator long long() const
 {
     // TODO
+    return 0;
+}
+
+decimal128::operator float() const
+{
+    return 0;
+}
+
+decimal128::operator double() const
+{
+    return 0;
+}
+
+decimal128::operator long double() const
+{
     return 0;
 }
 

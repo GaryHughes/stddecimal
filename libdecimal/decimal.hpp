@@ -164,7 +164,7 @@ template<> struct result_traits<128, 64>  : public result_128bit {};
 template<> struct result_traits<128, 128> : public result_128bit {}; 
 
 
-class decimal32 
+class decimal32 final
 {
 public:
 
@@ -190,7 +190,10 @@ public:
     
     // 3.2.2.4 conversion to integral type: 
     explicit operator long long() const;
-    
+    explicit operator float() const;
+    explicit operator double() const;
+    explicit operator long double() const;
+        
     // 3.2.2.5 increment and decrement operators: 
     decimal32& operator++();
     decimal32 operator++(int);
@@ -251,7 +254,7 @@ private:
    
 };
 
-class decimal64 
+class decimal64 final
 {
 public:
 
@@ -277,6 +280,9 @@ public:
     
     // 3.2.3.4 conversion to integral type: 
     explicit operator long long() const;
+    explicit operator float() const;
+    explicit operator double() const;
+    explicit operator long double() const;
     
     // 3.2.3.5 increment and decrement operators: 
     decimal64& operator++();
@@ -338,7 +344,7 @@ private:
 
 };
 
-class decimal128 
+class decimal128 final
 {
 public:
 
@@ -364,6 +370,9 @@ public:
     
     // 3.2.4.4 conversion to integral type: 
     explicit operator long long() const;
+    explicit operator float() const;
+    explicit operator double() const;
+    explicit operator long double() const;
     
     // 3.2.4.5 increment and decrement operators: 
     decimal128& operator++();
@@ -425,7 +434,6 @@ private:
 
 };
 
-
 // 3.2.5 initialization from coefficient and exponent: 
 decimal32 make_decimal32(long long coeff, int exponent); 
 decimal32 make_decimal32(unsigned long long coeff, int exponent);
@@ -435,8 +443,8 @@ decimal128 make_decimal128(long long coeff, int exponent);
 decimal128 make_decimal128(unsigned long long coeff, int exponent);
 
 // 3.2.6 conversion to generic floating-point type:
-float decimal32_to_float (decimal32 d); 
-float decimal64_to_float (decimal64 d); 
+float decimal32_to_float(decimal32 d); 
+float decimal64_to_float(decimal64 d); 
 float decimal128_to_float(decimal128 d); 
 float decimal_to_float(decimal32 d); 
 float decimal_to_float(decimal64 d); 
