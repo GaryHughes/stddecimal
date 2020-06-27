@@ -418,6 +418,12 @@ private:
 };
 
 // 3.2.5 initialization from coefficient and exponent: 
+//
+// Returns an object of the appropriate decimal floating-point type with the value coeff x 10^exponent
+// rounded as in IEEE-754, if necessary. If an overflow condition occurs, then the value of the macro 
+// ERANGE is stored in errno. In cases where the desired coefficient is greater than ULLONG_MAX or less 
+// than LLONG_MIN, it will be preferable to initialize an object of decimal floating-point type by 
+// extracting its value from a string literal using one of the strtod functions or iostreams.
 decimal32 make_decimal32(long long coeff, int exponent); 
 decimal32 make_decimal32(unsigned long long coeff, int exponent);
 decimal64 make_decimal64(long long coeff, int exponent);
@@ -426,18 +432,25 @@ decimal128 make_decimal128(long long coeff, int exponent);
 decimal128 make_decimal128(unsigned long long coeff, int exponent);
 
 // 3.2.6 conversion to generic floating-point type:
+//
+// If std::numeric_limits<float>::is_iec559 == true, returns the result of the conversion of d to float, 
+// performed as in IEEE 754-2008. Otherwise, the returned value is implementation-defined.
 float decimal32_to_float(decimal32 d); 
 float decimal64_to_float(decimal64 d); 
 float decimal128_to_float(decimal128 d); 
 float decimal_to_float(decimal32 d); 
 float decimal_to_float(decimal64 d); 
 float decimal_to_float(decimal128 d);
+// If std::numeric_limits<double>::is_iec559 == true, returns the result of the conversion of d double, 
+// performed as in IEEE 754-2008. Otherwise, the returned value is implementation-defined
 double decimal32_to_double (decimal32 d); 
 double decimal64_to_double (decimal64 d); 
 double decimal128_to_double(decimal128 d); 
 double decimal_to_double(decimal32 d); 
 double decimal_to_double(decimal64 d); 
 double decimal_to_double(decimal128 d);
+// If std::numeric_limits<long double>::is_iec559 == true, returns the result of the conversion of d 
+// to long double, performed as in IEEE754-2008. Otherwise, the returned value is implementation-defined
 long double decimal32_to_long_double(decimal32 d); 
 long double decimal64_to_long_double(decimal64 d); 
 long double decimal128_to_long_double(decimal128 d); 
@@ -445,16 +458,18 @@ long double decimal_to_long_double(decimal32 d);
 long double decimal_to_long_double(decimal64 d); 
 long double decimal_to_long_double(decimal128 d);
 
-// 3.2.7 unary arithmetic operators: 
-decimal32 operator+(decimal32 rhs);
-decimal64 operator+(decimal64 rhs);
-decimal128 operator+(decimal128 rhs);
-decimal32 operator-(decimal32 rhs);
-decimal64 operator-(decimal64 rhs);
-decimal128 operator-(decimal128 rhs);
+// 3.2.7 unary arithmetic operators:
+//
+// Adds lhs to 0, as in IEEE 754-2008, and returns the result.
+decimal32 operator+(decimal32 lhs);
+decimal64 operator+(decimal64 lhs);
+decimal128 operator+(decimal128 lhs);
+// Returns the result of inverting the sign of lhs.
+decimal32 operator-(decimal32 lhs);
+decimal64 operator-(decimal64 lhs);
+decimal128 operator-(decimal128 lhs);
 
 // 3.2.8 binary arithmetic operators:
-
 template<typename LHS, typename RHS>
 typename operator_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>::binary_result_type operator+(LHS lhs, RHS rhs)
 { 

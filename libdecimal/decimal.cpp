@@ -360,8 +360,8 @@ BID_UINT128 compound_result_traits_128::resize(BID_UINT128 value) {
 
 _IDEC_flags flags = 0;
 
-template<typename DecimalType, typename CoefficientType>
-DecimalType make_decimal(CoefficientType coeff, int exponent)
+template<typename DecimalType>
+DecimalType make_decimal(long long coeff, int exponent)
 {
     DecimalType multiplier;
     DecimalType power{1};
@@ -516,45 +516,45 @@ long double decimal_to_long_double(decimal128 d)
 
 // 3.2.7 unary arithmetic operators: 
 
-decimal32 operator+(decimal32 rhs)
+decimal32 operator+(decimal32 lhs)
 {
     decimal32 result;
-    result.value(rhs.value());
+    result.value(lhs.value());
     return result;
 }
 
-decimal64 operator+(decimal64 rhs)
+decimal64 operator+(decimal64 lhs)
 {
     decimal64 result;
-    result.value(rhs.value());
+    result.value(lhs.value());
     return result;
 }
 
-decimal128 operator+(decimal128 rhs)
+decimal128 operator+(decimal128 lhs)
 {
     decimal128 result;
-    result.value(rhs.value());
+    result.value(lhs.value());
     return result;
 }
 
-decimal32 operator-(decimal32 rhs)
+decimal32 operator-(decimal32 lhs)
 {
     decimal32 result;
-    result.value(bid32_negate(rhs.value()));
+    result.value(bid32_negate(lhs.value()));
     return result;
 }
 
-decimal64 operator-(decimal64 rhs)
+decimal64 operator-(decimal64 lhs)
 {
     decimal64 result;
-    result.value(bid64_negate(rhs.value()));
+    result.value(bid64_negate(lhs.value()));
     return result;
 }
 
-decimal128 operator-(decimal128 rhs)
+decimal128 operator-(decimal128 lhs)
 {
     decimal128 result;
-    result.value(bid128_negate(rhs.value()));
+    result.value(bid128_negate(lhs.value()));
     return result;
 }
 
