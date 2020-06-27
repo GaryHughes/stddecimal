@@ -8,15 +8,42 @@ TEST_CASE("decimal", "decimal")
     SECTION("constructors")
     {
        REQUIRE(decimal32() == 0);
-    
-      
-    
     }
 
     SECTION("makers")
     {
         // decimal32 make_decimal32(long long coeff, int exponent); 
         // decimal32 make_decimal32(unsigned long long coeff, int exponent);
+    }
+
+    SECTION("decimal to long double")
+    {
+        REQUIRE(decimal32_to_float(decimal32(5)) == 5.0f); 
+        REQUIRE(decimal_to_float(decimal32(5)) == 5.0f); 
+
+        REQUIRE(decimal64_to_float(decimal64(5)) == 5.0f); 
+        REQUIRE(decimal_to_float(decimal64(5)) == 5.0f); 
+
+        REQUIRE(decimal128_to_float(decimal128(5)) == 5.0f); 
+        REQUIRE(decimal_to_float(decimal128(5)) == 5.0f);
+
+        REQUIRE(decimal32_to_double(decimal32(5)) == 5.0); 
+        REQUIRE(decimal_to_double(decimal32(5)) == 5.0); 
+
+        REQUIRE(decimal64_to_double (decimal64(5)) == 5.0); 
+        REQUIRE(decimal_to_double(decimal64(5)) == 5.0); 
+
+        // REQUIRE(decimal128_to_double(decimal128(5)) == 5.0l); 
+        // REQUIRE(decimal_to_double(decimal128(5)) == 5.0l);
+
+        // REQUIRE(decimal32_to_long_double(decimal32(5)) == 5.0l);
+        // REQUIRE(decimal_to_long_double(decimal32(5)) == 5.0l);
+        
+        // REQUIRE(decimal64_to_long_double(decimal64(5)) == 5.0l);
+        // REQUIRE(decimal_to_long_double(decimal64(5)) == 5.0l);
+
+        // REQUIRE(decimal128_to_long_double(decimal128(5)) == 5.0l);
+        // REQUIRE(decimal_to_long_double(decimal128(5)) == 5.0l);
     }
 
     SECTION("unary arithmetic")

@@ -413,6 +413,74 @@ decimal128 make_decimal128(unsigned long long coeff, int exponent)
     return make_decimal<decimal128>(coeff, exponent);    
 }
 
+// 3.2.6 conversion to generic floating-point type:
+
+float decimal32_to_float (decimal32 d)
+{
+    _IDEC_flags flags = 0;
+    return bid32_to_binary32(d.value(), round_mode, &flags);
+} 
+
+float decimal64_to_float (decimal64 d)
+{
+    _IDEC_flags flags = 0;
+    return bid64_to_binary32(d.value(), round_mode, &flags);
+}
+
+float decimal128_to_float(decimal128 d)
+{
+    _IDEC_flags flags = 0;
+    return bid128_to_binary32(d.value(), round_mode, &flags);
+}
+
+float decimal_to_float(decimal32 d)
+{
+    return decimal32_to_float(d);
+}
+
+float decimal_to_float(decimal64 d)
+{
+    return decimal64_to_float(d);
+}
+
+float decimal_to_float(decimal128 d)
+{
+    return decimal128_to_float(d);
+}
+
+double decimal32_to_double (decimal32 d)
+{
+    _IDEC_flags flags = 0;
+    return bid32_to_binary64(d.value(), round_mode, &flags);
+}
+
+double decimal64_to_double (decimal64 d)
+{
+    _IDEC_flags flags = 0;
+    return bid64_to_binary64(d.value(), round_mode, &flags);
+}
+
+double decimal128_to_double(decimal128 d)
+{
+    // TODO
+    return 0;
+}
+
+double decimal_to_double(decimal32 d)
+{
+    return decimal32_to_double(d);
+}
+
+double decimal_to_double(decimal64 d)
+{
+    return decimal64_to_double(d);
+}
+
+double decimal_to_double(decimal128 d)
+{
+    return decimal128_to_double(d);
+}
+
 long double decimal32_to_long_double(decimal32 d)
 {
     // TODO
@@ -433,22 +501,18 @@ long double decimal128_to_long_double(decimal128 d)
 
 long double decimal_to_long_double(decimal32 d)
 {
-    // TODO
-    return 0;
+    return decimal32_to_long_double(d);
 }
 
 long double decimal_to_long_double(decimal64 d)
 {
-    // TODO
-    return 0;
+    return decimal64_to_double(d);
 }
 
 long double decimal_to_long_double(decimal128 d)
 {
-    // TODO
-    return 0;
+    return decimal128_to_long_double(d);
 }
-
 
 // 3.2.7 unary arithmetic operators: 
 

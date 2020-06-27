@@ -434,7 +434,19 @@ decimal64 make_decimal64(unsigned long long coeff, int exponent);
 decimal128 make_decimal128(long long coeff, int exponent); 
 decimal128 make_decimal128(unsigned long long coeff, int exponent);
 
-// 3.2.6 conversion to generic floating-point type: 
+// 3.2.6 conversion to generic floating-point type:
+float decimal32_to_float (decimal32 d); 
+float decimal64_to_float (decimal64 d); 
+float decimal128_to_float(decimal128 d); 
+float decimal_to_float(decimal32 d); 
+float decimal_to_float(decimal64 d); 
+float decimal_to_float(decimal128 d);
+double decimal32_to_double (decimal32 d); 
+double decimal64_to_double (decimal64 d); 
+double decimal128_to_double(decimal128 d); 
+double decimal_to_double(decimal32 d); 
+double decimal_to_double(decimal64 d); 
+double decimal_to_double(decimal128 d);
 long double decimal32_to_long_double(decimal32 d); 
 long double decimal64_to_long_double(decimal64 d); 
 long double decimal128_to_long_double(decimal128 d); 
