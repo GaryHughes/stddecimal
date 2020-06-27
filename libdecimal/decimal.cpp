@@ -3,170 +3,53 @@
 namespace std::decimal
 {
 
-template<> BID_UINT32 resize(decimal32 value) {
+// 32 ------------------------------------------------
+
+BID_UINT32 operator_32bit::resize(decimal32 value) {
     return value.value();
 }
 
-template<> BID_UINT32 resize(int value) {
+BID_UINT32 operator_32bit::resize(decimal64 value) {
     _IDEC_flags flags = 0;
-    return bid32_from_int32(value, round_mode, &flags);    
+    return bid64_to_bid32(value.value(), round_mode, &flags);
 }
 
-template<> BID_UINT32 resize(unsigned int value) {
+BID_UINT32 operator_32bit::resize(decimal128 value) {
     _IDEC_flags flags = 0;
-    return bid32_from_uint32(value, round_mode, &flags);    
+    return bid128_to_bid32(value.value(), round_mode, &flags);
 }
 
-template<> BID_UINT32 resize(long value) {
-    _IDEC_flags flags = 0;
-    return bid32_from_int64(value, round_mode, &flags);    
-}
+// 64 ------------------------------------------------
 
-template<> BID_UINT32 resize(unsigned long value) {
-    _IDEC_flags flags = 0;
-    return bid32_from_uint64(value, round_mode, &flags);    
-}
-
-template<> BID_UINT32 resize(long long value) {
-    _IDEC_flags flags = 0;
-    return bid32_from_int64(value, round_mode, &flags);    
-}
-
-template<> BID_UINT32 resize(unsigned long long value) {
-    _IDEC_flags flags = 0;
-    return bid64_to_bid32(value, round_mode, &flags);    
-}
-
-template<> BID_UINT32 resize(BID_UINT128 value) {
-    _IDEC_flags flags = 0;
-    return bid128_to_bid32(value, round_mode, &flags);    
-}
-
-template<> BID_UINT32 resize(float value) {
-    _IDEC_flags flags = 0;
-    return binary32_to_bid32(value, round_mode, &flags);
-}
-
-template<> BID_UINT64 resize(decimal32 value) {
+BID_UINT64 operator_64bit::resize(decimal32 value) {
     _IDEC_flags flags = 0;
     return bid32_to_bid64(value.value(), &flags);
 }
 
-template<> BID_UINT64 resize(decimal64 value) {
+BID_UINT64 operator_64bit::resize(decimal64 value) {
     return value.value();
 }
 
-template<> BID_UINT64 resize(int value) {
-    return bid64_from_int32(value);
+BID_UINT64 operator_64bit::resize(decimal128 value) {
+    _IDEC_flags flags = 0;
+    return bid128_to_bid64(value.value(), round_mode, &flags);
 }
 
-template<> BID_UINT64 resize(unsigned int value) {
-    return bid64_from_uint32(value);
-}
+// 128 -----------------------------------------------
 
-template<> BID_UINT64 resize(long value) {
-    return bid64_from_int32(value);
-}
-
-template<> BID_UINT64 resize(unsigned long value) {
-    return bid64_from_uint32(value);
-}
-
-template<> BID_UINT64 resize(long long value) {
-    return bid64_from_int32(value);
-}
-
-template<> BID_UINT64 resize(unsigned long long value) {
-    return bid64_from_uint32(value);
-}
-
-template<> BID_UINT64 resize(float value) {
-     _IDEC_flags flags = 0;
-    return binary32_to_bid64(value, round_mode, &flags);
-}
-
-template<> BID_UINT64 resize(double value) {
-     _IDEC_flags flags = 0;
-    return binary64_to_bid64(value, round_mode, &flags);
-}
-
-template<> BID_UINT64 resize(BID_UINT128 value) {
-     _IDEC_flags flags = 0;
-    return bid128_to_bid64(value, round_mode, &flags);
-}
-
-template<> BID_UINT128 resize(decimal32 value) {
-     _IDEC_flags flags = 0;
+BID_UINT128 operator_128bit::resize(decimal32 value) {
+    _IDEC_flags flags = 0;
     return bid32_to_bid128(value.value(), &flags);
 }
 
-template<> BID_UINT128 resize(decimal64 value) {
+BID_UINT128 operator_128bit::resize(decimal64 value) {
     _IDEC_flags flags = 0;
     return bid64_to_bid128(value.value(), &flags);
 }
 
-template<> BID_UINT128 resize(decimal128 value) {
+BID_UINT128 operator_128bit::resize(decimal128 value) {
     return value.value();
 }
-
-template<> BID_UINT128 resize(int value) {
-    return bid128_from_int32(value);
-}
-
-template<> BID_UINT128 resize(unsigned int value) {
-    return bid128_from_uint32(value);
-}
-
-template<> BID_UINT128 resize(long value) {
-    return bid128_from_int64(value);
-}
-
-template<> BID_UINT128 resize(unsigned long value) {
-    return bid128_from_uint64(value);
-}
-
-template<> BID_UINT128 resize(long long value) {
-    return bid128_from_int64(value);
-}
-
-template<> BID_UINT128 resize(unsigned long long value) {
-    return bid128_from_uint64(value);
-}
-
-template<> BID_UINT128 resize(BID_UINT128 value) {
-    return value;
-}
-
-template<> BID_UINT128 resize(float value) {
-    _IDEC_flags flags = 0;
-    return binary32_to_bid128(value, round_mode, &flags);
-}
-
-template<> BID_UINT128 resize(double value) {
-    _IDEC_flags flags = 0;
-    return binary64_to_bid128(value, round_mode, &flags);
-}
-
-template<> BID_UINT128 resize(long double value) {
-    //return bid128_from_binary128(value);
-    return BID_UINT128();
-}
-
-
-
-BID_UINT32 extract_value(decimal32& value) { return value.value(); }
-BID_UINT64 extract_value(decimal64& value) { return value.value(); }
-BID_UINT128 extract_value(decimal128& value) { return value.value(); }
-int extract_value(int value) { return value; }
-unsigned int extract_value(unsigned int value) { return value; }
-long extract_value(long value) { return value; }
-unsigned long extract_value(unsigned long value) { return value; }
-long long extract_value(long long value) { return value; }
-unsigned long long extract_value(unsigned long long value) { return value; }
-float extract_value(float value) { return value; }
-double extract_value(double value) { return value; }
-long double extract_value(long double value) { return value; }
-
 
 
 _IDEC_flags flags = 0;

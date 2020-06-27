@@ -2,12 +2,16 @@
 #include <IntelRDFPMathLib20U2/LIBRARY/src/bid_conf.h>
 #include <IntelRDFPMathLib20U2/LIBRARY/src/bid_functions.h>
 
+#include <iostream>
+
 namespace std::decimal
 {
 
 class decimal32;
 class decimal64;
 class decimal128;
+
+void print(decimal32& value);
 
 // - if one or both of the parameters of the overloaded operator is decimal128, then the return type is decimal128,
 // - otherwise, if one or both of the parameters is decimal64, then the return type is decimal64,
@@ -27,10 +31,6 @@ template<> struct value_traits<unsigned long long> { static constexpr int width(
 template<> struct value_traits<float> { static constexpr int width() { return sizeof(float) * 8; }  };
 template<> struct value_traits<double> { static constexpr int width() { return sizeof(double) * 8; }  };
 template<> struct value_traits<long double> { static constexpr int width() { return sizeof(long double) * 8; }  };
-
-
-template<typename TargetType, typename SourceType>
-TargetType resize(SourceType value);
 
 
 const _IDEC_round round_mode = BID_ROUNDING_TO_NEAREST;
@@ -88,6 +88,45 @@ struct operator_32bit {
         _IDEC_flags flags = 0;
         return bid32_quiet_greater_equal(lhs, rhs, &flags); 
     }
+
+    static BID_UINT32 resize(decimal32 value);
+    static BID_UINT32 resize(decimal64 value);
+    static BID_UINT32 resize(decimal128 value);
+
+    static BID_UINT32 resize(int value) {
+        _IDEC_flags flags = 0;
+        return bid32_from_int32(value, round_mode, &flags);    
+    }
+
+    static BID_UINT32 resize(unsigned int value) {
+        _IDEC_flags flags = 0;
+        return bid32_from_uint32(value, round_mode, &flags);    
+    }
+
+    static BID_UINT32 resize(long value) {
+        _IDEC_flags flags = 0;
+        return bid32_from_int64(value, round_mode, &flags);    
+    }
+
+    static BID_UINT32 resize(unsigned long value) {
+        _IDEC_flags flags = 0;
+        return bid32_from_uint64(value, round_mode, &flags);    
+    }
+
+    static BID_UINT32 resize(long long value) {
+        _IDEC_flags flags = 0;
+        return bid32_from_int64(value, round_mode, &flags);    
+    }
+
+    static BID_UINT32 resize(unsigned long long value) {
+        _IDEC_flags flags = 0;
+        return bid64_to_bid32(value, round_mode, &flags);    
+    }
+
+    static BID_UINT32 resize(float value) {
+        _IDEC_flags flags = 0;
+        return binary32_to_bid32(value, round_mode, &flags);
+    }
 };
 
 struct operator_64bit {
@@ -142,6 +181,44 @@ struct operator_64bit {
     static bool greater_equal(BID_UINT64 lhs, BID_UINT64 rhs) {
         _IDEC_flags flags = 0;
         return bid64_quiet_greater_equal(lhs, rhs, &flags); 
+    }
+
+    static BID_UINT64 resize(decimal32 value);
+    static BID_UINT64 resize(decimal64 value);
+    static BID_UINT64 resize(decimal128 value);
+    
+    static BID_UINT64 resize(int value) {
+        return bid64_from_int32(value);
+    }
+
+    static BID_UINT64 resize(unsigned int value) {
+        return bid64_from_uint32(value);
+    }
+
+    static BID_UINT64 resize(long value) {
+        return bid64_from_int32(value);
+    }
+
+    static BID_UINT64 resize(unsigned long value) {
+        return bid64_from_uint32(value);
+    }
+
+    static BID_UINT64 resize(long long value) {
+        return bid64_from_int32(value);
+    }
+
+    static BID_UINT64 resize(unsigned long long value) {
+        return bid64_from_uint32(value);
+    }
+
+    static BID_UINT64 resize(float value) {
+        _IDEC_flags flags = 0;
+        return binary32_to_bid64(value, round_mode, &flags);
+    }
+
+    static BID_UINT64 resize(double value) {
+        _IDEC_flags flags = 0;
+        return binary64_to_bid64(value, round_mode, &flags);
     }
 };
 
@@ -198,10 +275,52 @@ struct operator_128bit {
         _IDEC_flags flags = 0;
         return bid128_quiet_greater_equal(lhs, rhs, &flags); 
     }
+
+    static BID_UINT128 resize(decimal32 value);
+    static BID_UINT128 resize(decimal64 value);
+    static BID_UINT128 resize(decimal128 value);
+
+    static BID_UINT128 resize(int value) {
+        return bid128_from_int32(value);
+    }
+
+    static BID_UINT128 resize(unsigned int value) {
+        return bid128_from_uint32(value);
+    }
+
+    static BID_UINT128 resize(long value) {
+        return bid128_from_int64(value);
+    }
+
+    static BID_UINT128 resize(unsigned long value) {
+        return bid128_from_uint64(value);
+    }
+
+    static BID_UINT128 resize(long long value) {
+        return bid128_from_int64(value);
+    }
+
+    static BID_UINT128 resize(unsigned long long value) {
+        return bid128_from_uint64(value);
+    }
+
+    static BID_UINT128 resize(float value) {
+        _IDEC_flags flags = 0;
+        return binary32_to_bid128(value, round_mode, &flags);
+    }
+
+    static BID_UINT128 resize(double value) {
+        _IDEC_flags flags = 0;
+        return binary64_to_bid128(value, round_mode, &flags);
+    }
+
+    static BID_UINT128 resize(long double value) {
+        //return bid128_from_binary128(value);
+        return BID_UINT128();
+    }
 };
 
 template<int lhs, int rhs> struct operator_traits;
-
 template<> struct operator_traits<32,  32>  : public operator_32bit {}; 
 template<> struct operator_traits<32,  64>  : public operator_64bit {};
 template<> struct operator_traits<64,  32>  : public operator_64bit {};
@@ -210,14 +329,71 @@ template<> struct operator_traits<32,  128> : public operator_128bit {};
 template<> struct operator_traits<64,  128> : public operator_128bit {};
 template<> struct operator_traits<128, 32>  : public operator_128bit {};
 template<> struct operator_traits<128, 64>  : public operator_128bit {};
-template<> struct operator_traits<128, 128> : public operator_128bit {}; 
+template<> struct operator_traits<128, 128> : public operator_128bit {};
 
-template<int lhs, int rhs> struct result_traits;
+
+struct compound_result_traits_32
+{
+    static BID_UINT32 resize(BID_UINT32 value) {
+        return value;
+    }
+
+    static BID_UINT32 resize(BID_UINT64 value) {
+        _IDEC_flags flags = 0;
+        return bid64_to_bid32(value, round_mode, &flags);
+    }
+
+    static BID_UINT32 resize(BID_UINT128 value) {
+        _IDEC_flags flags = 0;
+        return bid128_to_bid32(value, round_mode, &flags);
+    }
+};
+
+struct compound_result_traits_64
+{
+    static BID_UINT64 resize(BID_UINT32 value) {
+        _IDEC_flags flags = 0;
+        return bid32_to_bid64(value, &flags);
+    }
+
+    static BID_UINT64 resize(BID_UINT64 value) {
+        return value;
+    }
+
+    static BID_UINT64 resize(BID_UINT128 value) {
+        _IDEC_flags flags = 0;
+        return bid128_to_bid64(value, round_mode, &flags);
+    }
+};
+
+struct compound_result_traits_128
+{
+    static BID_UINT128 resize(BID_UINT32 value) {
+        _IDEC_flags flags = 0;
+        return bid32_to_bid128(value, &flags);
+    }
+
+    static BID_UINT128 resize(BID_UINT64 value) {
+        _IDEC_flags flags = 0;
+        return bid64_to_bid128(value, &flags);
+    }
+
+    static BID_UINT128 resize(BID_UINT128 value) {
+        return value;
+    }
+};
+
+template<int result> struct compound_result_traits;
+template<> struct compound_result_traits<4> : public compound_result_traits_32 {};
+template<> struct compound_result_traits<8> : public compound_result_traits_64 {};
+template<> struct compound_result_traits<16> : public compound_result_traits_128 {};
+
 
 struct result_32bit { using result_type = decimal32; };
 struct result_64bit { using result_type = decimal64; };
 struct result_128bit { using result_type = decimal128; };
 
+template<int lhs, int rhs> struct result_traits;
 template<> struct result_traits<32,  32>  : public result_32bit {}; 
 template<> struct result_traits<32,  64>  : public result_64bit {};
 template<> struct result_traits<64,  32>  : public result_64bit {};
@@ -227,20 +403,6 @@ template<> struct result_traits<64,  128> : public result_128bit {};
 template<> struct result_traits<128, 32>  : public result_128bit {};
 template<> struct result_traits<128, 64>  : public result_128bit {};
 template<> struct result_traits<128, 128> : public result_128bit {}; 
-
-
-BID_UINT32 extract_value(decimal32& value);
-BID_UINT64 extract_value(decimal64& value);
-BID_UINT128 extract_value(decimal128& value);
-int extract_value(int value);
-unsigned int extract_value(unsigned int value);
-long extract_value(long value);
-unsigned long extract_value(unsigned long value);
-long long extract_value(long long value);
-unsigned long long extract_value(unsigned long long value);
-float extract_value(float value);
-double extract_value(double value);
-long double extract_value(long double value);
 
 
 class decimal32 
@@ -277,14 +439,14 @@ public:
     decimal32 operator--(int);
     
     // 3.2.2.6 compound assignment: 
-
     template<typename RHS>
     decimal32& operator+=(RHS rhs)
     {
         using traits = operator_traits<value_traits<value_type>::width(), value_traits<decltype(rhs)>::width()>;
-        auto result = resize<typename traits::result_type>(m_value);
-        traits::add(result, resize<typename traits::result_type>(extract_value(rhs)));
-        value(resize<value_type>(result));
+        auto result = traits::resize(*this);
+        traits::add(result, traits::resize(rhs));
+        using value_traits = compound_result_traits<sizeof(m_value)>;
+        value(value_traits::resize(result));
         return *this;    
     }
    
@@ -292,9 +454,10 @@ public:
     decimal32& operator-=(RHS rhs)
     {
         using traits = operator_traits<value_traits<value_type>::width(), value_traits<decltype(rhs)>::width()>;
-        auto result = resize<typename traits::result_type>(m_value);
-        traits::sub(result, resize<typename traits::result_type>(extract_value(rhs)));
-        value(resize<value_type>(result));
+        auto result = traits::resize(*this);
+        traits::sub(result, traits::resize(rhs));
+        using value_traits = compound_result_traits<sizeof(m_value)>;
+        value(value_traits::resize(result));
         return *this;    
     }
 
@@ -302,9 +465,10 @@ public:
     decimal32& operator*=(RHS rhs)
     {
         using traits = operator_traits<value_traits<value_type>::width(), value_traits<decltype(rhs)>::width()>;
-        auto result = resize<typename traits::result_type>(m_value);
-        traits::mul(result, resize<typename traits::result_type>(extract_value(rhs)));
-        value(resize<value_type>(result));
+        auto result = traits::resize(*this);
+        traits::mul(result, traits::resize(rhs));
+        using value_traits = compound_result_traits<sizeof(m_value)>;
+        value(value_traits::resize(result));
         return *this;    
     }
 
@@ -312,9 +476,10 @@ public:
     decimal32& operator/=(RHS rhs)
     {
         using traits = operator_traits<value_traits<value_type>::width(), value_traits<decltype(rhs)>::width()>;
-        auto result = resize<typename traits::result_type>(m_value);
-        traits::div(result, resize<typename traits::result_type>(extract_value(rhs)));
-        value(resize<value_type>(result));
+        auto result = traits::resize(*this);
+        traits::div(result, traits::resize(rhs));
+        using value_traits = compound_result_traits<sizeof(m_value)>;
+        value(value_traits::resize(result));
         return *this;    
     }
 
@@ -365,9 +530,10 @@ public:
     decimal64& operator+=(RHS rhs)
     {
         using traits = operator_traits<value_traits<value_type>::width(), value_traits<decltype(rhs)>::width()>;
-        auto result = resize<typename traits::result_type>(m_value);
-        traits::add(result, resize<typename traits::result_type>(extract_value(rhs)));
-        value(resize<value_type>(result));
+        auto result = traits::resize(*this);
+        traits::add(result, traits::resize(rhs));
+        using value_traits = compound_result_traits<sizeof(m_value)>;
+        value(value_traits::resize(result));
         return *this;    
     }
    
@@ -375,9 +541,10 @@ public:
     decimal64& operator-=(RHS rhs)
     {
         using traits = operator_traits<value_traits<value_type>::width(), value_traits<decltype(rhs)>::width()>;
-        auto result = resize<typename traits::result_type>(m_value);
-        traits::sub(result, resize<typename traits::result_type>(extract_value(rhs)));
-        value(resize<value_type>(result));
+        auto result = traits::resize(*this);
+        traits::sub(result, traits::resize(rhs));
+        using value_traits = compound_result_traits<sizeof(m_value)>;
+        value(value_traits::resize(result));
         return *this;    
     }
 
@@ -385,9 +552,10 @@ public:
     decimal64& operator*=(RHS rhs)
     {
         using traits = operator_traits<value_traits<value_type>::width(), value_traits<decltype(rhs)>::width()>;
-        auto result = resize<typename traits::result_type>(m_value);
-        traits::mul(result, resize<typename traits::result_type>(extract_value(rhs)));
-        value(resize<value_type>(result));
+        auto result = traits::resize(*this);
+        traits::mul(result, traits::resize(rhs));
+        using value_traits = compound_result_traits<sizeof(m_value)>;
+        value(value_traits::resize(result));
         return *this;    
     }
 
@@ -395,9 +563,10 @@ public:
     decimal64& operator/=(RHS rhs)
     {
         using traits = operator_traits<value_traits<value_type>::width(), value_traits<decltype(rhs)>::width()>;
-        auto result = resize<typename traits::result_type>(m_value);
-        traits::div(result, resize<typename traits::result_type>(extract_value(rhs)));
-        value(resize<value_type>(result));
+        auto result = traits::resize(*this);
+        traits::div(result, traits::resize(rhs));
+        using value_traits = compound_result_traits<sizeof(m_value)>;
+        value(value_traits::resize(result));
         return *this;    
     }
 
@@ -448,9 +617,10 @@ public:
     decimal128& operator+=(RHS rhs)
     {
         using traits = operator_traits<value_traits<value_type>::width(), value_traits<decltype(rhs)>::width()>;
-        auto result = resize<typename traits::result_type>(m_value);
-        traits::add(result, resize<typename traits::result_type>(extract_value(rhs)));
-        value(resize<value_type>(result));
+        auto result = traits::resize(*this);
+        traits::add(result, traits::resize(rhs));
+        using value_traits = compound_result_traits<sizeof(m_value)>;
+        value(value_traits::resize(result));
         return *this;    
     }
    
@@ -458,9 +628,10 @@ public:
     decimal128& operator-=(RHS rhs)
     {
         using traits = operator_traits<value_traits<value_type>::width(), value_traits<decltype(rhs)>::width()>;
-        auto result = resize<typename traits::result_type>(m_value);
-        traits::sub(result, resize<typename traits::result_type>(extract_value(rhs)));
-        value(resize<value_type>(result));
+        auto result = traits::resize(*this);
+        traits::sub(result, traits::resize(rhs));
+        using value_traits = compound_result_traits<sizeof(m_value)>;
+        value(value_traits::resize(result));
         return *this;    
     }
 
@@ -468,9 +639,10 @@ public:
     decimal128& operator*=(RHS rhs)
     {
         using traits = operator_traits<value_traits<value_type>::width(), value_traits<decltype(rhs)>::width()>;
-        auto result = resize<typename traits::result_type>(m_value);
-        traits::mul(result, resize<typename traits::result_type>(extract_value(rhs)));
-        value(resize<value_type>(result));
+        auto result = traits::resize(*this);
+        traits::mul(result, traits::resize(rhs));
+        using value_traits = compound_result_traits<sizeof(m_value)>;
+        value(value_traits::resize(result));
         return *this;    
     }
 
@@ -478,9 +650,10 @@ public:
     decimal128& operator/=(RHS rhs)
     {
         using traits = operator_traits<value_traits<value_type>::width(), value_traits<decltype(rhs)>::width()>;
-        auto result = resize<typename traits::result_type>(m_value);
-        traits::div(result, resize<typename traits::result_type>(extract_value(rhs)));
-        value(resize<value_type>(result));
+        auto result = traits::resize(*this);
+        traits::div(result, traits::resize(rhs));
+        using value_traits = compound_result_traits<sizeof(m_value)>;
+        value(value_traits::resize(result));
         return *this;    
     }
 
@@ -511,11 +684,11 @@ long double decimal_to_long_double(decimal64 d);
 long double decimal_to_long_double(decimal128 d);
 
 // 3.2.7 unary arithmetic operators: 
-decimal32 operator+(decimal32 rhs); 
-decimal64 operator+(decimal64 rhs); 
-decimal128 operator+(decimal128 rhs); 
-decimal32 operator-(decimal32 rhs); 
-decimal64 operator-(decimal64 rhs); 
+decimal32 operator+(decimal32 rhs);
+decimal64 operator+(decimal64 rhs);
+decimal128 operator+(decimal128 rhs);
+decimal32 operator-(decimal32 rhs);
+decimal64 operator-(decimal64 rhs);
 decimal128 operator-(decimal128 rhs);
 
 // 3.2.8 binary arithmetic operators:
@@ -524,8 +697,8 @@ template<typename LHS, typename RHS>
 typename result_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>::result_type operator+(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    auto promoted_lhs = resize<typename traits::result_type>(lhs);
-    traits::add(promoted_lhs, resize<typename traits::result_type>(rhs)); 
+    auto promoted_lhs = traits::resize(lhs);
+    traits::add(promoted_lhs, traits::resize(rhs)); 
     using result_traits = result_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
     typename result_traits::result_type result;
     result.value(promoted_lhs);
@@ -536,8 +709,8 @@ template<typename LHS, typename RHS>
 typename result_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>::result_type operator-(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    auto promoted_lhs = resize<typename traits::result_type>(lhs);
-    traits::sub(promoted_lhs, resize<typename traits::result_type>(rhs)); 
+    auto promoted_lhs = traits::resize(lhs);
+    traits::sub(promoted_lhs, traits::resize(rhs)); 
     using result_traits = result_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
     typename result_traits::result_type result;
     result.value(promoted_lhs);
@@ -548,8 +721,8 @@ template<typename LHS, typename RHS>
 typename result_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>::result_type operator*(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    auto promoted_lhs = resize<typename traits::result_type>(lhs);
-    traits::mul(promoted_lhs, resize<typename traits::result_type>(rhs)); 
+    auto promoted_lhs = traits::resize(lhs);
+    traits::mul(promoted_lhs, traits::resize(rhs)); 
     using result_traits = result_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
     typename result_traits::result_type result;
     result.value(promoted_lhs);
@@ -560,8 +733,8 @@ template<typename LHS, typename RHS>
 typename result_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>::result_type operator/(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    auto promoted_lhs = resize<typename traits::result_type>(lhs);
-    traits::div(promoted_lhs, resize<typename traits::result_type>(rhs)); 
+    auto promoted_lhs = traits::resize(lhs);
+    traits::div(promoted_lhs, traits::resize(rhs)); 
     using result_traits = result_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
     typename result_traits::result_type result;
     result.value(promoted_lhs);
@@ -574,42 +747,42 @@ template<typename LHS, typename RHS>
 bool operator==(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    return traits::equal(resize<typename traits::result_type>(lhs), resize<typename traits::result_type>(rhs)); 
+    return traits::equal(traits::resize(lhs), traits::resize(rhs)); 
 }
 
 template<typename LHS, typename RHS>
 bool operator!=(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    return traits::not_equal(resize<typename traits::result_type>(lhs), resize<typename traits::result_type>(rhs)); 
+    return traits::not_equal(traits::resize(lhs), traits::resize(rhs)); 
 }
 
 template<typename LHS, typename RHS>
 bool operator<(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    return traits::less(resize<typename traits::result_type>(lhs), resize<typename traits::result_type>(rhs)); 
+    return traits::less(traits::resize(lhs), traits::resize(rhs)); 
 }
 
 template<typename LHS, typename RHS>
 bool operator<=(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    return traits::less_equal(resize<typename traits::result_type>(lhs), resize<typename traits::result_type>(rhs)); 
+    return traits::less_equal(traits::resize(lhs), traits::resize(rhs)); 
 }
 
 template<typename LHS, typename RHS>
 bool operator>(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    return traits::greater(resize<typename traits::result_type>(lhs), resize<typename traits::result_type>(rhs)); 
+    return traits::greater(traits::resize(lhs), traits::resize(rhs)); 
 }
 
 template<typename LHS, typename RHS>
 bool operator>=(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    return traits::greater_equal(resize<typename traits::result_type>(lhs), resize<typename traits::result_type>(rhs)); 
+    return traits::greater_equal(traits::resize(lhs), traits::resize(rhs)); 
 }
 
 // 3.2.10 Formatted input:
@@ -644,6 +817,11 @@ std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> 
     bid32_to_string(buffer, d.value(), &flags);
     os << buffer;
     return os; 
+}
+
+inline void print(decimal32& value)
+{
+    std::cout << value;
 }
 
 template <class charT, class traits>
