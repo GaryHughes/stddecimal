@@ -720,13 +720,13 @@ decimal64::decimal64(unsigned long z)
 } 
 
 decimal64::decimal64(long long z)
+:   m_value(bid64_from_int64(z, round_mode, &flags))
 {
-    // TODO
 } 
 
 decimal64::decimal64(unsigned long long z)
+:   m_value(bid64_from_uint64(z, round_mode, &flags))
 {
-    // TODO
 }
     
 decimal64::operator long long() const
