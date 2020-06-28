@@ -18,15 +18,15 @@ template<> struct value_traits<decimal32> { static constexpr int width() { retur
 template<> struct value_traits<decimal64> { static constexpr int width() { return sizeof(BID_UINT64) * 8; }  };
 template<> struct value_traits<decimal128> { static constexpr int width() { return sizeof(BID_UINT128) * 8; }  };
 template<> struct value_traits<BID_UINT128> { static constexpr int width() { return sizeof(BID_UINT128) * 8; }  };
-template<> struct value_traits<int> { static constexpr int width() { return sizeof(int) * 8; }  };
-template<> struct value_traits<unsigned int> { static constexpr int width() { return sizeof(unsigned int) * 8; }  };
-template<> struct value_traits<long> { static constexpr int width() { return sizeof(long) * 8; }  };
-template<> struct value_traits<unsigned long> { static constexpr int width() { return sizeof(unsigned long) * 8; }  };
-template<> struct value_traits<long long> { static constexpr int width() { return sizeof(long long) * 8; }  };
-template<> struct value_traits<unsigned long long> { static constexpr int width() { return sizeof(unsigned long long) * 8; }  };
-template<> struct value_traits<float> { static constexpr int width() { return sizeof(float) * 8; }  };
-template<> struct value_traits<double> { static constexpr int width() { return sizeof(double) * 8; }  };
-template<> struct value_traits<long double> { static constexpr int width() { return sizeof(long double) * 8; }  };
+template<> struct value_traits<int> { static constexpr int width() { static_assert(sizeof(int) == 4); return sizeof(int) * 8; }  };
+template<> struct value_traits<unsigned int> { static constexpr int width() { static_assert(sizeof(int) == 4); return sizeof(unsigned int) * 8; }  };
+template<> struct value_traits<long> { static constexpr int width() { static_assert(sizeof(long) == 8); return sizeof(long) * 8; }  };
+template<> struct value_traits<unsigned long> { static constexpr int width() { static_assert(sizeof(unsigned long) == 8); return sizeof(unsigned long) * 8; }  };
+template<> struct value_traits<long long> { static constexpr int width() { static_assert(sizeof(long long) == 8); return sizeof(long long) * 8; }  };
+template<> struct value_traits<unsigned long long> { static constexpr int width() { static_assert(sizeof(unsigned long long) == 8); return sizeof(unsigned long long) * 8; }  };
+template<> struct value_traits<float> { static constexpr int width() { static_assert(sizeof(float) == 4); return sizeof(float) * 8; }  };
+template<> struct value_traits<double> { static constexpr int width() { static_assert(sizeof(double) == 8); return sizeof(double) * 8; }  };
+template<> struct value_traits<long double> { static constexpr int width() { static_assert(sizeof(long double) == 16); return sizeof(long double) * 8; }  };
 
 struct operator_32bit {
 
