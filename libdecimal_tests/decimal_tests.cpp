@@ -12,8 +12,23 @@ TEST_CASE("decimal", "decimal")
 
     SECTION("makers")
     {
-        // decimal32 make_decimal32(long long coeff, int exponent); 
-        // decimal32 make_decimal32(unsigned long long coeff, int exponent);
+        REQUIRE(make_decimal32(10ll, -1) == 1);
+        REQUIRE(make_decimal32(100ll, -2) == 1);
+        REQUIRE(make_decimal32(10ll, 0) == 10);
+        REQUIRE(make_decimal32(10ll, 1) == 100);
+        REQUIRE(make_decimal32(100ll, 2) == 10000);
+
+        REQUIRE(make_decimal64(10ll, -1) == 1);
+        REQUIRE(make_decimal64(100ll, -2) == 1);
+        REQUIRE(make_decimal64(10ll, 0) == 10);
+        REQUIRE(make_decimal64(10ll, 1) == 100);
+        REQUIRE(make_decimal64(100ll, 2) == 10000);
+
+        // REQUIRE(make_decimal128(10ll, -1) == 1);
+        // REQUIRE(make_decimal128(100ll, -2) == 1);
+        // REQUIRE(make_decimal128(10ll, 0) == 10);
+        // REQUIRE(make_decimal128(10ll, 1) == 100);
+        // REQUIRE(make_decimal128(100ll, 2) == 10000);
     }
 
     SECTION("convertion to integral type")
@@ -22,20 +37,20 @@ TEST_CASE("decimal", "decimal")
         decimal64 b(5);
         decimal128 c(5);
 
-        // operator long long() const;
+        REQUIRE(static_cast<long long>(a) == 5.0f);
         REQUIRE(static_cast<float>(a) == 5.0f);
         REQUIRE(static_cast<double>(a) == 5.0);
         //REQUIRE(static_cast<long double>(a) == 5.0l);
 
-        // operator long long() const;
+        REQUIRE(static_cast<long long>(b) == 5.0f);
         REQUIRE(static_cast<float>(b) == 5.0f);
         REQUIRE(static_cast<double>(b) == 5.0);
         //REQUIRE(static_cast<long double>(b) == 5.0l);
 
-        // operator long long() const;
+        // REQUIRE(static_cast<long long>(c) == 5.0f);
         // REQUIRE(static_cast<float>(c) == 5.0f);
         // REQUIRE(static_cast<double>(c) == 5.0);
-        //REQUIRE(static_cast<long double>(c) == 5.0l);
+        // REQUIRE(static_cast<long double>(c) == 5.0l);
     }
 
     SECTION("decimal to long double")

@@ -749,8 +749,7 @@ decimal64::decimal64(unsigned long long r)
     
 decimal64::operator long long() const
 {
-    // TODO - is this the appropriate conversion?
-    return bid32_to_int64_floor(m_value, 0);
+    return bid64_to_int64_floor(m_value, &flags);
 }
 
 decimal64::operator float() const
