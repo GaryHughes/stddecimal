@@ -578,46 +578,55 @@ decimal32::decimal32(decimal128 d128)
 decimal32::decimal32(float r)
 :   m_value(binary32_to_bid32(r, round_mode, &flags))
 {
+    static_assert(sizeof(r) == 4);
 }
 
 decimal32::decimal32(double r)
 :   m_value(binary64_to_bid32(r, round_mode, &flags))
 {
+    static_assert(sizeof(r) == 8);
 }
 
 decimal32::decimal32(long double r)
 // : m_value(binary128_to_bid32(r, round_mode, &flags))
 {
+    static_assert(sizeof(r) == 16);
 }
 
-decimal32::decimal32(int z)
-:   m_value(bid32_from_int32(z, round_mode, &flags))
+decimal32::decimal32(int r)
+:   m_value(bid32_from_int32(r, round_mode, &flags))
 {
+    static_assert(sizeof(r) == 4);
 }
 
-decimal32::decimal32(unsigned int z)
-:   m_value(bid32_from_uint32(z, round_mode, &flags))
+decimal32::decimal32(unsigned int r)
+:   m_value(bid32_from_uint32(r, round_mode, &flags))
 {
+    static_assert(sizeof(r) == 4);
 }
 
-decimal32::decimal32(long z)
-:   m_value(bid32_from_int64(z, round_mode, &flags))
+decimal32::decimal32(long r)
+:   m_value(bid32_from_int64(r, round_mode, &flags))
 {
+    static_assert(sizeof(r) == 8);
 }
 
-decimal32::decimal32(unsigned long z)
-:   m_value(bid32_from_uint64(z, round_mode, &flags))
+decimal32::decimal32(unsigned long r)
+:   m_value(bid32_from_uint64(r, round_mode, &flags))
 {
+    static_assert(sizeof(r) == 8);
 }
 
-decimal32::decimal32(long long z)
+decimal32::decimal32(long long r)
+:   m_value(bid32_from_int64(r, round_mode, &flags))
 {
-    // TODO
+    static_assert(sizeof(r) == 8);
 }
 
-decimal32::decimal32(unsigned long long z)
+decimal32::decimal32(unsigned long long r)
+:   m_value(bid32_from_uint64(r, round_mode, &flags))
 {
-    // TODO
+    static_assert(sizeof(r) == 8);
 }
 
 decimal32::operator long long() const
@@ -687,46 +696,55 @@ decimal64::decimal64(decimal128 d128)
 decimal64::decimal64(float r)
 :   m_value(binary32_to_bid64(r, round_mode, &flags))
 {
+    static_assert(sizeof(r) == 4);
 } 
 
 decimal64::decimal64(double r)
 :   m_value(binary64_to_bid64(r, round_mode, &flags))
 {
+    static_assert(sizeof(r) == 8);
 } 
 
 decimal64::decimal64(long double r)
 {
     // TODO
+    static_assert(sizeof(r) == 16);
 }
     
-decimal64::decimal64(int z)
-:   m_value(bid64_from_int32(z)) // TDOO - why are these different?
+decimal64::decimal64(int r)
+:   m_value(bid64_from_int32(r))
 {
+    static_assert(sizeof(r) == 4);
 }
 
-decimal64::decimal64(unsigned int z)
-:   m_value(bid64_from_uint32(z)) // TDOO - why are these different?
+decimal64::decimal64(unsigned int r)
+:   m_value(bid64_from_uint32(r))
 {
+    static_assert(sizeof(r) == 4);
 }
 
-decimal64::decimal64(long z)
-:   m_value(bid64_from_int64(z, round_mode, &flags))
+decimal64::decimal64(long r)
+:   m_value(bid64_from_int64(r, round_mode, &flags))
 {
+    static_assert(sizeof(r) == 8);
 }
 
-decimal64::decimal64(unsigned long z)
-:   m_value(bid64_from_uint64(z, round_mode, &flags))
+decimal64::decimal64(unsigned long r)
+:   m_value(bid64_from_uint64(r, round_mode, &flags))
 {
+    static_assert(sizeof(r) == 8);
 } 
 
-decimal64::decimal64(long long z)
-:   m_value(bid64_from_int64(z, round_mode, &flags))
+decimal64::decimal64(long long r)
+:   m_value(bid64_from_int64(r, round_mode, &flags))
 {
+    static_assert(sizeof(r) == 8);
 } 
 
-decimal64::decimal64(unsigned long long z)
-:   m_value(bid64_from_uint64(z, round_mode, &flags))
+decimal64::decimal64(unsigned long long r)
+:   m_value(bid64_from_uint64(r, round_mode, &flags))
 {
+    static_assert(sizeof(r) == 8);
 }
     
 decimal64::operator long long() const
@@ -796,46 +814,55 @@ decimal128::decimal128(decimal64 d64)
 decimal128::decimal128(float r)
 :   m_value(binary32_to_bid128(r, round_mode, &flags))
 {
+    static_assert(sizeof(r) == 4);
 }
 
 decimal128::decimal128(double r)
 :   m_value(binary64_to_bid128(r, round_mode, &flags))
 {
+    static_assert(sizeof(r) == 8);
 } 
 
 decimal128::decimal128(long double r)
 //:   m_value(binary128_to_bid128(r, round_mode, &flags))
 {
+    static_assert(sizeof(r) == 16);
 }
 
-decimal128::decimal128(int z)
-:   m_value(bid128_from_int32(z))
+decimal128::decimal128(int r)
+:   m_value(bid128_from_int32(r))
 {
+    static_assert(sizeof(r) == 4);
 }
 
-decimal128::decimal128(unsigned int z)
-:   m_value(bid128_from_uint32(z))
+decimal128::decimal128(unsigned int r)
+:   m_value(bid128_from_uint32(r))
 {
+    static_assert(sizeof(r) == 4);
 } 
 
-decimal128::decimal128(long z)
-:   m_value(bid128_from_int64(z))
+decimal128::decimal128(long r)
+:   m_value(bid128_from_int64(r))
 {
+    static_assert(sizeof(r) == 8);
 }
 
-decimal128::decimal128(unsigned long z)
-:   m_value(bid128_from_uint64(z))
+decimal128::decimal128(unsigned long r)
+:   m_value(bid128_from_uint64(r))
 {
+    static_assert(sizeof(r) == 8);
 }
 
-decimal128::decimal128(long long z)
+decimal128::decimal128(long long r)
 {
     // TODO
+    static_assert(sizeof(r) == 8);
 }
 
-decimal128::decimal128(unsigned long long z)
+decimal128::decimal128(unsigned long long r)
 {
     // TODO
+    static_assert(sizeof(r) == 8);
 }
 
 decimal128::operator long long() const
