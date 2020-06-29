@@ -15,4 +15,3 @@ I've used [this implementation](https://sourceforge.net/p/stddecimal/code/HEAD/t
 * The 128 bit implementation is incomplete.
 * Testing is currently limited to the supplied unit tests that are primarily there to instantiate the templates and prove basic functionality.
 * Testing will be expanded to include an automated test suite built using [these](http://speleotrove.com/decimal/dectest.html) test cases.
-* There is currently no explicit error handling and any exceptions signalled by the Intel library are ignored.

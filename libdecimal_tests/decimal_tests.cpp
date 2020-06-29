@@ -1,10 +1,139 @@
 #include <catch.hpp>
 #include <libdecimal/decimal.hpp>
+#include <thread>
 
 using namespace std::decimal;
 
 TEST_CASE("decimal", "decimal") 
 {
+    SECTION("fe_dec_getround and fe_dec_setround")
+    {
+        REQUIRE(fe_dec_getround() == FE_DEC_TONEAREST);
+
+        REQUIRE(fe_dec_setround(FE_DEC_DOWNWARD) == 0);
+        REQUIRE(fe_dec_getround() == FE_DEC_DOWNWARD);
+
+        REQUIRE(fe_dec_setround(FE_DEC_TONEAREST) == 0);
+        REQUIRE(fe_dec_getround() == FE_DEC_TONEAREST);
+
+        REQUIRE(fe_dec_setround(FE_DEC_TONEARESTFROMZERO) == 0);
+        REQUIRE(fe_dec_getround() == FE_DEC_TONEARESTFROMZERO);
+
+        REQUIRE(fe_dec_setround(FE_DEC_TOWARD_ZERO) == 0);
+        REQUIRE(fe_dec_getround() == FE_DEC_TOWARD_ZERO);
+
+        REQUIRE(fe_dec_setround(FE_DEC_UPWARD) == 0);
+        REQUIRE(fe_dec_getround() == FE_DEC_UPWARD);
+
+        REQUIRE(fe_dec_setround(5) != 0);
+
+        // TODO - behaviour tests
+    }
+
+    SECTION("fe_dec_getround and fe_dec_setround thread locality")
+    {
+        REQUIRE(fe_dec_setround(FE_DEC_TONEAREST) == 0);
+        REQUIRE(fe_dec_getround() == FE_DEC_TONEAREST);
+        auto thread = std::thread([]() {
+            REQUIRE(fe_dec_getround() == FE_DEC_TONEAREST);
+            REQUIRE(fe_dec_setround(FE_DEC_DOWNWARD) == 0);
+            REQUIRE(fe_dec_getround() == FE_DEC_DOWNWARD);
+        });
+        thread.join();
+        REQUIRE(fe_dec_setround(FE_DEC_TONEAREST) == 0);
+        REQUIRE(fe_dec_getround() == FE_DEC_TONEAREST);
+    }
+
+    SECTION("fe_dec_clearexcept")
+    {
+        REQUIRE(fe_dec_clearexcept(FE_DEC_ALL_EXCEPT) == 0);
+        REQUIRE(fe_dec_testexcept(FE_DEC_ALL_EXCEPT) == 0);
+        decimal32 one(1.0);
+        one /= 0;
+        REQUIRE(fe_dec_testexcept(FE_DEC_DIVBYZERO) == FE_DEC_DIVBYZERO);
+    }
+
+    SECTION("fe_dec_raiseexcept")
+    {
+        REQUIRE(fe_dec_clearexcept(FE_DEC_ALL_EXCEPT) == 0);
+        REQUIRE(fe_dec_raiseexcept(FE_DEC_ALL_EXCEPT) == 0);
+        REQUIRE(fe_dec_testexcept(FE_DEC_ALL_EXCEPT) == FE_DEC_ALL_EXCEPT);
+
+        REQUIRE(fe_dec_clearexcept(FE_DEC_ALL_EXCEPT) == 0);
+        REQUIRE(fe_dec_raiseexcept(FE_DEC_DIVBYZERO) == 0);
+        REQUIRE(fe_dec_testexcept(FE_DEC_DIVBYZERO) == FE_DEC_DIVBYZERO);
+        REQUIRE(fe_dec_testexcept(FE_DEC_ALL_EXCEPT) == FE_DEC_DIVBYZERO);
+
+        REQUIRE(fe_dec_clearexcept(FE_DEC_ALL_EXCEPT) == 0);
+        REQUIRE(fe_dec_raiseexcept(FE_DEC_INEXACT) == 0);
+        REQUIRE(fe_dec_testexcept(FE_DEC_INEXACT) == FE_DEC_INEXACT);
+        REQUIRE(fe_dec_testexcept(FE_DEC_ALL_EXCEPT) == FE_DEC_INEXACT);
+
+        REQUIRE(fe_dec_clearexcept(FE_DEC_ALL_EXCEPT) == 0);
+        REQUIRE(fe_dec_raiseexcept(FE_DEC_INVALID) == 0);
+        REQUIRE(fe_dec_testexcept(FE_DEC_INVALID) == FE_DEC_INVALID);
+        REQUIRE(fe_dec_testexcept(FE_DEC_ALL_EXCEPT) == FE_DEC_INVALID);
+
+        REQUIRE(fe_dec_clearexcept(FE_DEC_ALL_EXCEPT) == 0);
+        REQUIRE(fe_dec_raiseexcept(FE_DEC_OVERFLOW) == 0);
+        REQUIRE(fe_dec_testexcept(FE_DEC_OVERFLOW) == FE_DEC_OVERFLOW);
+        REQUIRE(fe_dec_testexcept(FE_DEC_ALL_EXCEPT) == FE_DEC_OVERFLOW);
+
+        REQUIRE(fe_dec_clearexcept(FE_DEC_ALL_EXCEPT) == 0);
+        REQUIRE(fe_dec_raiseexcept(FE_DEC_UNDERFLOW) == 0);
+        REQUIRE(fe_dec_testexcept(FE_DEC_UNDERFLOW) == FE_DEC_UNDERFLOW);
+        REQUIRE(fe_dec_testexcept(FE_DEC_ALL_EXCEPT) == FE_DEC_UNDERFLOW);
+    }
+
+    SECTION("fe_dec_getexceptflag and fe_dec_setexceptflag")
+    {
+        REQUIRE(fe_dec_clearexcept(FE_DEC_ALL_EXCEPT) == 0);
+        REQUIRE(fe_dec_setexceptflag(0, 0) != 0);
+        REQUIRE(fe_dec_testexcept(FE_DEC_OVERFLOW) == 0);
+        const std::decimal::fexcept_t input = FE_DEC_OVERFLOW;
+        REQUIRE(fe_dec_setexceptflag(&input, FE_DEC_OVERFLOW) == 0);
+        REQUIRE(fe_dec_testexcept(FE_DEC_OVERFLOW) == FE_DEC_OVERFLOW);
+        std::decimal::fexcept_t output;
+        REQUIRE(fe_dec_getexceptflag(&output, FE_DEC_OVERFLOW) == 0);
+    }
+
+    SECTION("fe_dec_getenv and fe_dec_setenv")
+    {
+        REQUIRE(fe_dec_clearexcept(FE_DEC_ALL_EXCEPT) == 0);
+        REQUIRE(fe_dec_getenv(0) != 0);
+        REQUIRE(fe_dec_setenv(0) != 0);
+        REQUIRE(fe_dec_testexcept(FE_DEC_DIVBYZERO) == 0);
+        std::decimal::fenv_t env;
+        REQUIRE(fe_dec_getenv(&env) == 0);
+        REQUIRE(fe_dec_raiseexcept(FE_DEC_DIVBYZERO) == 0);
+        REQUIRE(fe_dec_testexcept(FE_DEC_DIVBYZERO) == FE_DEC_DIVBYZERO);
+        REQUIRE(fe_dec_setenv(&env) == 0);
+        REQUIRE(fe_dec_testexcept(FE_DEC_DIVBYZERO) == 0);
+    }
+
+    SECTION("fe_dec_holdexcept and fe_dec_updateenv")
+    {
+        REQUIRE(fe_dec_clearexcept(FE_DEC_ALL_EXCEPT) == 0);
+        REQUIRE(fe_dec_holdexcept(0) != 0);
+        
+        decimal32 one(1.0);
+        one /= 0;
+        REQUIRE(fe_dec_testexcept(FE_DEC_ALL_EXCEPT) == FE_DEC_DIVBYZERO);
+
+        std::decimal::fenv_t env;
+        REQUIRE(fe_dec_holdexcept(&env) == 0);
+
+        REQUIRE(fe_dec_testexcept(FE_DEC_ALL_EXCEPT) == 0);
+        decimal32 two(1.0);
+        two /= 0;
+        REQUIRE(fe_dec_testexcept(FE_DEC_ALL_EXCEPT) == 0);
+
+        REQUIRE(fe_dec_updateenv(0) != 0);
+        REQUIRE(fe_dec_updateenv(&env) == 0);
+        REQUIRE(fe_dec_testexcept(FE_DEC_ALL_EXCEPT) == FE_DEC_DIVBYZERO);
+    }
+
+
     SECTION("constructors")
     {
        REQUIRE(decimal32() == 0);

@@ -5,6 +5,87 @@
 namespace std::decimal
 {
 
+// 3.5 Additions to <cfenv> and <fenv.h>
+
+constexpr int FE_DEC_TONEAREST = BID_ROUNDING_TO_NEAREST;
+constexpr int FE_DEC_DOWNWARD = BID_ROUNDING_DOWN;
+constexpr int FE_DEC_UPWARD = BID_ROUNDING_UP;
+constexpr int FE_DEC_TOWARD_ZERO = BID_ROUNDING_TO_ZERO;
+constexpr int FE_DEC_TONEARESTFROMZERO = BID_ROUNDING_TIES_AWAY;
+
+// There is no mention of changes to exception state in the standard so I am assuming that the floating point and decimal operations 
+// would share a single exception state. This implementation doesn't really want to affect the compiler runtime state so we need to 
+// supply our own. We need to redefine the exception constants because their values are implementation defined, add _DEC_ to the names 
+// as well as placing them in the std::decimal namespace to avoid any clashes or confusion.
+using fexcept_t = int;
+
+constexpr fexcept_t FE_DEC_DIVBYZERO = BID_ZERO_DIVIDE_EXCEPTION;
+constexpr fexcept_t FE_DEC_INEXACT = BID_INEXACT_EXCEPTION;
+constexpr fexcept_t FE_DEC_INVALID = BID_INVALID_EXCEPTION;
+constexpr fexcept_t FE_DEC_OVERFLOW = BID_OVERFLOW_EXCEPTION;
+constexpr fexcept_t FE_DEC_UNDERFLOW = BID_UNDERFLOW_EXCEPTION;
+constexpr fexcept_t FE_DEC_ALL_EXCEPT = FE_DEC_DIVBYZERO | 
+                                        FE_DEC_INEXACT | 
+                                        FE_DEC_INVALID | 
+                                        FE_DEC_OVERFLOW | 
+                                        FE_DEC_UNDERFLOW;
+
+// NB: Environment state is per thread.
+struct fenv_t
+{
+    int round;
+    unsigned int flags;
+    bool hold;
+};
+
+// Rename the global floating point environment functions by adding _dec_ to the names so there is no ambiguity and they
+// match the decimal specific fe_dec_getround and fe_dec_setround.
+
+// Clears the specified floating-point status flags
+// 0​ if all indicated exceptions were successfully cleared or if excepts is zero. Returns a non-zero value on error.
+int fe_dec_clearexcept(int except);
+
+// Raises the specified floating-point exceptions 
+// ​0​ if all listed exceptions were raised, non-zero value otherwise.
+int fe_dec_raiseexcept(int except);
+
+// Copies the state of the specified floating-point status flags from or to the floating-point environment
+// ​0​ on success, non-zero otherwise.
+int fe_dec_setexceptflag(const fexcept_t *pflag, int except);
+int fe_dec_getexceptflag(fexcept_t *pflag, int except);
+
+// Determines which of the specified floating-point status flags are set
+// Returns: Bitwise OR of the floating-point exception macros that are both included in excepts and correspond to floating-point exceptions currently set.
+int fe_dec_testexcept(int except);
+
+// Attempts to store the status of the floating-point environment in the object pointed to by envp.
+// ​0​ on success, non-zero otherwise.
+int fe_dec_getenv(fenv_t *penv);
+
+// Attempts to establish the floating-point environment from the object pointed to by envp. 
+// ​0​ on success, non-zero otherwise.
+int fe_dec_setenv(const fenv_t *penv);
+
+// Saves the environment, clears all status flags and ignores all future errors
+// ​0​ on success, non-zero otherwise.
+int fe_dec_holdexcept(fenv_t *penv);
+
+// restores the floating-point environment and raises the previously raise exceptions 
+// 0​ on success, non-zero otherwise.
+int fe_dec_updateenv(const fenv_t *penv);
+
+// These are additions for decimal. Unlike the exception flags they don't overlap with the regular floating point counterparts.
+
+// Gets the current rounding direction for decimal floating-point operations.
+int fe_dec_getround();
+
+// Establishes round as the rounding direction for decimal floating-point operations. If round is not equal to the value of a DFP 
+// rounding direction macro, the rounding direction is not changed.
+// Returns: a zero value if and only if the argument is equal to one of the rounding direction macros
+int fe_dec_setround(int round);
+
+
+
 class decimal32;
 class decimal64;
 class decimal128;
