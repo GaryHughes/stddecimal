@@ -27,3 +27,10 @@ RUN curl -SL http://www.netlib.org/misc/intel/IntelRDFPMathLib20U2.tar.gz | tar 
     sed -i -e 's/ic/clang/g' linuxbuild && \
     ./RUNLINUX
     
+#
+# Boost
+#
+RUN curl -SL https://sourceforge.net/projects/boost/files/boost/1.72.0/boost_1_72_0.tar.gz/download | tar -zxf - && \
+    cd boost_1_72_0 && \
+    ./bootstrap.sh --with-toolset=clang --prefix=/usr/local && \
+    ./b2 toolset=clang cxxflags="-std=c++17" install
