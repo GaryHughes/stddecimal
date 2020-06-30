@@ -3,7 +3,7 @@
 namespace std::decimal
 {
 
-const fenv_t default_environment { FE_DEC_TONEAREST, 0, false };
+const fenv_t default_environment { FE_DEC_TONEAREST, 0, false, 0 };
 thread_local fenv_t environment = default_environment;
 thread_local unsigned int hold_flags;
 
@@ -130,6 +130,61 @@ int fe_dec_setround(int round)
 	return 1;
 }
 
+
+exception::exception(fexcept_t flags)
+:   m_flags(flags)
+{
+    if (m_flags & FE_DEC_DIVBYZERO) {
+        m_what += "divide by zero";
+    } 
+
+    if (m_flags & FE_DEC_OVERFLOW) {
+        if (!m_what.empty()) { m_what += ", "; }
+        m_what += "overflow";
+    }
+
+    if (m_flags & FE_DEC_UNDERFLOW) {
+        if (!m_what.empty()) { m_what += ", "; }
+        m_what += "underflow";
+    } 
+
+    if (m_flags & FE_DEC_INEXACT) {
+        if (!m_what.empty()) { m_what += ", "; }
+        m_what += "inexact";
+    } 
+
+    if (m_flags & FE_DEC_INVALID) {
+        if (!m_what.empty()) { m_what += ", "; }
+        m_what += "invalid";
+    } 
+}
+
+void set_exceptions(int except) noexcept
+{
+    environment.exceptions |= except;
+    fe_dec_clearexcept(except);
+}
+
+void clear_exceptions(int except) noexcept
+{
+    environment.exceptions &= ~except;
+}
+
+int get_exceptions() noexcept
+{
+    return environment.exceptions;
+}
+
+void check_exceptions()
+{
+    int raised_exceptions = environment.flags & environment.exceptions;
+
+    if (raised_exceptions) {
+        fe_dec_clearexcept(raised_exceptions);
+        throw std::decimal::exception(raised_exceptions);
+    }
+}
+
 // 32 ------------------------------------------------
 
 void operator_32bit::add(BID_UINT32& lhs, BID_UINT32 rhs) {
@@ -215,23 +270,27 @@ BID_UINT32 operator_32bit::resize(float value) {
 // 64 ------------------------------------------------
 
 void operator_64bit::add(BID_UINT64& lhs, BID_UINT64 rhs) {
-    lhs = bid64_add(lhs, rhs, environment.round, environment_flags()); 
+    lhs = bid64_add(lhs, rhs, environment.round, environment_flags());
+    check_exceptions(); 
 }
 
 void operator_64bit::sub(BID_UINT64& lhs, BID_UINT64 rhs) {
-    lhs = bid64_sub(lhs, rhs, environment.round, environment_flags()); 
+    lhs = bid64_sub(lhs, rhs, environment.round, environment_flags());
+    check_exceptions();
 }
 
 void operator_64bit::mul(BID_UINT64& lhs, BID_UINT64 rhs) {
-    lhs = bid64_mul(lhs, rhs, environment.round, environment_flags()); 
+    lhs = bid64_mul(lhs, rhs, environment.round, environment_flags());
+    check_exceptions();
 }
 
 void operator_64bit::div(BID_UINT64& lhs, BID_UINT64 rhs) {
-    lhs = bid64_div(lhs, rhs, environment.round, environment_flags()); 
+    lhs = bid64_div(lhs, rhs, environment.round, environment_flags());
+    check_exceptions();
 }
 
 bool operator_64bit::equal(BID_UINT64 lhs, BID_UINT64 rhs) {
-    return bid64_quiet_equal(lhs, rhs, environment_flags()); 
+    return bid64_quiet_equal(lhs, rhs, environment_flags());
 }
 
 bool operator_64bit::not_equal(BID_UINT64 lhs, BID_UINT64 rhs) {
@@ -385,7 +444,6 @@ BID_UINT128 operator_128bit::resize(double value) {
 }
 
 BID_UINT128 operator_128bit::resize(long double value) {
-    //return bid128_from_binary128(value);
     return BID_UINT128();
 }
 
@@ -434,7 +492,7 @@ DecimalType make_decimal(long long coeff, int exponent)
 {
     DecimalType multiplier;
     DecimalType power{1};
-    DecimalType result{coeff};
+    DecimalType value{coeff};
 
     if (exponent < 0) {
         multiplier = DecimalType{1} / DecimalType{10};
@@ -448,7 +506,11 @@ DecimalType make_decimal(long long coeff, int exponent)
         power *= multiplier;
     }
 
-    return result * power;
+    auto result = value * power;
+
+    check_exceptions();
+
+    return result;
 }
 
 
@@ -486,17 +548,24 @@ decimal128 make_decimal128(unsigned long long coeff, int exponent)
 
 float decimal32_to_float (decimal32 d)
 {
-    return bid32_to_binary32(d.value(), environment.round, environment_flags());
-} 
+    auto result = bid32_to_binary32(d.value(), environment.round, environment_flags());
+    check_exceptions();
+    return result;
+}
+ 
 
 float decimal64_to_float (decimal64 d)
 {
-    return bid64_to_binary32(d.value(), environment.round, environment_flags());
+    auto result = bid64_to_binary32(d.value(), environment.round, environment_flags());
+    check_exceptions();
+    return result;
 }
 
 float decimal128_to_float(decimal128 d)
 {
-    return bid128_to_binary32(d.value(), environment.round, environment_flags());
+    auto result = bid128_to_binary32(d.value(), environment.round, environment_flags());
+    check_exceptions();
+    return result;
 }
 
 float decimal_to_float(decimal32 d)
@@ -516,12 +585,16 @@ float decimal_to_float(decimal128 d)
 
 double decimal32_to_double (decimal32 d)
 {
-    return bid32_to_binary64(d.value(), environment.round, environment_flags());
+    auto result = bid32_to_binary64(d.value(), environment.round, environment_flags());
+    check_exceptions();
+    return result;
 }
 
 double decimal64_to_double (decimal64 d)
 {
-    return bid64_to_binary64(d.value(), environment.round, environment_flags());
+    auto result = bid64_to_binary64(d.value(), environment.round, environment_flags());
+    check_exceptions();
+    return result;
 }
 
 double decimal128_to_double(decimal128 d)
@@ -625,78 +698,91 @@ decimal128 operator-(decimal128 lhs)
 // decimal32 ------------------------------------------------------------------
 
 decimal32::decimal32()
-:   m_value(bid32_from_int32(0, environment.round, environment_flags()))
+:   m_value(0)
 {
 }
 
 decimal32::decimal32(decimal64 d64)
 :   m_value(bid64_to_bid32(d64.value(), environment.round, environment_flags()))
 {
+    check_exceptions();
 }
 
 decimal32::decimal32(decimal128 d128)
 :   m_value(bid128_to_bid32(d128.value(), environment.round, environment_flags()))
 {
+    check_exceptions();
 }
 
 decimal32::decimal32(float r)
 :   m_value(binary32_to_bid32(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 4);
+    check_exceptions();
 }
 
 decimal32::decimal32(double r)
 :   m_value(binary64_to_bid32(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 8);
+    check_exceptions();
 }
 
 decimal32::decimal32(long double r)
 // : m_value(binary128_to_bid32(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 16);
+    check_exceptions();
 }
 
 decimal32::decimal32(int r)
 :   m_value(bid32_from_int32(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 4);
+    check_exceptions();
 }
 
 decimal32::decimal32(unsigned int r)
 :   m_value(bid32_from_uint32(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 4);
+    check_exceptions();
 }
 
 decimal32::decimal32(long r)
 :   m_value(bid32_from_int64(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 8);
+    check_exceptions();
 }
 
 decimal32::decimal32(unsigned long r)
 :   m_value(bid32_from_uint64(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 8);
+    check_exceptions();
 }
 
 decimal32::decimal32(long long r)
 :   m_value(bid32_from_int64(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 8);
+    check_exceptions();
 }
 
 decimal32::decimal32(unsigned long long r)
 :   m_value(bid32_from_uint64(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 8);
+    check_exceptions();
 }
 
 decimal32::operator long long() const
 {
     // TODO - is this the appropriate conversion?
-    return bid32_to_int32_floor(m_value, environment_flags());
+    auto result = bid32_to_int32_floor(m_value, environment_flags());
+    check_exceptions();
+    return result;
 }
 
 decimal32::operator float() const
@@ -745,75 +831,89 @@ decimal32 decimal32::operator--(int)
 decimal64::decimal64()
 :   m_value(bid64_from_int64(0, environment.round, environment_flags()))
 {
+    check_exceptions();
 }
     
 decimal64::decimal64(decimal32 d32)
 :   m_value(bid32_to_bid64(d32.value(), environment_flags()))
 {
+    check_exceptions();
 }
 
 decimal64::decimal64(decimal128 d128)
 :   m_value(bid128_to_bid64(d128.value(), environment.round, environment_flags()))
 {
+    check_exceptions();
 } 
 
 decimal64::decimal64(float r)
 :   m_value(binary32_to_bid64(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 4);
+    check_exceptions();
 } 
 
 decimal64::decimal64(double r)
 :   m_value(binary64_to_bid64(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 8);
+    check_exceptions();
 } 
 
 decimal64::decimal64(long double r)
 {
     // TODO
     static_assert(sizeof(r) == 16);
+    check_exceptions();
 }
     
 decimal64::decimal64(int r)
 :   m_value(bid64_from_int32(r))
 {
     static_assert(sizeof(r) == 4);
+    check_exceptions();
 }
 
 decimal64::decimal64(unsigned int r)
 :   m_value(bid64_from_uint32(r))
 {
     static_assert(sizeof(r) == 4);
+    check_exceptions();
 }
 
 decimal64::decimal64(long r)
 :   m_value(bid64_from_int64(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 8);
+    check_exceptions();
 }
 
 decimal64::decimal64(unsigned long r)
 :   m_value(bid64_from_uint64(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 8);
+    check_exceptions();
 } 
 
 decimal64::decimal64(long long r)
 :   m_value(bid64_from_int64(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 8);
+    check_exceptions();
 } 
 
 decimal64::decimal64(unsigned long long r)
 :   m_value(bid64_from_uint64(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 8);
+    check_exceptions();
 }
     
 decimal64::operator long long() const
 {
-    return bid64_to_int64_floor(m_value, environment_flags());
+    auto result = bid64_to_int64_floor(m_value, environment_flags());
+    check_exceptions();
+    return result;
 }
 
 decimal64::operator float() const
@@ -862,58 +962,68 @@ decimal64 decimal64::operator--(int)
 decimal128::decimal128()
 :   m_value(bid128_from_int32(0))
 {
+    check_exceptions();
 }
     
 decimal128::decimal128(decimal32 d32)
 :   m_value(bid32_to_bid128(d32.value(), environment_flags()))
 {
+    check_exceptions();
 }
 
 decimal128::decimal128(decimal64 d64)
 :   m_value(bid64_to_bid128(d64.value(), environment_flags()))
 {
+    check_exceptions();
 } 
 
 decimal128::decimal128(float r)
 :   m_value(binary32_to_bid128(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 4);
+    check_exceptions();
 }
 
 decimal128::decimal128(double r)
 :   m_value(binary64_to_bid128(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 8);
+    check_exceptions();
 } 
 
 decimal128::decimal128(long double r)
 //:   m_value(binary128_to_bid128(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 16);
+    check_exceptions();
 }
 
 decimal128::decimal128(int r)
 :   m_value(bid128_from_int32(r))
 {
     static_assert(sizeof(r) == 4);
+    check_exceptions();
 }
 
 decimal128::decimal128(unsigned int r)
 :   m_value(bid128_from_uint32(r))
 {
     static_assert(sizeof(r) == 4);
+    check_exceptions();
 } 
 
 decimal128::decimal128(long r)
 :   m_value(bid128_from_int64(r))
 {
     static_assert(sizeof(r) == 8);
+    check_exceptions();
 }
 
 decimal128::decimal128(unsigned long r)
 :   m_value(bid128_from_uint64(r))
 {
     static_assert(sizeof(r) == 8);
+    check_exceptions();
 }
 
 decimal128::decimal128(long long r)

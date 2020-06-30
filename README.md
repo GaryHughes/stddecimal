@@ -55,3 +55,48 @@ namespace std::decimal {
 
 }
 ```
+
+# Extensions
+
+Support has been added for selectively throwing C++ exceptions.
+
+```c++
+// Throw std::decimal::exception if any of the exceptions in the except mask are raised.
+// NB: Some operations will result in multiple floating point exceptions being raised and
+// this will result in a single std::decimal::exception being thrown. The flags property of
+/// this exception will include all raised exceptions.
+void set_exceptions(int except) noexcept;
+// Remove an exceptions in the except mask from the throw list.
+void clear_exceptions(int except) noexcept;
+// What exceptions have been configured to throw with set_exceptions?
+int get_exceptions() noexcept;
+// Check the decimal floating point environment exception flags and throw a std:decimal::exception if
+// any exceptions have been raised.
+// This function is called internally if any exceptions have been enabled with set_exceptions but it
+// can also be called manually by the user.
+void check_exceptions();
+```
+
+
+
+```c++
+namespace std::decimal {
+
+class exception : public std::exception
+{
+public:
+
+    exception(fexcept_t flags);
+    constexpr fexcept_t flags() const { return m_flags; }
+    const char* what() const noexcept override { return m_what.c_str(); }
+
+private:
+
+    fexcept_t m_flags;
+    std::string m_what;
+
+};
+
+}
+
+```

@@ -1,4 +1,6 @@
 #include <iosfwd>
+#include <exception>
+#include <string>
 #include <IntelRDFPMathLib20U2/LIBRARY/src/bid_conf.h>
 #include <IntelRDFPMathLib20U2/LIBRARY/src/bid_functions.h>
 
@@ -36,6 +38,7 @@ struct fenv_t
     int round;
     unsigned int flags;
     bool hold;
+    unsigned int exceptions;
 };
 
 // Rename the global floating point environment functions by adding _dec_ to the names so there is no ambiguity and they
@@ -84,6 +87,40 @@ int fe_dec_getround();
 // Returns: a zero value if and only if the argument is equal to one of the rounding direction macros
 int fe_dec_setround(int round);
 
+
+// Extensions
+
+class exception : public std::exception
+{
+public:
+
+    exception(fexcept_t flags);
+    constexpr fexcept_t flags() const { return m_flags; }
+    const char* what() const noexcept override { return m_what.c_str(); }
+
+private:
+
+    fexcept_t m_flags;
+    std::string m_what;
+
+};
+
+// Throw a C++ exception whenever an exception in the except mask is raised. This will prevent the specified
+// exceptions from being set in the environment flags, other exceptions will be unnaffected.
+// This also clears these exceptions from the environment flags if they are set.
+// Any operation involving the decimal types may require multiple calls to the underlying Intel library, the
+// exception state will only be checked at the end of the sequence of operations so the exception flags may
+// have multiple exception flags set. This allows all the exceptions to be communicated to the caller but 
+// there is no ordering information available which is atleast consistent with the fe_dec* api.
+void set_exceptions(int except) noexcept;
+// Disable C++ exceptions for the exceptions in the except mask.
+void clear_exceptions(int except) noexcept;
+// Return the current exception mask.
+int get_exceptions() noexcept;
+// If any exceptions have been raised in the environment flags then throw a C++ std::decimal::exception.
+// This is primarily for internal use but can be called explicitly if it is not desirable to use set_exceptions in
+// some circumstances. 
+void check_exceptions();
 
 
 class decimal32;
@@ -273,6 +310,7 @@ public:
         traits::add(result, traits::resize(rhs));
         using value_traits = compound_result_traits<sizeof(m_value)>;
         value(value_traits::resize(result));
+        check_exceptions();
         return *this;    
     }
    
@@ -284,6 +322,7 @@ public:
         traits::sub(result, traits::resize(rhs));
         using value_traits = compound_result_traits<sizeof(m_value)>;
         value(value_traits::resize(result));
+        check_exceptions();
         return *this;    
     }
 
@@ -295,6 +334,7 @@ public:
         traits::mul(result, traits::resize(rhs));
         using value_traits = compound_result_traits<sizeof(m_value)>;
         value(value_traits::resize(result));
+        check_exceptions();
         return *this;    
     }
 
@@ -306,6 +346,7 @@ public:
         traits::div(result, traits::resize(rhs));
         using value_traits = compound_result_traits<sizeof(m_value)>;
         value(value_traits::resize(result));
+        check_exceptions();
         return *this;    
     }
 
@@ -363,6 +404,7 @@ public:
         traits::add(result, traits::resize(rhs));
         using value_traits = compound_result_traits<sizeof(m_value)>;
         value(value_traits::resize(result));
+        check_exceptions();
         return *this;    
     }
    
@@ -374,6 +416,7 @@ public:
         traits::sub(result, traits::resize(rhs));
         using value_traits = compound_result_traits<sizeof(m_value)>;
         value(value_traits::resize(result));
+        check_exceptions();
         return *this;    
     }
 
@@ -385,6 +428,7 @@ public:
         traits::mul(result, traits::resize(rhs));
         using value_traits = compound_result_traits<sizeof(m_value)>;
         value(value_traits::resize(result));
+        check_exceptions();
         return *this;    
     }
 
@@ -396,6 +440,7 @@ public:
         traits::div(result, traits::resize(rhs));
         using value_traits = compound_result_traits<sizeof(m_value)>;
         value(value_traits::resize(result));
+        check_exceptions();
         return *this;    
     }
 
@@ -453,6 +498,7 @@ public:
         traits::add(result, traits::resize(rhs));
         using value_traits = compound_result_traits<sizeof(m_value)>;
         value(value_traits::resize(result));
+        check_exceptions();
         return *this;    
     }
    
@@ -464,6 +510,7 @@ public:
         traits::sub(result, traits::resize(rhs));
         using value_traits = compound_result_traits<sizeof(m_value)>;
         value(value_traits::resize(result));
+        check_exceptions();
         return *this;    
     }
 
@@ -475,6 +522,7 @@ public:
         traits::mul(result, traits::resize(rhs));
         using value_traits = compound_result_traits<sizeof(m_value)>;
         value(value_traits::resize(result));
+        check_exceptions();
         return *this;    
     }
 
@@ -486,6 +534,7 @@ public:
         traits::div(result, traits::resize(rhs));
         using value_traits = compound_result_traits<sizeof(m_value)>;
         value(value_traits::resize(result));
+        check_exceptions();
         return *this;    
     }
 
@@ -559,6 +608,7 @@ typename operator_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>
     traits::add(promoted_lhs, traits::resize(rhs)); 
     typename traits::binary_result_type result;
     result.value(promoted_lhs);
+    check_exceptions();
     return result;
 }
 
@@ -570,6 +620,7 @@ typename operator_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>
     traits::sub(promoted_lhs, traits::resize(rhs)); 
     typename traits::binary_result_type result;
     result.value(promoted_lhs);
+    check_exceptions();
     return result;
 }
 
@@ -581,6 +632,7 @@ typename operator_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>
     traits::mul(promoted_lhs, traits::resize(rhs)); 
     typename traits::binary_result_type result;
     result.value(promoted_lhs);
+    check_exceptions();
     return result;
 }
 
@@ -592,6 +644,7 @@ typename operator_traits<value_traits<LHS>::width(), value_traits<RHS>::width()>
     traits::div(promoted_lhs, traits::resize(rhs)); 
     typename traits::binary_result_type result;
     result.value(promoted_lhs);
+    check_exceptions();
     return result;
 }
 
@@ -601,42 +654,54 @@ template<typename LHS, typename RHS>
 bool operator==(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    return traits::equal(traits::resize(lhs), traits::resize(rhs)); 
+    auto result = traits::equal(traits::resize(lhs), traits::resize(rhs));
+    check_exceptions();
+    return result;
 }
 
 template<typename LHS, typename RHS>
 bool operator!=(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    return traits::not_equal(traits::resize(lhs), traits::resize(rhs)); 
+    auto result = traits::not_equal(traits::resize(lhs), traits::resize(rhs)); 
+    check_exceptions();
+    return result;
 }
 
 template<typename LHS, typename RHS>
 bool operator<(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    return traits::less(traits::resize(lhs), traits::resize(rhs)); 
+    auto result = traits::less(traits::resize(lhs), traits::resize(rhs)); 
+    check_exceptions();
+    return result;
 }
 
 template<typename LHS, typename RHS>
 bool operator<=(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    return traits::less_equal(traits::resize(lhs), traits::resize(rhs)); 
+    auto result = traits::less_equal(traits::resize(lhs), traits::resize(rhs)); 
+    check_exceptions();
+    return result;
 }
 
 template<typename LHS, typename RHS>
 bool operator>(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    return traits::greater(traits::resize(lhs), traits::resize(rhs)); 
+    auto result = traits::greater(traits::resize(lhs), traits::resize(rhs)); 
+    check_exceptions();
+    return result;
 }
 
 template<typename LHS, typename RHS>
 bool operator>=(LHS lhs, RHS rhs)
 { 
     using traits = operator_traits<value_traits<decltype(lhs)>::width(), value_traits<decltype(rhs)>::width()>;
-    return traits::greater_equal(traits::resize(lhs), traits::resize(rhs)); 
+    auto result = traits::greater_equal(traits::resize(lhs), traits::resize(rhs)); 
+    check_exceptions();
+    return result;
 }
 
 // 3.2.10 Formatted input:
