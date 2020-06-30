@@ -1,4 +1,5 @@
 #include "decimal.hpp"
+#include <limits>
 
 namespace std::decimal
 {
