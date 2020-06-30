@@ -267,6 +267,14 @@ BID_UINT32 operator_32bit::resize(float value) {
     return binary32_to_bid32(value, environment.round, environment_flags());
 }
 
+BID_UINT32 operator_32bit::resize(double value) {
+    return binary64_to_bid32(value, environment.round, environment_flags());
+}
+
+BID_UINT32 operator_32bit::resize(long double value) {
+    return binary80_to_bid32(value, environment.round, environment_flags());
+}
+
 // 64 ------------------------------------------------
 
 void operator_64bit::add(BID_UINT64& lhs, BID_UINT64 rhs) {
@@ -357,6 +365,10 @@ BID_UINT64 operator_64bit::resize(double value) {
     return binary64_to_bid64(value, environment.round, environment_flags());
 }
 
+BID_UINT64 operator_64bit::resize(long double value) {
+    return binary80_to_bid64(value, environment.round, environment_flags());
+}
+
 // 128 -----------------------------------------------
 
 void operator_128bit::add(BID_UINT128& lhs, BID_UINT128 rhs) {
@@ -444,7 +456,7 @@ BID_UINT128 operator_128bit::resize(double value) {
 }
 
 BID_UINT128 operator_128bit::resize(long double value) {
-    return BID_UINT128();
+    return binary80_to_bid128(value, environment.round, environment_flags());
 }
 
 // ---------------------------------------------------------
@@ -599,8 +611,9 @@ double decimal64_to_double (decimal64 d)
 
 double decimal128_to_double(decimal128 d)
 {
-    // TODO
-    return 0;
+    auto result = bid128_to_binary64(d.value(), environment.round, environment_flags());
+    check_exceptions();
+    return result;
 }
 
 double decimal_to_double(decimal32 d)
@@ -620,20 +633,23 @@ double decimal_to_double(decimal128 d)
 
 long double decimal32_to_long_double(decimal32 d)
 {
-    // TODO
-    return 0;
+    auto result = bid32_to_binary80(d.value(), environment.round, environment_flags());
+    check_exceptions();
+    return result;
 }
 
 long double decimal64_to_long_double(decimal64 d)
 {
-    // TODO
-    return 0;
+    auto result = bid64_to_binary80(d.value(), environment.round, environment_flags());
+    check_exceptions();
+    return result;
 } 
 
 long double decimal128_to_long_double(decimal128 d)
 {
-    // TODO
-    return 0;
+    auto result = bid128_to_binary80(d.value(), environment.round, environment_flags());
+    check_exceptions();
+    return result;
 } 
 
 long double decimal_to_long_double(decimal32 d)
@@ -643,7 +659,7 @@ long double decimal_to_long_double(decimal32 d)
 
 long double decimal_to_long_double(decimal64 d)
 {
-    return decimal64_to_double(d);
+    return decimal64_to_long_double(d);
 }
 
 long double decimal_to_long_double(decimal128 d)
@@ -729,9 +745,10 @@ decimal32::decimal32(double r)
 }
 
 decimal32::decimal32(long double r)
-// : m_value(binary128_to_bid32(r, environment.round, environment_flags()))
+:   m_value(binary80_to_bid32(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 16);
+    static_assert(std::numeric_limits<long double>::digits10 == 18); // 80 bit Intel extended precision
     check_exceptions();
 }
 
@@ -779,8 +796,7 @@ decimal32::decimal32(unsigned long long r)
 
 decimal32::operator long long() const
 {
-    // TODO - is this the appropriate conversion?
-    auto result = bid32_to_int32_floor(m_value, environment_flags());
+    auto result = bid32_to_int64_floor(m_value, environment_flags());
     check_exceptions();
     return result;
 }
@@ -861,9 +877,10 @@ decimal64::decimal64(double r)
 } 
 
 decimal64::decimal64(long double r)
+:   m_value(binary80_to_bid64(r, environment.round, environment_flags()))
 {
-    // TODO
     static_assert(sizeof(r) == 16);
+    static_assert(std::numeric_limits<long double>::digits10 == 18); // 80 bit Intel extended precision
     check_exceptions();
 }
     
@@ -992,9 +1009,10 @@ decimal128::decimal128(double r)
 } 
 
 decimal128::decimal128(long double r)
-//:   m_value(binary128_to_bid128(r, environment.round, environment_flags()))
+:   m_value(binary80_to_bid128(r, environment.round, environment_flags()))
 {
     static_assert(sizeof(r) == 16);
+    static_assert(std::numeric_limits<long double>::digits10 == 18); // 80 bit Intel extended precision
     check_exceptions();
 }
 
@@ -1027,36 +1045,39 @@ decimal128::decimal128(unsigned long r)
 }
 
 decimal128::decimal128(long long r)
+:   m_value(bid128_from_int64(r))
 {
-    // TODO
     static_assert(sizeof(r) == 8);
+    check_exceptions();
 }
 
 decimal128::decimal128(unsigned long long r)
+:   m_value(bid128_from_uint64(r))
 {
-    // TODO
     static_assert(sizeof(r) == 8);
+    check_exceptions();
 }
 
 decimal128::operator long long() const
 {
-    // TODO
-    return 0;
+    auto result = bid128_to_int64_floor(m_value, environment_flags());
+    check_exceptions();
+    return result;
 }
 
 decimal128::operator float() const
 {
-    return 0;
+    return decimal_to_float(*this);
 }
 
 decimal128::operator double() const
 {
-    return 0;
+    return decimal_to_double(*this);
 }
 
 decimal128::operator long double() const
 {
-    return 0;
+    return decimal_to_long_double(*this);
 }
 
 decimal128& decimal128::operator++()

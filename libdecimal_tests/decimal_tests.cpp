@@ -176,11 +176,11 @@ TEST_CASE_METHOD(decimal_fixture, "makers")
     REQUIRE(make_decimal64(10ll, 1) == 100);
     REQUIRE(make_decimal64(100ll, 2) == 10000);
 
-    // REQUIRE(make_decimal128(10ll, -1) == 1);
-    // REQUIRE(make_decimal128(100ll, -2) == 1);
-    // REQUIRE(make_decimal128(10ll, 0) == 10);
-    // REQUIRE(make_decimal128(10ll, 1) == 100);
-    // REQUIRE(make_decimal128(100ll, 2) == 10000);
+    REQUIRE(make_decimal128(10ll, -1) == 1);
+    REQUIRE(make_decimal128(100ll, -2) == 1);
+    REQUIRE(make_decimal128(10ll, 0) == 10);
+    REQUIRE(make_decimal128(10ll, 1) == 100);
+    REQUIRE(make_decimal128(100ll, 2) == 10000);
 }
 
 TEST_CASE_METHOD(decimal_fixture, "convertion to integral type")
@@ -192,17 +192,17 @@ TEST_CASE_METHOD(decimal_fixture, "convertion to integral type")
     REQUIRE(static_cast<long long>(a) == 5.0f);
     REQUIRE(static_cast<float>(a) == 5.0f);
     REQUIRE(static_cast<double>(a) == 5.0);
-    //REQUIRE(static_cast<long double>(a) == 5.0l);
+    REQUIRE(static_cast<long double>(a) == 5.0l);
 
     REQUIRE(static_cast<long long>(b) == 5.0f);
     REQUIRE(static_cast<float>(b) == 5.0f);
     REQUIRE(static_cast<double>(b) == 5.0);
-    //REQUIRE(static_cast<long double>(b) == 5.0l);
+    REQUIRE(static_cast<long double>(b) == 5.0l);
 
-    // REQUIRE(static_cast<long long>(c) == 5.0f);
-    // REQUIRE(static_cast<float>(c) == 5.0f);
-    // REQUIRE(static_cast<double>(c) == 5.0);
-    // REQUIRE(static_cast<long double>(c) == 5.0l);
+    REQUIRE(static_cast<long long>(c) == 5.0f);
+    REQUIRE(static_cast<float>(c) == 5.0f);
+    REQUIRE(static_cast<double>(c) == 5.0);
+    REQUIRE(static_cast<long double>(c) == 5.0l);
 }
 
 TEST_CASE_METHOD(decimal_fixture, "decimal to long double")
@@ -222,17 +222,17 @@ TEST_CASE_METHOD(decimal_fixture, "decimal to long double")
     REQUIRE(decimal64_to_double (decimal64(5)) == 5.0); 
     REQUIRE(decimal_to_double(decimal64(5)) == 5.0); 
 
-    // REQUIRE(decimal128_to_double(decimal128(5)) == 5.0l); 
-    // REQUIRE(decimal_to_double(decimal128(5)) == 5.0l);
+    REQUIRE(decimal128_to_double(decimal128(5)) == 5.0l); 
+    REQUIRE(decimal_to_double(decimal128(5)) == 5.0l);
 
-    // REQUIRE(decimal32_to_long_double(decimal32(5)) == 5.0l);
-    // REQUIRE(decimal_to_long_double(decimal32(5)) == 5.0l);
+    REQUIRE(decimal32_to_long_double(decimal32(5)) == 5.0l);
+    REQUIRE(decimal_to_long_double(decimal32(5)) == 5.0l);
     
-    // REQUIRE(decimal64_to_long_double(decimal64(5)) == 5.0l);
-    // REQUIRE(decimal_to_long_double(decimal64(5)) == 5.0l);
+    REQUIRE(decimal64_to_long_double(decimal64(5)) == 5.0l);
+    REQUIRE(decimal_to_long_double(decimal64(5)) == 5.0l);
 
-    // REQUIRE(decimal128_to_long_double(decimal128(5)) == 5.0l);
-    // REQUIRE(decimal_to_long_double(decimal128(5)) == 5.0l);
+    REQUIRE(decimal128_to_long_double(decimal128(5)) == 5.0l);
+    REQUIRE(decimal_to_long_double(decimal128(5)) == 5.0l);
 }
 
 TEST_CASE_METHOD(decimal_fixture, "unary arithmetic")
@@ -284,7 +284,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary addition")
     REQUIRE(decimal32(1) + 2llu == decimal128(3));
     REQUIRE(decimal32(1) + 2.0f == decimal32(3));
     REQUIRE(decimal32(1) + 2.0 == decimal64(3));
-    // REQUIRE(decimal32(1) + 2.0l == decimal128(3));
+    REQUIRE(decimal32(1) + 2.0l == decimal128(3));
 
     REQUIRE(1 + decimal32(2) == decimal32(3));
     REQUIRE(1u + decimal32(2) == decimal32(3));
@@ -294,7 +294,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary addition")
     REQUIRE(1llu + decimal32(2) == decimal128(3));
     REQUIRE(1.0f + decimal32(2) == decimal32(3));
     REQUIRE(1.0 + decimal32(2) == decimal64(3));
-    // REQUIRE(1.0l + decimal32(2) == decimal128(3));
+    REQUIRE(1.0l + decimal32(2) == decimal128(3));
 
     REQUIRE(decimal64(1) + 2 == decimal64(3));
     REQUIRE(decimal64(1) + 2u == decimal64(3));
@@ -304,7 +304,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary addition")
     REQUIRE(decimal64(1) + 2llu == decimal128(3));
     REQUIRE(decimal64(1) + 2.0f == decimal64(3));
     REQUIRE(decimal64(1) + 2.0 == decimal64(3));
-    // REQUIRE(decimal64(1) + 2.0l == decimal128(3));
+    REQUIRE(decimal64(1) + 2.0l == decimal128(3));
 
     REQUIRE(1 + decimal64(2) == decimal64(3));
     REQUIRE(1u + decimal64(2) == decimal64(3));
@@ -314,7 +314,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary addition")
     REQUIRE(1llu + decimal64(2) == decimal128(3));
     REQUIRE(1.0f + decimal64(2) == decimal64(3));
     REQUIRE(1.0 + decimal64(2) == decimal64(3));
-    // REQUIRE(1.0l + decimal64(2) == decimal128(3));
+    REQUIRE(1.0l + decimal64(2) == decimal128(3));
 
     REQUIRE(decimal128(1) + 2 == decimal128(3));
     REQUIRE(decimal128(1) + 2u == decimal128(3));
@@ -324,7 +324,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary addition")
     REQUIRE(decimal128(1) + 2llu == decimal128(3));
     REQUIRE(decimal128(1) + 2.0f == decimal128(3));
     REQUIRE(decimal128(1) + 2.0 == decimal128(3));
-    // REQUIRE(decimal128(1) + 2.0l == decimal128(3));
+    REQUIRE(decimal128(1) + 2.0l == decimal128(3));
 
     REQUIRE(1 + decimal128(2) == decimal128(3));
     REQUIRE(1u + decimal128(2) == decimal128(3));
@@ -334,7 +334,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary addition")
     REQUIRE(1llu + decimal128(2) == decimal128(3));
     REQUIRE(1.0f + decimal128(2) == decimal128(3));
     REQUIRE(1.0 + decimal128(2) == decimal128(3));
-    // REQUIRE(1.0l + decimal128(2) == decimal128(3));
+    REQUIRE(1.0l + decimal128(2) == decimal128(3));
 }
 
 TEST_CASE_METHOD(decimal_fixture, "binary subtraction")
@@ -359,7 +359,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary subtraction")
     REQUIRE(decimal32(3) - 2llu == decimal128(1));
     REQUIRE(decimal32(3) - 2.0f == decimal32(1));
     REQUIRE(decimal32(3) - 2.0 == decimal64(1));
-    // REQUIRE(decimal32(3) - 2.0l == decimal128(1));
+    REQUIRE(decimal32(3) - 2.0l == decimal128(1));
 
     REQUIRE(3 - decimal32(2) == decimal32(1));
     REQUIRE(3u - decimal32(2) == decimal32(1));
@@ -369,7 +369,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary subtraction")
     REQUIRE(3llu - decimal32(2) == decimal128(1));
     REQUIRE(3.0f - decimal32(2) == decimal32(1));
     REQUIRE(3.0 - decimal32(2) == decimal64(1));
-    // REQUIRE(3.0l - decimal32(2) == decimal128(1));
+    REQUIRE(3.0l - decimal32(2) == decimal128(1));
 
     REQUIRE(decimal64(3) - 2 == decimal64(1));
     REQUIRE(decimal64(3) - 2u == decimal64(1));
@@ -379,7 +379,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary subtraction")
     REQUIRE(decimal64(3) - 2llu == decimal128(1));
     REQUIRE(decimal64(3) - 2.0f == decimal64(1));
     REQUIRE(decimal64(3) - 2.0 == decimal64(1));
-    // REQUIRE(decimal64(3) - 2.0l == decimal128(1));
+    REQUIRE(decimal64(3) - 2.0l == decimal128(1));
 
     REQUIRE(3 - decimal64(2) == decimal64(1));
     REQUIRE(3u - decimal64(2) == decimal64(1));
@@ -389,7 +389,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary subtraction")
     REQUIRE(3llu - decimal64(2) == decimal128(1));
     REQUIRE(3.0f - decimal64(2) == decimal64(1));
     REQUIRE(3.0 - decimal64(2) == decimal64(1));
-    // REQUIRE(3.0l - decimal64(2) == decimal128(1));
+    REQUIRE(3.0l - decimal64(2) == decimal128(1));
 
     REQUIRE(decimal128(3) - 2 == decimal128(1));
     REQUIRE(decimal128(3) - 2u == decimal128(1));
@@ -399,7 +399,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary subtraction")
     REQUIRE(decimal128(3) - 2llu == decimal128(1));
     REQUIRE(decimal128(3) - 2.0f == decimal128(1));
     REQUIRE(decimal128(3) - 2.0 == decimal128(1));
-    // REQUIRE(decimal128(3) - 2.0l == decimal128(1));
+    REQUIRE(decimal128(3) - 2.0l == decimal128(1));
 
     REQUIRE(3 - decimal128(2) == decimal128(1));
     REQUIRE(3u - decimal128(2) == decimal128(1));
@@ -409,7 +409,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary subtraction")
     REQUIRE(3llu - decimal128(2) == decimal128(1));
     REQUIRE(3.0f - decimal128(2) == decimal128(1));
     REQUIRE(3.0 - decimal128(2) == decimal128(1));
-    // REQUIRE(3.0l - decimal128(2) == decimal128(1));
+    REQUIRE(3.0l - decimal128(2) == decimal128(1));
 }
 
 TEST_CASE_METHOD(decimal_fixture, "binary multiplication")
@@ -434,7 +434,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary multiplication")
     REQUIRE(decimal32(2) * 3llu == decimal128(6));
     REQUIRE(decimal32(2) * 3.0f == decimal32(6));
     REQUIRE(decimal32(2) * 3.0 == decimal64(6));
-    // REQUIRE(decimal32(2) * 3.0l == decimal128(6));
+    REQUIRE(decimal32(2) * 3.0l == decimal128(6));
 
     REQUIRE(2 * decimal32(3) == decimal32(6));
     REQUIRE(2u * decimal32(3) == decimal32(6));
@@ -444,7 +444,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary multiplication")
     REQUIRE(2llu * decimal32(3) == decimal128(6));
     REQUIRE(2.0f * decimal32(3) == decimal32(6));
     REQUIRE(2.0 * decimal32(3) == decimal64(6));
-    // REQUIRE(2.0l * decimal32(3) == decimal128(6));
+    REQUIRE(2.0l * decimal32(3) == decimal128(6));
 
     REQUIRE(decimal64(2) * 3 == decimal64(6));
     REQUIRE(decimal64(2) * 3u == decimal64(6));
@@ -454,7 +454,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary multiplication")
     REQUIRE(decimal64(2) * 3llu == decimal128(6));
     REQUIRE(decimal64(2) * 3.0f == decimal64(6));
     REQUIRE(decimal64(2) * 3.0 == decimal64(6));
-    // REQUIRE(decimal64(2) * 3.0l == decimal128(6));
+    REQUIRE(decimal64(2) * 3.0l == decimal128(6));
 
     REQUIRE(2 * decimal64(3) == decimal64(6));
     REQUIRE(2u * decimal64(3) == decimal64(6));
@@ -464,7 +464,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary multiplication")
     REQUIRE(2llu * decimal64(3) == decimal128(6));
     REQUIRE(2.0f * decimal64(3) == decimal64(6));
     REQUIRE(2.0 * decimal64(3) == decimal64(6));
-    // REQUIRE(2.0l * decimal64(3) == decimal128(6));
+    REQUIRE(2.0l * decimal64(3) == decimal128(6));
 
     REQUIRE(decimal128(2) * 3 == decimal128(6));
     REQUIRE(decimal128(2) * 3u == decimal128(6));
@@ -474,7 +474,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary multiplication")
     REQUIRE(decimal128(2) * 3llu == decimal128(6));
     REQUIRE(decimal128(2) * 3.0f == decimal128(6));
     REQUIRE(decimal128(2) * 3.0 == decimal128(6));
-    // REQUIRE(decimal128(2) * 3.0l == decimal128(6));
+    REQUIRE(decimal128(2) * 3.0l == decimal128(6));
 
     REQUIRE(2 * decimal128(3) == decimal128(6));
     REQUIRE(2u * decimal128(3) == decimal128(6));
@@ -484,7 +484,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary multiplication")
     REQUIRE(2llu * decimal128(3) == decimal128(6));
     REQUIRE(2.0f * decimal128(3) == decimal128(6));
     REQUIRE(2.0 * decimal128(3) == decimal128(6));
-    // REQUIRE(2.0l * decimal128(3) == decimal128(6));
+    REQUIRE(2.0l * decimal128(3) == decimal128(6));
 }
 
 TEST_CASE_METHOD(decimal_fixture, "binary division")
@@ -509,7 +509,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary division")
     REQUIRE(decimal32(6) / 2llu == decimal128(3));
     REQUIRE(decimal32(6) / 2.0f == decimal32(3));
     REQUIRE(decimal32(6) / 2.0 == decimal64(3));
-    // REQUIRE(decimal32(6) / 2.0l == decimal128(3));
+    REQUIRE(decimal32(6) / 2.0l == decimal128(3));
 
     REQUIRE(6 / decimal32(2) == decimal32(3));
     REQUIRE(6u / decimal32(2) == decimal32(3));
@@ -519,7 +519,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary division")
     REQUIRE(6llu / decimal32(2) == decimal128(3));
     REQUIRE(6.0f / decimal32(2) == decimal32(3));
     REQUIRE(6.0 / decimal32(2) == decimal64(3));
-    // REQUIRE(6.0l / decimal32(2) == decimal128(3));
+    REQUIRE(6.0l / decimal32(2) == decimal128(3));
 
     REQUIRE(decimal64(6) / 2 == decimal64(3));
     REQUIRE(decimal64(6) / 2u == decimal64(3));
@@ -529,7 +529,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary division")
     REQUIRE(decimal64(6) / 2llu == decimal128(3));
     REQUIRE(decimal64(6) / 2.0f == decimal64(3));
     REQUIRE(decimal64(6) / 2.0 == decimal64(3));
-    // REQUIRE(decimal64(6) / 2.0l == decimal128(3));
+    REQUIRE(decimal64(6) / 2.0l == decimal128(3));
 
     REQUIRE(6 / decimal64(2) == decimal64(3));
     REQUIRE(6u / decimal64(2) == decimal64(3));
@@ -539,7 +539,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary division")
     REQUIRE(6llu / decimal64(2) == decimal128(3));
     REQUIRE(6.0f / decimal64(2) == decimal64(3));
     REQUIRE(6.0 / decimal64(2) == decimal64(3));
-    // REQUIRE(6.0l / decimal64(2) == decimal128(3));
+    REQUIRE(6.0l / decimal64(2) == decimal128(3));
 
     REQUIRE(decimal128(6) / 2 == decimal128(3));
     REQUIRE(decimal128(6) / 2u == decimal128(3));
@@ -549,7 +549,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary division")
     REQUIRE(decimal128(6) / 2llu == decimal128(3));
     REQUIRE(decimal128(6) / 2.0f == decimal128(3));
     REQUIRE(decimal128(6) / 2.0 == decimal128(3));
-    // REQUIRE(decimal128(6) / 2.0l == decimal128(3));
+    REQUIRE(decimal128(6) / 2.0l == decimal128(3));
 
     REQUIRE(6 / decimal128(2) == decimal128(3));
     REQUIRE(6u / decimal128(2) == decimal128(3));
@@ -559,7 +559,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary division")
     REQUIRE(6llu / decimal128(2) == decimal128(3));
     REQUIRE(6.0f / decimal128(2) == decimal128(3));
     REQUIRE(6.0 / decimal128(2) == decimal128(3));
-    // REQUIRE(6.0l / decimal128(2) == decimal128(3));
+    REQUIRE(6.0l / decimal128(2) == decimal128(3));
 }
 
 TEST_CASE_METHOD(decimal_fixture, "binary equal")
@@ -659,7 +659,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary not equal")
     REQUIRE(decimal32(0) != 1llu);
     REQUIRE(decimal32(0) != 1.0f);
     REQUIRE(decimal32(0) != 1.0);
-    // REQUIRE(decimal32(0) != 1.0l);
+    REQUIRE(decimal32(0) != 1.0l);
 
     REQUIRE(0 != decimal32(1));
     REQUIRE(0u != decimal32(1));
@@ -669,7 +669,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary not equal")
     REQUIRE(0llu != decimal32(1));
     REQUIRE(0.0f != decimal32(1));
     REQUIRE(0.0 != decimal32(1));
-    // REQUIRE(0.0l != decimal32(1));
+    REQUIRE(0.0l != decimal32(1));
 
     REQUIRE(decimal64(0) != 1);
     REQUIRE(decimal64(0) != 1u);
@@ -679,7 +679,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary not equal")
     REQUIRE(decimal64(0) != 1llu);
     REQUIRE(decimal64(0) != 1.0f);
     REQUIRE(decimal64(0) != 1.0);
-    // REQUIRE(decimal64(0) != 1.0l);
+    REQUIRE(decimal64(0) != 1.0l);
 
     REQUIRE(0 != decimal64(1));
     REQUIRE(0u != decimal64(1));
@@ -689,7 +689,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary not equal")
     REQUIRE(0llu != decimal64(1));
     REQUIRE(0.0f != decimal64(1));
     REQUIRE(0.0 != decimal64(1));
-    // REQUIRE(0.0l != decimal64(1));
+    REQUIRE(0.0l != decimal64(1));
 
     REQUIRE(decimal128(0) != 1);
     REQUIRE(decimal128(0) != 1u);
@@ -699,7 +699,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary not equal")
     REQUIRE(decimal128(0) != 1llu);
     REQUIRE(decimal128(0) != 1.0f);
     REQUIRE(decimal128(0) != 1.0);
-    // REQUIRE(decimal128(0) != 1.0l);
+    REQUIRE(decimal128(0) != 1.0l);
 
     REQUIRE(0 != decimal128(1));
     REQUIRE(0u != decimal128(1));
@@ -709,7 +709,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary not equal")
     REQUIRE(0llu != decimal128(1));
     REQUIRE(0.0f != decimal128(1));
     REQUIRE(0.0 != decimal128(1));
-    // REQUIRE(0.0l != decimal128(1));
+    REQUIRE(0.0l != decimal128(1));
 }
 
 TEST_CASE_METHOD(decimal_fixture, "binary less")
@@ -734,7 +734,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary less")
     REQUIRE(decimal32(0) < 1llu);
     REQUIRE(decimal32(0) < 1.0f);
     REQUIRE(decimal32(0) < 1.0);
-    // REQUIRE(decimal32(0) < 1.0l);
+    REQUIRE(decimal32(0) < 1.0l);
 
     REQUIRE(0 < decimal32(1));
     REQUIRE(0u < decimal32(1));
@@ -744,7 +744,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary less")
     REQUIRE(0llu < decimal32(1));
     REQUIRE(0.0f < decimal32(1));
     REQUIRE(0.0 < decimal32(1));
-    // REQUIRE(0.0l < decimal32(1));
+    REQUIRE(0.0l < decimal32(1));
 
     REQUIRE(decimal64(0) < 1);
     REQUIRE(decimal64(0) < 1u);
@@ -754,7 +754,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary less")
     REQUIRE(decimal64(0) < 1llu);
     REQUIRE(decimal64(0) < 1.0f);
     REQUIRE(decimal64(0) < 1.0);
-    // REQUIRE(decimal64(0) < 1.0l);
+    REQUIRE(decimal64(0) < 1.0l);
 
     REQUIRE(0 < decimal64(1));
     REQUIRE(0u < decimal64(1));
@@ -764,7 +764,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary less")
     REQUIRE(0llu < decimal64(1));
     REQUIRE(0.0f < decimal64(1));
     REQUIRE(0.0 < decimal64(1));
-    // REQUIRE(0.0l < decimal64(1));
+    REQUIRE(0.0l < decimal64(1));
 
     REQUIRE(decimal128(0) < 1);
     REQUIRE(decimal128(0) < 1u);
@@ -774,7 +774,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary less")
     REQUIRE(decimal128(0) < 1llu);
     REQUIRE(decimal128(0) < 1.0f);
     REQUIRE(decimal128(0) < 1.0);
-    // REQUIRE(decimal128(0) < 1.0l);
+    REQUIRE(decimal128(0) < 1.0l);
 
     REQUIRE(0 < decimal128(1));
     REQUIRE(0u < decimal128(1));
@@ -784,7 +784,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary less")
     REQUIRE(0llu < decimal128(1));
     REQUIRE(0.0f < decimal128(1));
     REQUIRE(0.0 < decimal128(1));
-    // REQUIRE(0.0l < decimal128(1));
+    REQUIRE(0.0l < decimal128(1));
 }
 
 TEST_CASE_METHOD(decimal_fixture, "binary less than or equal")
@@ -884,7 +884,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary greater")
     REQUIRE(decimal32(1) > 0llu);
     REQUIRE(decimal32(1) > 0.0f);
     REQUIRE(decimal32(1) > 0.0);
-    // REQUIRE(decimal32(1) > 0.0l);
+    REQUIRE(decimal32(1) > 0.0l);
 
     REQUIRE(1 > decimal32(0));
     REQUIRE(1u > decimal32(0));
@@ -894,7 +894,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary greater")
     REQUIRE(1llu > decimal32(0));
     REQUIRE(1.0f > decimal32(0));
     REQUIRE(1.0 > decimal32(0));
-    // REQUIRE(1.0l > decimal32(0));
+    REQUIRE(1.0l > decimal32(0));
 
     REQUIRE(decimal64(1) > 0);
     REQUIRE(decimal64(1) > 0u);
@@ -904,7 +904,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary greater")
     REQUIRE(decimal64(1) > 0llu);
     REQUIRE(decimal64(1) > 0.0f);
     REQUIRE(decimal64(1) > 0.0);
-    // REQUIRE(decimal64(1) > 0.0l);
+    REQUIRE(decimal64(1) > 0.0l);
 
     REQUIRE(1 > decimal64(0));
     REQUIRE(1u > decimal64(0));
@@ -914,7 +914,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary greater")
     REQUIRE(1llu > decimal64(0));
     REQUIRE(1.0f > decimal64(0));
     REQUIRE(1.0 > decimal64(0));
-    // REQUIRE(1.0l > decimal64(0));
+    REQUIRE(1.0l > decimal64(0));
 
     REQUIRE(decimal128(1) > 0);
     REQUIRE(decimal128(1) > 0u);
@@ -924,7 +924,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary greater")
     REQUIRE(decimal128(1) > 0llu);
     REQUIRE(decimal128(1) > 0.0f);
     REQUIRE(decimal128(1) > 0.0);
-    // REQUIRE(decimal128(1) > 0.0l);
+    REQUIRE(decimal128(1) > 0.0l);
 
     REQUIRE(1 > decimal128(0));
     REQUIRE(1u > decimal128(0));
@@ -934,7 +934,7 @@ TEST_CASE_METHOD(decimal_fixture, "binary greater")
     REQUIRE(1llu > decimal128(0));
     REQUIRE(1.0f > decimal128(0));
     REQUIRE(1.0 > decimal128(0));
-    // REQUIRE(1.0l > decimal128(0));
+    REQUIRE(1.0l > decimal128(0));
 }
 
 TEST_CASE_METHOD(decimal_fixture, "binary greater than or equal")
@@ -1025,7 +1025,7 @@ TEST_CASE_METHOD(decimal_fixture, "compound assignment addition")
     REQUIRE((decimal32(1) += 2llu) == decimal32(3));
     REQUIRE((decimal32(1) += 2.0f) == decimal32(3));
     REQUIRE((decimal32(1) += 2.0) == decimal32(3));
-    //REQUIRE((decimal32(1) += 2.0l) == decimal32(3));
+    REQUIRE((decimal32(1) += 2.0l) == decimal32(3));
 
     REQUIRE((decimal64(1) += decimal32(2)) == decimal64(3));
     REQUIRE((decimal64(1) += decimal64(2)) == decimal64(3));
@@ -1038,7 +1038,7 @@ TEST_CASE_METHOD(decimal_fixture, "compound assignment addition")
     REQUIRE((decimal64(1) += 2llu) == decimal64(3));
     REQUIRE((decimal64(1) += 2.0f) == decimal64(3));
     REQUIRE((decimal64(1) += 2.0) == decimal64(3));
-    //REQUIRE((decimal64(1) += 2.0l) == decimal64(3));
+    REQUIRE((decimal64(1) += 2.0l) == decimal64(3));
 
     REQUIRE((decimal128(1) += decimal32(2)) == decimal128(3));
     REQUIRE((decimal128(1) += decimal64(2)) == decimal128(3));
@@ -1051,7 +1051,7 @@ TEST_CASE_METHOD(decimal_fixture, "compound assignment addition")
     REQUIRE((decimal128(1) += 2llu) == decimal128(3));
     REQUIRE((decimal128(1) += 2.0f) == decimal128(3));
     REQUIRE((decimal128(1) += 2.0) == decimal128(3));
-    //REQUIRE((decimal128(1) += 2.0l) == decimal128(3));
+    REQUIRE((decimal128(1) += 2.0l) == decimal128(3));
 }
 
 TEST_CASE_METHOD(decimal_fixture, "compound assignment subtraction")
@@ -1067,7 +1067,7 @@ TEST_CASE_METHOD(decimal_fixture, "compound assignment subtraction")
     REQUIRE((decimal32(3) -= 2llu) == decimal32(1));
     REQUIRE((decimal32(3) -= 2.0f) == decimal32(1));
     REQUIRE((decimal32(3) -= 2.0) == decimal32(1));
-    //REQUIRE((decimal32(3) -= 2.0l) == decimal32(1));
+    REQUIRE((decimal32(3) -= 2.0l) == decimal32(1));
 
     REQUIRE((decimal64(3) -= decimal32(2)) == decimal64(1));
     REQUIRE((decimal64(3) -= decimal64(2)) == decimal64(1));
@@ -1080,7 +1080,7 @@ TEST_CASE_METHOD(decimal_fixture, "compound assignment subtraction")
     REQUIRE((decimal64(3) -= 2llu) == decimal64(1));
     REQUIRE((decimal64(3) -= 2.0f) == decimal64(1));
     REQUIRE((decimal64(3) -= 2.0) == decimal64(1));
-    //REQUIRE((decimal64(3) -= 2.0l) == decimal64(1));
+    REQUIRE((decimal64(3) -= 2.0l) == decimal64(1));
 
     REQUIRE((decimal128(3) -= decimal32(2)) == decimal128(1));
     REQUIRE((decimal128(3) -= decimal64(2)) == decimal128(1));
@@ -1093,7 +1093,7 @@ TEST_CASE_METHOD(decimal_fixture, "compound assignment subtraction")
     REQUIRE((decimal128(3) -= 2llu) == decimal128(1));
     REQUIRE((decimal128(3) -= 2.0f) == decimal128(1));
     REQUIRE((decimal128(3) -= 2.0) == decimal128(1));
-    //REQUIRE((decimal128(3) -= 2.0l) == decimal128(1));
+    REQUIRE((decimal128(3) -= 2.0l) == decimal128(1));
 }
 
 TEST_CASE_METHOD(decimal_fixture, "compound assignment multiplication")
@@ -1109,7 +1109,7 @@ TEST_CASE_METHOD(decimal_fixture, "compound assignment multiplication")
     REQUIRE((decimal32(2) *= 3llu) == decimal32(6));
     REQUIRE((decimal32(2) *= 3.0f) == decimal32(6));
     REQUIRE((decimal32(2) *= 3.0) == decimal32(6));
-    // REQUIRE((decimal32(2) *= 3.0l) == decimal32(6));
+    REQUIRE((decimal32(2) *= 3.0l) == decimal32(6));
 
     REQUIRE((decimal64(2) *= decimal32(3)) == decimal64(6));
     REQUIRE((decimal64(2) *= decimal64(3)) == decimal64(6));
@@ -1122,7 +1122,7 @@ TEST_CASE_METHOD(decimal_fixture, "compound assignment multiplication")
     REQUIRE((decimal64(2) *= 3llu) == decimal64(6));
     REQUIRE((decimal64(2) *= 3.0f) == decimal64(6));
     REQUIRE((decimal64(2) *= 3.0) == decimal64(6));
-    // REQUIRE((decimal64(2) *= 3.0l) == decimal64(6));
+    REQUIRE((decimal64(2) *= 3.0l) == decimal64(6));
 
     REQUIRE((decimal128(2) *= decimal32(3)) == decimal128(6));
     REQUIRE((decimal128(2) *= decimal64(3)) == decimal128(6));
@@ -1135,7 +1135,7 @@ TEST_CASE_METHOD(decimal_fixture, "compound assignment multiplication")
     REQUIRE((decimal128(2) *= 3llu) == decimal128(6));
     REQUIRE((decimal128(2) *= 3.0f) == decimal128(6));
     REQUIRE((decimal128(2) *= 3.0) == decimal128(6));
-    // REQUIRE((decimal128(2) *= 3.0l) == decimal128(6));
+    REQUIRE((decimal128(2) *= 3.0l) == decimal128(6));
 }
 
 TEST_CASE_METHOD(decimal_fixture, "compound assignment division")
@@ -1151,7 +1151,7 @@ TEST_CASE_METHOD(decimal_fixture, "compound assignment division")
     REQUIRE((decimal32(6) /= 2llu) == decimal32(3));
     REQUIRE((decimal32(6) /= 2.0f) == decimal32(3));
     REQUIRE((decimal32(6) /= 2.0) == decimal32(3));
-    // REQUIRE((decimal32(6) /= 2.0l) == decimal32(3));
+    REQUIRE((decimal32(6) /= 2.0l) == decimal32(3));
 
     REQUIRE((decimal64(6) /= decimal32(2)) == decimal64(3));
     REQUIRE((decimal64(6) /= decimal64(2)) == decimal64(3));
@@ -1164,20 +1164,20 @@ TEST_CASE_METHOD(decimal_fixture, "compound assignment division")
     REQUIRE((decimal64(6) /= 2llu) == decimal64(3));
     REQUIRE((decimal64(6) /= 2.0f) == decimal64(3));
     REQUIRE((decimal64(6) /= 2.0) == decimal64(3));
-    // REQUIRE((decimal64(6) /= 2.0l) == decimal64(3));
+    REQUIRE((decimal64(6) /= 2.0l) == decimal64(3));
 
-    // REQUIRE((decimal128(6) /= decimal32(2)) == decimal128(3));
-    // REQUIRE((decimal128(6) /= decimal64(2)) == decimal128(3));
-    // REQUIRE((decimal128(6) /= decimal128(2)) == decimal128(3));
-    // REQUIRE((decimal128(6) /= 2) == decimal128(3));
-    // REQUIRE((decimal128(6) /= 2u) == decimal128(3));
-    // REQUIRE((decimal128(6) /= 2l) == decimal128(3));
-    // REQUIRE((decimal128(6) /= 2lu) == decimal128(3));
-    // REQUIRE((decimal128(6) /= 2ll) == decimal128(3));
-    // REQUIRE((decimal128(6) /= 2llu) == decimal128(3));
-    // REQUIRE((decimal128(6) /= 2.0f) == decimal128(3));
-    // REQUIRE((decimal128(6) /= 2.0) == decimal128(3));
-    // REQUIRE((decimal128(6) /= 2.0l) == decimal128(3));
+    REQUIRE((decimal128(6) /= decimal32(2)) == decimal128(3));
+    REQUIRE((decimal128(6) /= decimal64(2)) == decimal128(3));
+    REQUIRE((decimal128(6) /= decimal128(2)) == decimal128(3));
+    REQUIRE((decimal128(6) /= 2) == decimal128(3));
+    REQUIRE((decimal128(6) /= 2u) == decimal128(3));
+    REQUIRE((decimal128(6) /= 2l) == decimal128(3));
+    REQUIRE((decimal128(6) /= 2lu) == decimal128(3));
+    REQUIRE((decimal128(6) /= 2ll) == decimal128(3));
+    REQUIRE((decimal128(6) /= 2llu) == decimal128(3));
+    REQUIRE((decimal128(6) /= 2.0f) == decimal128(3));
+    REQUIRE((decimal128(6) /= 2.0) == decimal128(3));
+    REQUIRE((decimal128(6) /= 2.0l) == decimal128(3));
 }
 
 TEST_CASE_METHOD(decimal_fixture, "increment and decrement operators")

@@ -170,6 +170,8 @@ struct operator_32bit {
     static BID_UINT32 resize(long long value);
     static BID_UINT32 resize(unsigned long long value);
     static BID_UINT32 resize(float value);
+    static BID_UINT32 resize(double value);
+    static BID_UINT32 resize(long double value);
 };
 
 struct operator_64bit {
@@ -197,6 +199,7 @@ struct operator_64bit {
     static BID_UINT64 resize(unsigned long long value);
     static BID_UINT64 resize(float value);
     static BID_UINT64 resize(double value);
+    static BID_UINT64 resize(long double value);
 };
 
 struct operator_128bit {
