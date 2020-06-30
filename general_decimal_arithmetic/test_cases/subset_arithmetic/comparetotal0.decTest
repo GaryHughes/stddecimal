@@ -1,0 +1,546 @@
+------------------------------------------------------------------------
+-- comparetotal0.decTest -- decimal comparison using total ordering   --
+-- Copyright (c) Mike Cowlishaw,  1981, 2010.  All rights reserved.   --
+-- Parts copyright (c) IBM Corporation, 1981, 2008.                   --
+------------------------------------------------------------------------
+-- Please see the document "General Decimal Arithmetic Testcases"     --
+-- at http://speleotrove.com/decimal for the description of           --
+-- these testcases.                                                   --
+--                                                                    --
+-- These testcases are experimental ('beta' versions), and they       --
+-- may contain errors.  They are offered on an as-is basis.  In       --
+-- particular, achieving the same results as the tests here is not    --
+-- a guarantee that an implementation complies with any Standard      --
+-- or specification.  The tests are not exhaustive.                   --
+--                                                                    --
+-- Please send comments, suggestions, and corrections to the author:  --
+--   Mike Cowlishaw, mfc@speleotrove.com                              --
+------------------------------------------------------------------------
+version: 2.62
+
+-- Note that we cannot assume add/subtract tests cover paths adequately,
+-- here, because the code might be quite different (comparison cannot
+-- overflow or underflow, so actual subtractions are not necessary).
+-- Similarly, comparetotal will have some radically different paths
+-- than compare.
+
+extended:    0
+precision:   16
+rounding:    half_up
+maxExponent: 384
+minExponent: -383
+
+-- sanity checks
+cot001 comparetotal  -2  -2  -> 0
+cot002 comparetotal  -2  -1  -> -1
+cot003 comparetotal  -2   0  -> -1
+cot004 comparetotal  -2   1  -> -1
+cot005 comparetotal  -2   2  -> -1
+cot006 comparetotal  -1  -2  -> 1
+cot007 comparetotal  -1  -1  -> 0
+cot008 comparetotal  -1   0  -> -1
+cot009 comparetotal  -1   1  -> -1
+cot010 comparetotal  -1   2  -> -1
+cot011 comparetotal   0  -2  -> 1
+cot012 comparetotal   0  -1  -> 1
+cot013 comparetotal   0   0  -> 0
+cot014 comparetotal   0   1  -> -1
+cot015 comparetotal   0   2  -> -1
+cot016 comparetotal   1  -2  -> 1
+cot017 comparetotal   1  -1  -> 1
+cot018 comparetotal   1   0  -> 1
+cot019 comparetotal   1   1  -> 0
+cot020 comparetotal   1   2  -> -1
+cot021 comparetotal   2  -2  -> 1
+cot022 comparetotal   2  -1  -> 1
+cot023 comparetotal   2   0  -> 1
+cot025 comparetotal   2   1  -> 1
+cot026 comparetotal   2   2  -> 0
+
+cot031 comparetotal  -20  -20  -> 0
+cot032 comparetotal  -20  -10  -> -1
+cot033 comparetotal  -20   00  -> -1
+cot034 comparetotal  -20   10  -> -1
+cot035 comparetotal  -20   20  -> -1
+cot036 comparetotal  -10  -20  -> 1
+cot037 comparetotal  -10  -10  -> 0
+cot038 comparetotal  -10   00  -> -1
+cot039 comparetotal  -10   10  -> -1
+cot040 comparetotal  -10   20  -> -1
+cot041 comparetotal   00  -20  -> 1
+cot042 comparetotal   00  -10  -> 1
+cot043 comparetotal   00   00  -> 0
+cot044 comparetotal   00   10  -> -1
+cot045 comparetotal   00   20  -> -1
+cot046 comparetotal   10  -20  -> 1
+cot047 comparetotal   10  -10  -> 1
+cot048 comparetotal   10   00  -> 1
+cot049 comparetotal   10   10  -> 0
+cot050 comparetotal   10   20  -> -1
+cot051 comparetotal   20  -20  -> 1
+cot052 comparetotal   20  -10  -> 1
+cot053 comparetotal   20   00  -> 1
+cot055 comparetotal   20   10  -> 1
+cot056 comparetotal   20   20  -> 0
+
+cot061 comparetotal  -2.0  -2.0  -> 0
+cot062 comparetotal  -2.0  -1.0  -> -1
+cot063 comparetotal  -2.0   0.0  -> -1
+cot064 comparetotal  -2.0   1.0  -> -1
+cot065 comparetotal  -2.0   2.0  -> -1
+cot066 comparetotal  -1.0  -2.0  -> 1
+cot067 comparetotal  -1.0  -1.0  -> 0
+cot068 comparetotal  -1.0   0.0  -> -1
+cot069 comparetotal  -1.0   1.0  -> -1
+cot070 comparetotal  -1.0   2.0  -> -1
+cot071 comparetotal   0.0  -2.0  -> 1
+cot072 comparetotal   0.0  -1.0  -> 1
+cot073 comparetotal   0.0   0.0  -> 0
+cot074 comparetotal   0.0   1.0  -> -1
+cot075 comparetotal   0.0   2.0  -> -1
+cot076 comparetotal   1.0  -2.0  -> 1
+cot077 comparetotal   1.0  -1.0  -> 1
+cot078 comparetotal   1.0   0.0  -> 1
+cot079 comparetotal   1.0   1.0  -> 0
+cot080 comparetotal   1.0   2.0  -> -1
+cot081 comparetotal   2.0  -2.0  -> 1
+cot082 comparetotal   2.0  -1.0  -> 1
+cot083 comparetotal   2.0   0.0  -> 1
+cot085 comparetotal   2.0   1.0  -> 1
+cot086 comparetotal   2.0   2.0  -> 0
+
+-- now some cases which might overflow if subtract were used
+maxexponent: 999999999
+minexponent: -999999999
+cot090 comparetotal  9.99999999E+999999999 9.99999999E+999999999  -> 0
+cot091 comparetotal -9.99999999E+999999999 9.99999999E+999999999  -> -1
+cot092 comparetotal  9.99999999E+999999999 -9.99999999E+999999999 -> 1
+cot093 comparetotal -9.99999999E+999999999 -9.99999999E+999999999 -> 0
+
+-- some differing length/exponent cases
+-- in this first group, compare would compare all equal
+cot100 comparetotal   7.0    7.0    -> 0
+cot101 comparetotal   7.0    7      -> -1
+cot102 comparetotal   7      7.0    -> 1
+cot103 comparetotal   7E+0   7.0    -> 1
+cot104 comparetotal   70E-1  7.0    -> 0
+cot105 comparetotal   0.7E+1 7      -> 0
+cot106 comparetotal   70E-1  7      -> -1
+cot107 comparetotal   7.0    7E+0   -> -1
+cot108 comparetotal   7.0    70E-1  -> 0
+cot109 comparetotal   7      0.7E+1 -> 0
+cot110 comparetotal   7      70E-1  -> 1
+
+cot120 comparetotal   8.0    7.0    -> 1
+cot121 comparetotal   8.0    7      -> 1
+cot122 comparetotal   8      7.0    -> 1
+cot123 comparetotal   8E+0   7.0    -> 1
+cot124 comparetotal   80E-1  7.0    -> 1
+cot125 comparetotal   0.8E+1 7      -> 1
+cot126 comparetotal   80E-1  7      -> 1
+cot127 comparetotal   8.0    7E+0   -> 1
+cot128 comparetotal   8.0    70E-1  -> 1
+cot129 comparetotal   8      0.7E+1  -> 1
+cot130 comparetotal   8      70E-1  -> 1
+
+cot140 comparetotal   8.0    9.0    -> -1
+cot141 comparetotal   8.0    9      -> -1
+cot142 comparetotal   8      9.0    -> -1
+cot143 comparetotal   8E+0   9.0    -> -1
+cot144 comparetotal   80E-1  9.0    -> -1
+cot145 comparetotal   0.8E+1 9      -> -1
+cot146 comparetotal   80E-1  9      -> -1
+cot147 comparetotal   8.0    9E+0   -> -1
+cot148 comparetotal   8.0    90E-1  -> -1
+cot149 comparetotal   8      0.9E+1 -> -1
+cot150 comparetotal   8      90E-1  -> -1
+
+-- and again, with sign changes -+ ..
+cot200 comparetotal  -7.0    7.0    -> -1
+cot201 comparetotal  -7.0    7      -> -1
+cot202 comparetotal  -7      7.0    -> -1
+cot203 comparetotal  -7E+0   7.0    -> -1
+cot204 comparetotal  -70E-1  7.0    -> -1
+cot205 comparetotal  -0.7E+1 7      -> -1
+cot206 comparetotal  -70E-1  7      -> -1
+cot207 comparetotal  -7.0    7E+0   -> -1
+cot208 comparetotal  -7.0    70E-1  -> -1
+cot209 comparetotal  -7      0.7E+1 -> -1
+cot210 comparetotal  -7      70E-1  -> -1
+
+cot220 comparetotal  -8.0    7.0    -> -1
+cot221 comparetotal  -8.0    7      -> -1
+cot222 comparetotal  -8      7.0    -> -1
+cot223 comparetotal  -8E+0   7.0    -> -1
+cot224 comparetotal  -80E-1  7.0    -> -1
+cot225 comparetotal  -0.8E+1 7      -> -1
+cot226 comparetotal  -80E-1  7      -> -1
+cot227 comparetotal  -8.0    7E+0   -> -1
+cot228 comparetotal  -8.0    70E-1  -> -1
+cot229 comparetotal  -8      0.7E+1 -> -1
+cot230 comparetotal  -8      70E-1  -> -1
+
+cot240 comparetotal  -8.0    9.0    -> -1
+cot241 comparetotal  -8.0    9      -> -1
+cot242 comparetotal  -8      9.0    -> -1
+cot243 comparetotal  -8E+0   9.0    -> -1
+cot244 comparetotal  -80E-1  9.0    -> -1
+cot245 comparetotal  -0.8E+1 9      -> -1
+cot246 comparetotal  -80E-1  9      -> -1
+cot247 comparetotal  -8.0    9E+0   -> -1
+cot248 comparetotal  -8.0    90E-1  -> -1
+cot249 comparetotal  -8      0.9E+1 -> -1
+cot250 comparetotal  -8      90E-1  -> -1
+
+-- and again, with sign changes +- ..
+cot300 comparetotal   7.0    -7.0    -> 1
+cot301 comparetotal   7.0    -7      -> 1
+cot302 comparetotal   7      -7.0    -> 1
+cot303 comparetotal   7E+0   -7.0    -> 1
+cot304 comparetotal   70E-1  -7.0    -> 1
+cot305 comparetotal   .7E+1  -7      -> 1
+cot306 comparetotal   70E-1  -7      -> 1
+cot307 comparetotal   7.0    -7E+0   -> 1
+cot308 comparetotal   7.0    -70E-1  -> 1
+cot309 comparetotal   7      -.7E+1  -> 1
+cot310 comparetotal   7      -70E-1  -> 1
+
+cot320 comparetotal   8.0    -7.0    -> 1
+cot321 comparetotal   8.0    -7      -> 1
+cot322 comparetotal   8      -7.0    -> 1
+cot323 comparetotal   8E+0   -7.0    -> 1
+cot324 comparetotal   80E-1  -7.0    -> 1
+cot325 comparetotal   .8E+1  -7      -> 1
+cot326 comparetotal   80E-1  -7      -> 1
+cot327 comparetotal   8.0    -7E+0   -> 1
+cot328 comparetotal   8.0    -70E-1  -> 1
+cot329 comparetotal   8      -.7E+1  -> 1
+cot330 comparetotal   8      -70E-1  -> 1
+
+cot340 comparetotal   8.0    -9.0    -> 1
+cot341 comparetotal   8.0    -9      -> 1
+cot342 comparetotal   8      -9.0    -> 1
+cot343 comparetotal   8E+0   -9.0    -> 1
+cot344 comparetotal   80E-1  -9.0    -> 1
+cot345 comparetotal   .8E+1  -9      -> 1
+cot346 comparetotal   80E-1  -9      -> 1
+cot347 comparetotal   8.0    -9E+0   -> 1
+cot348 comparetotal   8.0    -90E-1  -> 1
+cot349 comparetotal   8      -.9E+1  -> 1
+cot350 comparetotal   8      -90E-1  -> 1
+
+-- and again, with sign changes -- ..
+cot400 comparetotal   -7.0    -7.0    -> 0
+cot401 comparetotal   -7.0    -7      -> 1
+cot402 comparetotal   -7      -7.0    -> -1
+cot403 comparetotal   -7E+0   -7.0    -> -1
+cot404 comparetotal   -70E-1  -7.0    -> 0
+cot405 comparetotal   -.7E+1  -7      -> 0
+cot406 comparetotal   -70E-1  -7      -> 1
+cot407 comparetotal   -7.0    -7E+0   -> 1
+cot408 comparetotal   -7.0    -70E-1  -> 0
+cot409 comparetotal   -7      -.7E+1  -> 0
+cot410 comparetotal   -7      -70E-1  -> -1
+
+cot420 comparetotal   -8.0    -7.0    -> -1
+cot421 comparetotal   -8.0    -7      -> -1
+cot422 comparetotal   -8      -7.0    -> -1
+cot423 comparetotal   -8E+0   -7.0    -> -1
+cot424 comparetotal   -80E-1  -7.0    -> -1
+cot425 comparetotal   -.8E+1  -7      -> -1
+cot426 comparetotal   -80E-1  -7      -> -1
+cot427 comparetotal   -8.0    -7E+0   -> -1
+cot428 comparetotal   -8.0    -70E-1  -> -1
+cot429 comparetotal   -8      -.7E+1  -> -1
+cot430 comparetotal   -8      -70E-1  -> -1
+
+cot440 comparetotal   -8.0    -9.0    -> 1
+cot441 comparetotal   -8.0    -9      -> 1
+cot442 comparetotal   -8      -9.0    -> 1
+cot443 comparetotal   -8E+0   -9.0    -> 1
+cot444 comparetotal   -80E-1  -9.0    -> 1
+cot445 comparetotal   -.8E+1  -9      -> 1
+cot446 comparetotal   -80E-1  -9      -> 1
+cot447 comparetotal   -8.0    -9E+0   -> 1
+cot448 comparetotal   -8.0    -90E-1  -> 1
+cot449 comparetotal   -8      -.9E+1  -> 1
+cot450 comparetotal   -8      -90E-1  -> 1
+
+
+-- testcases that subtract to lots of zeros at boundaries [pgr]
+precision: 40
+cot470 comparetotal 123.4560000000000000E789 123.456E789 -> -1
+cot471 comparetotal 123.456000000000000E-89 123.456E-89 -> -1
+cot472 comparetotal 123.45600000000000E789 123.456E789 -> -1
+cot473 comparetotal 123.4560000000000E-89 123.456E-89 -> -1
+cot474 comparetotal 123.456000000000E789 123.456E789 -> -1
+cot475 comparetotal 123.45600000000E-89 123.456E-89 -> -1
+cot476 comparetotal 123.4560000000E789 123.456E789 -> -1
+cot477 comparetotal 123.456000000E-89 123.456E-89 -> -1
+cot478 comparetotal 123.45600000E789 123.456E789 -> -1
+cot479 comparetotal 123.4560000E-89 123.456E-89 -> -1
+cot480 comparetotal 123.456000E789 123.456E789 -> -1
+cot481 comparetotal 123.45600E-89 123.456E-89 -> -1
+cot482 comparetotal 123.4560E789 123.456E789 -> -1
+cot483 comparetotal 123.456E-89 123.456E-89 -> 0
+cot484 comparetotal 123.456E-89 123.4560000000000000E-89 -> 1
+cot485 comparetotal 123.456E789 123.456000000000000E789 -> 1
+cot486 comparetotal 123.456E-89 123.45600000000000E-89 -> 1
+cot487 comparetotal 123.456E789 123.4560000000000E789 -> 1
+cot488 comparetotal 123.456E-89 123.456000000000E-89 -> 1
+cot489 comparetotal 123.456E789 123.45600000000E789 -> 1
+cot490 comparetotal 123.456E-89 123.4560000000E-89 -> 1
+cot491 comparetotal 123.456E789 123.456000000E789 -> 1
+cot492 comparetotal 123.456E-89 123.45600000E-89 -> 1
+cot493 comparetotal 123.456E789 123.4560000E789 -> 1
+cot494 comparetotal 123.456E-89 123.456000E-89 -> 1
+cot495 comparetotal 123.456E789 123.45600E789 -> 1
+cot496 comparetotal 123.456E-89 123.4560E-89 -> 1
+cot497 comparetotal 123.456E789 123.456E789 -> 0
+
+-- wide-ranging, around precision; signs equal
+precision: 9
+cot500 comparetotal    1     1E-15    -> 1
+cot501 comparetotal    1     1E-14    -> 1
+cot502 comparetotal    1     1E-13    -> 1
+cot503 comparetotal    1     1E-12    -> 1
+cot504 comparetotal    1     1E-11    -> 1
+cot505 comparetotal    1     1E-10    -> 1
+cot506 comparetotal    1     1E-9     -> 1
+cot507 comparetotal    1     1E-8     -> 1
+cot508 comparetotal    1     1E-7     -> 1
+cot509 comparetotal    1     1E-6     -> 1
+cot510 comparetotal    1     1E-5     -> 1
+cot511 comparetotal    1     1E-4     -> 1
+cot512 comparetotal    1     1E-3     -> 1
+cot513 comparetotal    1     1E-2     -> 1
+cot514 comparetotal    1     1E-1     -> 1
+cot515 comparetotal    1     1E-0     -> 0
+cot516 comparetotal    1     1E+1     -> -1
+cot517 comparetotal    1     1E+2     -> -1
+cot518 comparetotal    1     1E+3     -> -1
+cot519 comparetotal    1     1E+4     -> -1
+cot521 comparetotal    1     1E+5     -> -1
+cot522 comparetotal    1     1E+6     -> -1
+cot523 comparetotal    1     1E+7     -> -1
+cot524 comparetotal    1     1E+8     -> -1
+cot525 comparetotal    1     1E+9     -> -1
+cot526 comparetotal    1     1E+10    -> -1
+cot527 comparetotal    1     1E+11    -> -1
+cot528 comparetotal    1     1E+12    -> -1
+cot529 comparetotal    1     1E+13    -> -1
+cot530 comparetotal    1     1E+14    -> -1
+cot531 comparetotal    1     1E+15    -> -1
+-- LR swap
+cot540 comparetotal    1E-15  1       -> -1
+cot541 comparetotal    1E-14  1       -> -1
+cot542 comparetotal    1E-13  1       -> -1
+cot543 comparetotal    1E-12  1       -> -1
+cot544 comparetotal    1E-11  1       -> -1
+cot545 comparetotal    1E-10  1       -> -1
+cot546 comparetotal    1E-9   1       -> -1
+cot547 comparetotal    1E-8   1       -> -1
+cot548 comparetotal    1E-7   1       -> -1
+cot549 comparetotal    1E-6   1       -> -1
+cot550 comparetotal    1E-5   1       -> -1
+cot551 comparetotal    1E-4   1       -> -1
+cot552 comparetotal    1E-3   1       -> -1
+cot553 comparetotal    1E-2   1       -> -1
+cot554 comparetotal    1E-1   1       -> -1
+cot555 comparetotal    1E-0   1       ->  0
+cot556 comparetotal    1E+1   1       ->  1
+cot557 comparetotal    1E+2   1       ->  1
+cot558 comparetotal    1E+3   1       ->  1
+cot559 comparetotal    1E+4   1       ->  1
+cot561 comparetotal    1E+5   1       ->  1
+cot562 comparetotal    1E+6   1       ->  1
+cot563 comparetotal    1E+7   1       ->  1
+cot564 comparetotal    1E+8   1       ->  1
+cot565 comparetotal    1E+9   1       ->  1
+cot566 comparetotal    1E+10  1       ->  1
+cot567 comparetotal    1E+11  1       ->  1
+cot568 comparetotal    1E+12  1       ->  1
+cot569 comparetotal    1E+13  1       ->  1
+cot570 comparetotal    1E+14  1       ->  1
+cot571 comparetotal    1E+15  1       ->  1
+-- similar with an useful coefficient, one side only
+cot580 comparetotal  0.000000987654321     1E-15    -> 1
+cot581 comparetotal  0.000000987654321     1E-14    -> 1
+cot582 comparetotal  0.000000987654321     1E-13    -> 1
+cot583 comparetotal  0.000000987654321     1E-12    -> 1
+cot584 comparetotal  0.000000987654321     1E-11    -> 1
+cot585 comparetotal  0.000000987654321     1E-10    -> 1
+cot586 comparetotal  0.000000987654321     1E-9     -> 1
+cot587 comparetotal  0.000000987654321     1E-8     -> 1
+cot588 comparetotal  0.000000987654321     1E-7     -> 1
+cot589 comparetotal  0.000000987654321     1E-6     -> -1
+cot590 comparetotal  0.000000987654321     1E-5     -> -1
+cot591 comparetotal  0.000000987654321     1E-4     -> -1
+cot592 comparetotal  0.000000987654321     1E-3     -> -1
+cot593 comparetotal  0.000000987654321     1E-2     -> -1
+cot594 comparetotal  0.000000987654321     1E-1     -> -1
+cot595 comparetotal  0.000000987654321     1E-0     -> -1
+cot596 comparetotal  0.000000987654321     1E+1     -> -1
+cot597 comparetotal  0.000000987654321     1E+2     -> -1
+cot598 comparetotal  0.000000987654321     1E+3     -> -1
+cot599 comparetotal  0.000000987654321     1E+4     -> -1
+
+-- check some unit-y traps
+precision: 20
+cot600 comparetotal   12            12.2345 -> -1
+cot601 comparetotal   12.0          12.2345 -> -1
+cot602 comparetotal   12.00         12.2345 -> -1
+cot603 comparetotal   12.000        12.2345 -> -1
+cot604 comparetotal   12.0000       12.2345 -> -1
+cot605 comparetotal   12.00000      12.2345 -> -1
+cot606 comparetotal   12.000000     12.2345 -> -1
+cot607 comparetotal   12.0000000    12.2345 -> -1
+cot608 comparetotal   12.00000000   12.2345 -> -1
+cot609 comparetotal   12.000000000  12.2345 -> -1
+cot610 comparetotal   12.1234 12            ->  1
+cot611 comparetotal   12.1234 12.0          ->  1
+cot612 comparetotal   12.1234 12.00         ->  1
+cot613 comparetotal   12.1234 12.000        ->  1
+cot614 comparetotal   12.1234 12.0000       ->  1
+cot615 comparetotal   12.1234 12.00000      ->  1
+cot616 comparetotal   12.1234 12.000000     ->  1
+cot617 comparetotal   12.1234 12.0000000    ->  1
+cot618 comparetotal   12.1234 12.00000000   ->  1
+cot619 comparetotal   12.1234 12.000000000  ->  1
+cot620 comparetotal  -12           -12.2345 ->  1
+cot621 comparetotal  -12.0         -12.2345 ->  1
+cot622 comparetotal  -12.00        -12.2345 ->  1
+cot623 comparetotal  -12.000       -12.2345 ->  1
+cot624 comparetotal  -12.0000      -12.2345 ->  1
+cot625 comparetotal  -12.00000     -12.2345 ->  1
+cot626 comparetotal  -12.000000    -12.2345 ->  1
+cot627 comparetotal  -12.0000000   -12.2345 ->  1
+cot628 comparetotal  -12.00000000  -12.2345 ->  1
+cot629 comparetotal  -12.000000000 -12.2345 ->  1
+cot630 comparetotal  -12.1234 -12           -> -1
+cot631 comparetotal  -12.1234 -12.0         -> -1
+cot632 comparetotal  -12.1234 -12.00        -> -1
+cot633 comparetotal  -12.1234 -12.000       -> -1
+cot634 comparetotal  -12.1234 -12.0000      -> -1
+cot635 comparetotal  -12.1234 -12.00000     -> -1
+cot636 comparetotal  -12.1234 -12.000000    -> -1
+cot637 comparetotal  -12.1234 -12.0000000   -> -1
+cot638 comparetotal  -12.1234 -12.00000000  -> -1
+cot639 comparetotal  -12.1234 -12.000000000 -> -1
+precision: 9
+
+-- trailing zeros; unit-y
+precision: 20
+cot680 comparetotal   12    12           -> 0
+cot681 comparetotal   12    12.0         -> 1
+cot682 comparetotal   12    12.00        -> 1
+cot683 comparetotal   12    12.000       -> 1
+cot684 comparetotal   12    12.0000      -> 1
+cot685 comparetotal   12    12.00000     -> 1
+cot686 comparetotal   12    12.000000    -> 1
+cot687 comparetotal   12    12.0000000   -> 1
+cot688 comparetotal   12    12.00000000  -> 1
+cot689 comparetotal   12    12.000000000 -> 1
+cot690 comparetotal   12              12 -> 0
+cot691 comparetotal   12.0            12 -> -1
+cot692 comparetotal   12.00           12 -> -1
+cot693 comparetotal   12.000          12 -> -1
+cot694 comparetotal   12.0000         12 -> -1
+cot695 comparetotal   12.00000        12 -> -1
+cot696 comparetotal   12.000000       12 -> -1
+cot697 comparetotal   12.0000000      12 -> -1
+cot698 comparetotal   12.00000000     12 -> -1
+cot699 comparetotal   12.000000000    12 -> -1
+
+-- long operand checks
+maxexponent: 999
+minexponent: -999
+precision: 9
+cot701 comparetotal 12345678000  1 ->  1  Rounded
+cot702 comparetotal 1 12345678000  -> -1  Rounded
+cot703 comparetotal 1234567800   1 ->  1  Rounded
+cot704 comparetotal 1 1234567800   -> -1  Rounded
+cot705 comparetotal 1234567890   1 ->  1  Rounded
+cot706 comparetotal 1 1234567890   -> -1  Rounded
+cot707 comparetotal 1234567891   1 ->  1  Rounded Inexact Lost_digits
+cot708 comparetotal 1 1234567891   -> -1  Rounded Inexact Lost_digits
+cot709 comparetotal 12345678901  1 ->  1  Rounded Inexact Lost_digits
+cot710 comparetotal 1 12345678901  -> -1  Rounded Inexact Lost_digits
+cot711 comparetotal 1234567896   1 ->  1  Rounded Inexact Lost_digits
+cot712 comparetotal 1 1234567896   -> -1  Rounded Inexact Lost_digits
+cot713 comparetotal -1234567891  1 -> -1  Rounded Inexact Lost_digits
+cot714 comparetotal 1 -1234567891  ->  1  Rounded Inexact Lost_digits
+cot715 comparetotal -12345678901 1 -> -1  Rounded Inexact Lost_digits
+cot716 comparetotal 1 -12345678901 ->  1  Rounded Inexact Lost_digits
+cot717 comparetotal -1234567896  1 -> -1  Rounded Inexact Lost_digits
+cot718 comparetotal 1 -1234567896  ->  1  Rounded Inexact Lost_digits
+
+precision: 15
+-- same with plenty of precision
+cot721 comparetotal 12345678000 1 -> 1
+cot722 comparetotal 1 12345678000 -> -1
+cot723 comparetotal 1234567800  1 -> 1
+cot724 comparetotal 1 1234567800  -> -1
+cot725 comparetotal 1234567890  1 -> 1
+cot726 comparetotal 1 1234567890  -> -1
+cot727 comparetotal 1234567891  1 -> 1
+cot728 comparetotal 1 1234567891  -> -1
+cot729 comparetotal 12345678901 1 -> 1
+cot730 comparetotal 1 12345678901 -> -1
+cot731 comparetotal 1234567896  1 -> 1
+cot732 comparetotal 1 1234567896  -> -1
+
+-- residue cases (NB operands rounded on input)
+precision: 5
+cot740 comparetotal  1  0.9999999  -> 1    Rounded Inexact Lost_digits
+cot741 comparetotal  1  0.999999   -> 1    Rounded Inexact Lost_digits
+cot742 comparetotal  1  0.99999    -> 1
+cot743 comparetotal  1  1.0000     -> 1
+cot744 comparetotal  1  1.00001    -> 1    Rounded Inexact Lost_digits
+cot745 comparetotal  1  1.000001   -> 1    Rounded Inexact Lost_digits
+cot746 comparetotal  1  1.0000001  -> 1    Rounded Inexact Lost_digits
+cot750 comparetotal  0.9999999  1  -> -1   Rounded Inexact Lost_digits
+cot751 comparetotal  0.999999   1  -> -1   Rounded Inexact Lost_digits
+cot752 comparetotal  0.99999    1  -> -1
+cot753 comparetotal  1.0000     1  -> -1
+cot754 comparetotal  1.00001    1  -> -1   Rounded Inexact Lost_digits
+cot755 comparetotal  1.000001   1  -> -1   Rounded Inexact Lost_digits
+cot756 comparetotal  1.0000001  1  -> -1   Rounded Inexact Lost_digits
+
+-- overflow and underflow tests .. subnormal results now allowed
+maxExponent: 999999999
+minexponent: -999999999
+cot1080 comparetotal +1.23456789012345E-0 9E+999999999 -> -1 Rounded Inexact Lost_digits
+cot1081 comparetotal 9E+999999999 +1.23456789012345E-0 ->  1 Rounded Inexact Lost_digits
+cot1082 comparetotal +0.100 9E-999999999               ->  1
+cot1083 comparetotal 9E-999999999 +0.100               -> -1
+cot1085 comparetotal -1.23456789012345E-0 9E+999999999 -> -1 Rounded Inexact Lost_digits
+cot1086 comparetotal 9E+999999999 -1.23456789012345E-0 ->  1 Rounded Inexact Lost_digits
+cot1087 comparetotal -0.100 9E-999999999               -> -1
+cot1088 comparetotal 9E-999999999 -0.100               ->  1
+
+cot1089 comparetotal 1e-599999999 1e-400000001   -> -1
+cot1090 comparetotal 1e-599999999 1e-400000000   -> -1
+cot1091 comparetotal 1e-600000000 1e-400000000   -> -1
+cot1092 comparetotal 9e-999999998 0.01           -> -1
+cot1093 comparetotal 9e-999999998 0.1            -> -1
+cot1094 comparetotal 0.01 9e-999999998           ->  1
+cot1095 comparetotal 1e599999999 1e400000001     ->  1
+cot1096 comparetotal 1e599999999 1e400000000     ->  1
+cot1097 comparetotal 1e600000000 1e400000000     ->  1
+cot1098 comparetotal 9e999999998 100             ->  1
+cot1099 comparetotal 9e999999998 10              ->  1
+cot1100 comparetotal 100  9e999999998            -> -1
+-- signs
+cot1101 comparetotal  1e+777777777  1e+411111111 ->  1
+cot1102 comparetotal  1e+777777777 -1e+411111111 ->  1
+cot1103 comparetotal -1e+777777777  1e+411111111 -> -1
+cot1104 comparetotal -1e+777777777 -1e+411111111 -> -1
+cot1105 comparetotal  1e-777777777  1e-411111111 -> -1
+cot1106 comparetotal  1e-777777777 -1e-411111111 ->  1
+cot1107 comparetotal -1e-777777777  1e-411111111 -> -1
+cot1108 comparetotal -1e-777777777 -1e-411111111 ->  1
+
+-- Null tests
+cot9990 comparetotal 10  # -> ? Invalid_operation
+cot9991 comparetotal  # 10 -> ? Invalid_operation

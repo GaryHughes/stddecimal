@@ -25,3 +25,4 @@ include(Catch)
 
 add_subdirectory(libdecimal)
 add_subdirectory(libdecimal_tests)
+add_subdirectory(general_decimal_arithmetic)

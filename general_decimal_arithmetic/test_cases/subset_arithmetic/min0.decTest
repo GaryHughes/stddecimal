@@ -1,0 +1,110 @@
+------------------------------------------------------------------------
+-- min0.decTest -- decimal minimum (simplified)                       --
+-- Copyright (c) Mike Cowlishaw,  1981, 2010.  All rights reserved.   --
+-- Parts copyright (c) IBM Corporation, 1981, 2008.                   --
+------------------------------------------------------------------------
+-- Please see the document "General Decimal Arithmetic Testcases"     --
+-- at http://speleotrove.com/decimal for the description of           --
+-- these testcases.                                                   --
+--                                                                    --
+-- These testcases are experimental ('beta' versions), and they       --
+-- may contain errors.  They are offered on an as-is basis.  In       --
+-- particular, achieving the same results as the tests here is not    --
+-- a guarantee that an implementation complies with any Standard      --
+-- or specification.  The tests are not exhaustive.                   --
+--                                                                    --
+-- Please send comments, suggestions, and corrections to the author:  --
+--   Mike Cowlishaw, mfc@speleotrove.com                              --
+------------------------------------------------------------------------
+version: 2.62
+
+-- we assume that base comparison is tested in compare.decTest, so
+-- these mainly cover special cases, lost digits, and rounding
+
+extended:    0
+precision:   9
+rounding:    half_up
+maxExponent: 999
+minexponent: -999
+
+-- sanity checks
+mnm001 min  -2  -2  -> -2
+mnm002 min  -2  -1  -> -2
+mnm003 min  -2   0  -> -2
+mnm004 min  -2   1  -> -2
+mnm005 min  -2   2  -> -2
+mnm006 min  -1  -2  -> -2
+mnm007 min  -1  -1  -> -1
+mnm008 min  -1   0  -> -1
+mnm009 min  -1   1  -> -1
+mnm010 min  -1   2  -> -1
+mnm011 min   0  -2  -> -2
+mnm012 min   0  -1  -> -1
+mnm013 min   0   0  ->  0
+mnm014 min   0   1  ->  0
+mnm015 min   0   2  ->  0
+mnm016 min   1  -2  -> -2
+mnm017 min   1  -1  -> -1
+mnm018 min   1   0  ->  0
+mnm019 min   1   1  ->  1
+mnm020 min   1   2  ->  1
+mnm021 min   2  -2  -> -2
+mnm022 min   2  -1  -> -1
+mnm023 min   2   0  ->  0
+mnm025 min   2   1  ->  1
+mnm026 min   2   2  ->  2
+
+-- lostDigits and input rounding checks
+maxExponent: 999
+minexponent: -999
+precision: 9
+mnm101 min -12345678000 1  -> -1.23456780E+10 Rounded
+mnm102 min 1 -12345678000  -> -1.23456780E+10 Rounded
+mnm103 min -1234567800  1  -> -1.23456780E+9 Rounded
+mnm104 min 1 -1234567800   -> -1.23456780E+9 Rounded
+mnm105 min -1234567890  1  -> -1.23456789E+9 Rounded
+mnm106 min 1 -1234567890   -> -1.23456789E+9 Rounded
+mnm107 min -1234567891  1  -> -1.23456789E+9 Inexact Lost_digits Rounded
+mnm108 min 1 -1234567891   -> -1.23456789E+9 Inexact Lost_digits Rounded
+mnm109 min -12345678901 1  -> -1.23456789E+10 Inexact Lost_digits Rounded
+mnm110 min 1 -12345678901  -> -1.23456789E+10 Inexact Lost_digits Rounded
+mnm111 min -1234567896  1  -> -1.23456790E+9 Inexact Lost_digits Rounded
+mnm112 min 1 -1234567896   -> -1.23456790E+9 Inexact Lost_digits Rounded
+mnm113 min 1234567891  1   -> 1 Inexact Lost_digits Rounded
+mnm114 min 1 1234567891    -> 1 Inexact Lost_digits Rounded
+mnm115 min 12345678901 1   -> 1 Inexact Lost_digits Rounded
+mnm116 min 1 12345678901   -> 1 Inexact Lost_digits Rounded
+mnm117 min 1234567896  1   -> 1 Inexact Lost_digits Rounded
+mnm118 min 1 1234567896    -> 1 Inexact Lost_digits Rounded
+
+precision: 15
+-- still checking for [no] lostDigits
+mnm121 min -12345678000 1  -> -12345678000
+mnm122 min 1 -12345678000  -> -12345678000
+mnm123 min -1234567800  1  -> -1234567800
+mnm124 min 1 -1234567800   -> -1234567800
+mnm125 min -1234567890  1  -> -1234567890
+mnm126 min 1 -1234567890   -> -1234567890
+mnm127 min -1234567891  1  -> -1234567891
+mnm128 min 1 -1234567891   -> -1234567891
+mnm129 min -12345678901 1  -> -12345678901
+mnm130 min 1 -12345678901  -> -12345678901
+mnm131 min -1234567896  1  -> -1234567896
+mnm132 min 1 -1234567896   -> -1234567896
+mnm133 min 1234567891  1   -> 1
+mnm134 min 1 1234567891    -> 1
+mnm135 min 12345678901 1   -> 1
+mnm136 min 1 12345678901   -> 1
+mnm137 min 1234567896  1   -> 1
+mnm138 min 1 1234567896    -> 1
+
+-- from examples
+mnm180 min '3'   '2'  ->  '2'
+mnm181 min '-10' '3'  ->  '-10'
+mnm182 min '1.0' '1'  ->  '1.0'
+mnm183 min '1' '1.0'  ->  '1'
+
+-- Null tests
+mnm900 min 10  # -> ? Invalid_operation
+mnm901 min  # 10 -> ? Invalid_operation
+

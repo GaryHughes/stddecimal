@@ -1,0 +1,110 @@
+------------------------------------------------------------------------
+-- max0.decTest -- decimal maximum (simplified)                       --
+-- Copyright (c) Mike Cowlishaw,  1981, 2010.  All rights reserved.   --
+-- Parts copyright (c) IBM Corporation, 1981, 2008.                   --
+------------------------------------------------------------------------
+-- Please see the document "General Decimal Arithmetic Testcases"     --
+-- at http://speleotrove.com/decimal for the description of           --
+-- these testcases.                                                   --
+--                                                                    --
+-- These testcases are experimental ('beta' versions), and they       --
+-- may contain errors.  They are offered on an as-is basis.  In       --
+-- particular, achieving the same results as the tests here is not    --
+-- a guarantee that an implementation complies with any Standard      --
+-- or specification.  The tests are not exhaustive.                   --
+--                                                                    --
+-- Please send comments, suggestions, and corrections to the author:  --
+--   Mike Cowlishaw, mfc@speleotrove.com                              --
+------------------------------------------------------------------------
+version: 2.62
+
+-- we assume that base comparison is tested in compare.decTest, so
+-- these mainly cover special cases, lost digits, and rounding
+
+extended:    0
+precision:   9
+rounding:    half_up
+maxExponent: 999
+minexponent: -999
+
+-- sanity checks
+max001 max  -2  -2  -> -2
+max002 max  -2  -1  -> -1
+max003 max  -2   0  ->  0
+max004 max  -2   1  ->  1
+max005 max  -2   2  ->  2
+max006 max  -1  -2  -> -1
+max007 max  -1  -1  -> -1
+max008 max  -1   0  ->  0
+max009 max  -1   1  ->  1
+max010 max  -1   2  ->  2
+max011 max   0  -2  ->  0
+max012 max   0  -1  ->  0
+max013 max   0   0  ->  0
+max014 max   0   1  ->  1
+max015 max   0   2  ->  2
+max016 max   1  -2  ->  1
+max017 max   1  -1  ->  1
+max018 max   1   0  ->  1
+max019 max   1   1  ->  1
+max020 max   1   2  ->  2
+max021 max   2  -2  ->  2
+max022 max   2  -1  ->  2
+max023 max   2   0  ->  2
+max025 max   2   1  ->  2
+max026 max   2   2  ->  2
+
+-- lostDigits and input rounding checks
+maxexponent: 999
+minexponent: -999
+precision: 9
+max101 max 12345678000 1  -> 1.23456780E+10 Rounded
+max102 max 1 12345678000  -> 1.23456780E+10 Rounded
+max103 max 1234567800  1  -> 1.23456780E+9 Rounded
+max104 max 1 1234567800   -> 1.23456780E+9 Rounded
+max105 max 1234567890  1  -> 1.23456789E+9 Rounded
+max106 max 1 1234567890   -> 1.23456789E+9 Rounded
+max107 max 1234567891  1  -> 1.23456789E+9 Inexact Lost_digits Rounded
+max108 max 1 1234567891   -> 1.23456789E+9 Inexact Lost_digits Rounded
+max109 max 12345678901 1  -> 1.23456789E+10 Inexact Lost_digits Rounded
+max110 max 1 12345678901  -> 1.23456789E+10 Inexact Lost_digits Rounded
+max111 max 1234567896  1  -> 1.23456790E+9 Inexact Lost_digits Rounded
+max112 max 1 1234567896   -> 1.23456790E+9 Inexact Lost_digits Rounded
+max113 max -1234567891  1 -> 1 Inexact Lost_digits Rounded
+max114 max 1 -1234567891  -> 1 Inexact Lost_digits Rounded
+max115 max -12345678901 1 -> 1 Inexact Lost_digits Rounded
+max116 max 1 -12345678901 -> 1 Inexact Lost_digits Rounded
+max117 max -1234567896  1 -> 1 Inexact Lost_digits Rounded
+max118 max 1 -1234567896  -> 1 Inexact Lost_digits Rounded
+
+precision: 15
+-- still checking for [no] lostDigits
+max121 max 12345678000 1  -> 12345678000
+max122 max 1 12345678000  -> 12345678000
+max123 max 1234567800  1  -> 1234567800
+max124 max 1 1234567800   -> 1234567800
+max125 max 1234567890  1  -> 1234567890
+max126 max 1 1234567890   -> 1234567890
+max127 max 1234567891  1  -> 1234567891
+max128 max 1 1234567891   -> 1234567891
+max129 max 12345678901 1  -> 12345678901
+max130 max 1 12345678901  -> 12345678901
+max131 max 1234567896  1  -> 1234567896
+max132 max 1 1234567896   -> 1234567896
+max133 max -1234567891  1 -> 1
+max134 max 1 -1234567891  -> 1
+max135 max -12345678901 1 -> 1
+max136 max 1 -12345678901 -> 1
+max137 max -1234567896  1 -> 1
+max138 max 1 -1234567896  -> 1
+
+-- from examples
+max180 max '3'   '2'  ->  '3'
+max181 max '-10' '3'  ->  '3'
+max182 max '1.0' '1'  ->  '1.0'
+max183 max '1' '1.0'  ->  '1'
+
+-- Null tests
+max900 max 10  # -> ? Invalid_operation
+max901 max  # 10 -> ? Invalid_operation
+

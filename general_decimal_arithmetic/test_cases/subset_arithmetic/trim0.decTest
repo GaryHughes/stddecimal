@@ -1,0 +1,131 @@
+------------------------------------------------------------------------
+-- trim0.decTest -- remove insignificant trailing zeros (simplified)  --
+-- Copyright (c) Mike Cowlishaw,  1981, 2010.  All rights reserved.   --
+-- Parts copyright (c) IBM Corporation, 1981, 2008.                   --
+------------------------------------------------------------------------
+-- Please see the document "General Decimal Arithmetic Testcases"     --
+-- at http://speleotrove.com/decimal for the description of           --
+-- these testcases.                                                   --
+--                                                                    --
+-- These testcases are experimental ('beta' versions), and they       --
+-- may contain errors.  They are offered on an as-is basis.  In       --
+-- particular, achieving the same results as the tests here is not    --
+-- a guarantee that an implementation complies with any Standard      --
+-- or specification.  The tests are not exhaustive.                   --
+--                                                                    --
+-- Please send comments, suggestions, and corrections to the author:  --
+--   Mike Cowlishaw, mfc@speleotrove.com                              --
+------------------------------------------------------------------------
+version: 2.62
+
+extended:    0
+precision:   9
+rounding:    half_up
+maxExponent: 999
+minexponent: -999
+
+trm001 trim '1'      -> '1'
+trm002 trim '-1'     -> '-1'
+trm003 trim '1.00'   -> '1'
+trm004 trim '-1.00'  -> '-1'
+trm005 trim '0'      -> '0'
+trm006 trim '0.00'   -> '0'
+trm007 trim '00.0'   -> '0'
+trm008 trim '00.00'  -> '0'
+trm009 trim '00'     -> '0'
+
+trm010 trim '-2'     -> '-2'
+trm011 trim '2'      -> '2'
+trm012 trim '-2.00'  -> '-2'
+trm013 trim '2.00'   -> '2'
+trm014 trim '-0'     -> '0'
+trm015 trim '-0.00'  -> '0'
+trm016 trim '-00.0'  -> '0'
+trm017 trim '-00.00' -> '0'
+trm018 trim '-00'    -> '0'
+trm019 trim '0E+5'   -> '0'
+trm020 trim '-0E+1'  -> '0'
+
+trm030 trim '+0.1'            -> '0.1'
+trm031 trim '-0.1'            -> '-0.1'
+trm032 trim '+0.01'           -> '0.01'
+trm033 trim '-0.01'           -> '-0.01'
+trm034 trim '+0.001'          -> '0.001'
+trm035 trim '-0.001'          -> '-0.001'
+trm036 trim '+0.000001'       -> '0.000001'
+trm037 trim '-0.000001'       -> '-0.000001'
+trm038 trim '+0.000000000001' -> '1E-12'
+trm039 trim '-0.000000000001' -> '-1E-12'
+
+trm041 trim 1.1        -> 1.1
+trm042 trim 1.10       -> 1.1
+trm043 trim 1.100      -> 1.1
+trm044 trim 1.110      -> 1.11
+trm045 trim -1.1       -> -1.1
+trm046 trim -1.10      -> -1.1
+trm047 trim -1.100     -> -1.1
+trm048 trim -1.110     -> -1.11
+trm049 trim 9.9        -> 9.9
+trm050 trim 9.90       -> 9.9
+trm051 trim 9.900      -> 9.9
+trm052 trim 9.990      -> 9.99
+trm053 trim -9.9       -> -9.9
+trm054 trim -9.90      -> -9.9
+trm055 trim -9.900     -> -9.9
+trm056 trim -9.990     -> -9.99
+
+-- some insignificant trailing fractional zeros
+trm060 trim  10.0        -> 10
+trm061 trim  10.00       -> 10
+trm062 trim  100.0       -> 100
+trm063 trim  100.00      -> 100
+trm064 trim  1.1000E+3   -> 1100
+trm065 trim  1.10000E+3  -> 1100
+trm066 trim -10.0        -> -10
+trm067 trim -10.00       -> -10
+trm068 trim -100.0       -> -100
+trm069 trim -100.00      -> -100
+trm070 trim -1.1000E+3   -> -1100
+trm071 trim -1.10000E+3  -> -1100
+
+-- some insignificant trailing zeros with positive exponent
+trm080 trim  10E+1       -> 1E+2
+trm081 trim  100E+1      -> 1E+3
+trm082 trim  1.0E+2      -> 1E+2
+trm083 trim  1.0E+3      -> 1E+3
+trm084 trim  1.1E+3      -> 1.1E+3
+trm085 trim  1.00E+3     -> 1E+3
+trm086 trim  1.10E+3     -> 1.1E+3
+trm087 trim -10E+1       -> -1E+2
+trm088 trim -100E+1      -> -1E+3
+trm089 trim -1.0E+2      -> -1E+2
+trm090 trim -1.0E+3      -> -1E+3
+trm091 trim -1.1E+3      -> -1.1E+3
+trm092 trim -1.00E+3     -> -1E+3
+trm093 trim -1.10E+3     -> -1.1E+3
+
+-- some significant trailing zeros
+trm100 trim  11          -> 11
+trm101 trim  10          -> 10
+trm102 trim  10.         -> 10
+trm103 trim  1.1E+1      -> 11
+trm104 trim  1.0E+1      -> 10
+trm105 trim  1.10E+2     -> 110
+trm106 trim  1.00E+2     -> 100
+trm107 trim  1.100E+3    -> 1100
+trm108 trim  1.000E+3    -> 1000
+trm109 trim  1.000000E+6 -> 1000000
+trm110 trim -11          -> -11
+trm111 trim -10          -> -10
+trm112 trim -10.         -> -10
+trm113 trim -1.1E+1      -> -11
+trm114 trim -1.0E+1      -> -10
+trm115 trim -1.10E+2     -> -110
+trm116 trim -1.00E+2     -> -100
+trm117 trim -1.100E+3    -> -1100
+trm118 trim -1.000E+3    -> -1000
+trm119 trim -1.000000E+6 -> -1000000
+
+-- Null test
+trm400 trim  # -> ? Invalid_operation
+

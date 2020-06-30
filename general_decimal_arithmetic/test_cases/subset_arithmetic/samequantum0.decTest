@@ -1,0 +1,101 @@
+------------------------------------------------------------------------
+-- samequantum0.decTest -- check quantums match                       --
+-- Copyright (c) Mike Cowlishaw,  1981, 2010.  All rights reserved.   --
+-- Parts copyright (c) IBM Corporation, 1981, 2008.                   --
+------------------------------------------------------------------------
+-- Please see the document "General Decimal Arithmetic Testcases"     --
+-- at http://speleotrove.com/decimal for the description of           --
+-- these testcases.                                                   --
+--                                                                    --
+-- These testcases are experimental ('beta' versions), and they       --
+-- may contain errors.  They are offered on an as-is basis.  In       --
+-- particular, achieving the same results as the tests here is not    --
+-- a guarantee that an implementation complies with any Standard      --
+-- or specification.  The tests are not exhaustive.                   --
+--                                                                    --
+-- Please send comments, suggestions, and corrections to the author:  --
+--   Mike Cowlishaw, mfc@speleotrove.com                              --
+------------------------------------------------------------------------
+version: 2.62
+
+extended:    0
+precision:   9
+rounding:    half_up
+maxExponent: 999
+minExponent: -999
+
+samq001 samequantum  0      0      ->  1
+samq002 samequantum  0      1      ->  1
+samq003 samequantum  1      0      ->  1
+samq004 samequantum  1      1      ->  1
+
+samq011 samequantum  10     1E+1   -> 0
+samq012 samequantum  10E+1  10E+1  -> 1
+samq013 samequantum  100    10E+1  -> 0
+samq014 samequantum  100    1E+2   -> 0
+samq015 samequantum  0.1    1E-2   -> 0
+samq016 samequantum  0.1    1E-1   -> 1
+samq017 samequantum  0.1    1E-0   -> 0
+samq018 samequantum  999    999    -> 1
+samq019 samequantum  999E-1 99.9   -> 1
+samq020 samequantum  111E-1 22.2   -> 1
+samq021 samequantum  111E-1 1234.2 -> 1
+
+-- combinations
+
+samq0413 samequantum  -7E+3    -7E+3  -> 1
+samq0414 samequantum  -7E+3    -7     -> 0
+samq0415 samequantum  -7E+3    -7E-3  -> 0
+samq0420 samequantum  -7E+3     0     -> 0
+samq0422 samequantum  -7E+3     7E-3  -> 0
+samq0423 samequantum  -7E+3     7     -> 0
+samq0424 samequantum  -7E+3     7E+3  -> 1
+
+samq0513 samequantum  -7      -7E+3  -> 0
+samq0514 samequantum  -7      -7     -> 1
+samq0515 samequantum  -7      -7E-3  -> 0
+samq0520 samequantum  -7       0     -> 1
+samq0522 samequantum  -7       7E-3  -> 0
+samq0523 samequantum  -7       7     -> 1
+samq0524 samequantum  -7       7E+3  -> 0
+
+samq0613 samequantum  -7E-3    -7E+3  -> 0
+samq0614 samequantum  -7E-3    -7     -> 0
+samq0615 samequantum  -7E-3    -7E-3  -> 1
+samq0620 samequantum  -7E-3     0     -> 0
+samq0622 samequantum  -7E-3     7E-3  -> 1
+samq0623 samequantum  -7E-3     7     -> 0
+samq0624 samequantum  -7E-3     7E+3  -> 0
+
+samq1213 samequantum  0       -7E+3  -> 0
+samq1214 samequantum  0       -7     -> 1
+samq1215 samequantum  0       -7E-3  -> 0
+samq1220 samequantum  0        0     -> 1
+samq1222 samequantum  0        7E-3  -> 0
+samq1223 samequantum  0        7     -> 1
+samq1224 samequantum  0        7E+3  -> 0
+
+samq1413 samequantum  7E-3    -7E+3  -> 0
+samq1414 samequantum  7E-3    -7     -> 0
+samq1415 samequantum  7E-3    -7E-3  -> 1
+samq1420 samequantum  7E-3     0     -> 0
+samq1422 samequantum  7E-3     7E-3  -> 1
+samq1423 samequantum  7E-3     7     -> 0
+samq1424 samequantum  7E-3     7E+3  -> 0
+
+samq1513 samequantum  7      -7E+3  -> 0
+samq1514 samequantum  7      -7     -> 1
+samq1515 samequantum  7      -7E-3  -> 0
+samq1520 samequantum  7       0     -> 1
+samq1522 samequantum  7       7E-3  -> 0
+samq1523 samequantum  7       7     -> 1
+samq1524 samequantum  7       7E+3  -> 0
+
+samq1613 samequantum  7E+3    -7E+3  -> 1
+samq1614 samequantum  7E+3    -7     -> 0
+samq1615 samequantum  7E+3    -7E-3  -> 0
+samq1620 samequantum  7E+3     0     -> 0
+samq1622 samequantum  7E+3     7E-3  -> 0
+samq1623 samequantum  7E+3     7     -> 0
+samq1624 samequantum  7E+3     7E+3  -> 1
+
