@@ -73,6 +73,24 @@
         "utility": "cpp",
         "variant": "cpp",
         "vector": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "__functional_03": "cpp",
+        "__functional_base_03": "cpp",
+        "valarray": "cpp",
+        "charconv": "cpp",
+        "cinttypes": "cpp",
+        "clocale": "cpp",
+        "codecvt": "cpp",
+        "condition_variable": "cpp",
+        "csignal": "cpp",
+        "coroutine": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "queue": "cpp",
+        "scoped_allocator": "cpp",
+        "strstream": "cpp",
+        "typeindex": "cpp",
+        "unordered_set": "cpp",
+        "pointers": "cpp"
     }
 }
