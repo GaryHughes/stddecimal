@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <libgen.h>
 #include <boost/program_options.hpp>
+#include "test_file.hpp"
 
 namespace po = boost::program_options;
 
@@ -27,7 +28,7 @@ int main(int argc, char**argv)
         po::variables_map variables;
         po::store(po::command_line_parser(argc, argv).options(options).positional(positional).run(), variables);
 
-        if (variables.count(option_help))
+        if (variables.count(option_help) || !variables.count(option_files))
         {
             std::cout << "usage: " << basename(const_cast<char*>(argv[0])) << " [--help] [FILE]...\n" 
                       << options << std::endl;
@@ -36,8 +37,21 @@ int main(int argc, char**argv)
 
         po::notify(variables);
 
-        
+        for (const auto& filename : variables[option_files].as<input_file_collection>())
+        {
+            try
+            {
+                test_file file;
+                file.process(filename);
+                std::cout << filename << std::endl;
 
+            
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << "ERROR processing file " << filename << " : " << e.what() << std::endl;
+            }
+        }
     }
     catch (std::exception& ex)
     {

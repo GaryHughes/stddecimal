@@ -7,9 +7,7 @@ class test_file
 {
 public:
 
-    test_file(const std::string& filename);
-
-    
+    void process(const std::string& filename);
 
 };
 
