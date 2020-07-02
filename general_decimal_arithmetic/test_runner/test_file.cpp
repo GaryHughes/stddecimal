@@ -89,7 +89,19 @@ result test_file::process_test(const test& test)
     if (test.operation == "add") {
         return result::fail;
     }
-    
+
+    if (test.operation == "subtract") {
+        return result::fail;
+    }
+
+    if (test.operation == "divide") {
+        return result::fail;
+    }
+
+    if (test.operation == "multiply") {
+        return result::fail;
+    }
+
     std::cerr << "skipping: " << test.id << '\n';
 
     return result::skip;

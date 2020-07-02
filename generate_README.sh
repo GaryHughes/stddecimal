@@ -27,7 +27,7 @@ if [ -f extended_64_results.md ]; then
 fi
 
 if [ -f extended_128_results.md ]; then
-    cat extended128_results.md >> README.md
+    cat extended_128_results.md >> README.md
 fi
 
 cat README_footer.md >> README.md
