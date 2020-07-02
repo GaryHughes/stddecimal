@@ -37,29 +37,31 @@ int main(int argc, char**argv)
 
         po::notify(variables);
 
+        test_results results;
+
         for (const auto& filename : variables[option_files].as<input_file_collection>())
         {
             try
             {
-                test_file file;
-                file.process(filename);
+                test_file file(filename, results);
+                file.process();
                 std::cout << filename << std::endl;
-
-            
             }
             catch(const std::exception& e)
             {
                 std::cerr << "ERROR processing file " << filename << " : " << e.what() << std::endl;
             }
         }
+
+        std::cout << "Passed: " << results.passed() << " Failed: " << results.failed() << " Skipped: " << results.skipped() << std::endl;
+
+        return results.failed() > 0;
     }
     catch (std::exception& ex)
     {
         std::cerr << ex.what() << std::endl;    
         return 1;
     }
-
-    return 0;
 }
 
 

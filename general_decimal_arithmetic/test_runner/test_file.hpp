@@ -3,21 +3,32 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
+#include "test_results.hpp"
+
+struct test
+{
+    std::string id;
+    std::string operation; 
+    std::vector<std::string> operands; 
+    std::string expected_result;
+    std::vector<std::string> conditions;
+};
 
 class test_file
 {
 public:
 
-    void process(const std::string& filename);
+    test_file(const std::string& filename, test_results& results);
+
+    void process();
 
 private:
 
-    void process_test(const std::string& id,
-                      const std::string& operation, 
-                      const std::vector<std::string>& operands, 
-                      const std::string& result, 
-                      const std::vector<std::string>& conditions);
-
+    result process_test(const test& test);
+   
+    std::ifstream m_is;
+    test_results& m_results;
 
 };
 

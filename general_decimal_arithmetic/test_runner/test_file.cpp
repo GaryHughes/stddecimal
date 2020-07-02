@@ -4,16 +4,21 @@
 #include <iostream>
 #include <boost/algorithm/string/trim_all.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string.hpp>
 #include "test_context.hpp"
 
-void test_file::process(const std::string& filename)
-{
-    std::ifstream is(filename);
 
-    if (!is) {
+test_file::test_file(const std::string& filename, test_results& results)
+:   m_is(filename),
+    m_results(results)
+{
+    if (!m_is) {
         throw std::runtime_error("Unable to open test file '" + filename + "'");
     }
+}
 
+void test_file::process()
+{
     // Lines with no characters, or only space characters. These lines are treated as commentary and are ignored.
     const std::regex empty_line_regex("^\\s*");
     // If the first two characters of a token are two hyphens (--) the token indicates the start of a comment. The two-hyphen 
@@ -26,11 +31,11 @@ void test_file::process(const std::string& filename)
     
     test_context context;
 
-    while (is) 
+    while (m_is) 
     {
         std::string line;
     
-        if (!std::getline(is, line)) {
+        if (!std::getline(m_is, line)) {
             break;
         }
 
@@ -54,18 +59,23 @@ void test_file::process(const std::string& filename)
         }
 
         if (std::regex_match(line, match, test_regex)) {
-            auto id = match[1].str();
-            auto operation = match[2].str();
-            std::vector<std::string> operands;
+            test test;
+            test.id = match[1].str();
+            test.operation = match[2].str();
+            boost::algorithm::to_lower(test.operation);
             auto operand_string{match[3].str()};
             boost::trim(operand_string);
-            boost::split(operands, operand_string, boost::is_any_of("\t "), boost::token_compress_on);
-            auto result = match[4];
-            std::vector<std::string> conditions;
+            boost::split(test.operands, operand_string, boost::is_any_of("\t "), boost::token_compress_on);
+            test.expected_result = match[4];
             auto condition_string{match[5].str()};
             boost::trim(condition_string);
-            boost::split(conditions, condition_string, boost::is_any_of("\t "), boost::token_compress_on);
-            process_test(id, operation, operands, result, conditions);
+            boost::split(test.conditions, condition_string, boost::is_any_of("\t "), boost::token_compress_on);
+            try {
+                m_results.record(process_test(test));
+            }
+            catch (std::exception& ex) {
+                m_results.record(result::fail);
+            }
             continue;
         }
 
@@ -74,19 +84,17 @@ void test_file::process(const std::string& filename)
     }
 }
 
-void test_file::process_test(const std::string& id,
-                             const std::string& operation, 
-                             const std::vector<std::string>& operands, 
-                             const std::string& result, 
-                             const std::vector<std::string>& conditions)
+result test_file::process_test(const test& test)
 {
-    // std::cout << "TEST " << id << " " << operation << " OP " << operands.size() << " -> " << result << " COND " << conditions.size() << std::endl;
-    // for (const auto& operand : operands) {
-    //     std::cout << "  " << operand << '\n';
-    // }
+    if (test.operation == "add") {
+        return result::fail;
+    }
+    
+    std::cout << "skipping: " << test.id << '\n';
 
-
-
+    return result::skip;
 }
+
+
 
 
