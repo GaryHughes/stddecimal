@@ -10,3 +10,5 @@ This is an implementation of the proposed C++ [ISO/IEC JTC1 SC22 WG21 N2849](htt
 I've used [this implementation](https://sourceforge.net/p/stddecimal/code/HEAD/tree/trunk/) successfully in the past however I wanted build a modern version that relied on templates instead of macros to generate the numerous operators required.
 
 # Testing
+
+The library is validated using the [General Decimal Arithmetic Test Cases](http://speleotrove.com/decimal/dectest.html). Test cases that are not applicable or not yet supported will be explicitly skipped.
