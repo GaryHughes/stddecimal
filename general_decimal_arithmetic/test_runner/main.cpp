@@ -19,11 +19,11 @@ int main(int argc, char**argv)
     {
         po::options_description options;
 
-        int bits;
+        unsigned int bits;
     
         options.add_options()
             (option_help, "display usage")
-            (option_bits, po::value<int>(&bits)->required(), "the decimal width to test 32|64|128")
+            (option_bits, po::value<unsigned int>(&bits)->required(), "the decimal width to test 32|64|128")
             (option_files, po::value<input_file_collection>());
 
         po::positional_options_description positional;
@@ -31,9 +31,8 @@ int main(int argc, char**argv)
 
         po::variables_map variables;
         po::store(po::command_line_parser(argc, argv).options(options).positional(positional).run(), variables);
-
-        // Why is the parser not binding this?
-        bits = variables[option_bits].as<int>();
+       
+        po::notify(variables);
 
         if (variables.count(option_help) || 
             !variables.count(option_files) ||
@@ -43,8 +42,6 @@ int main(int argc, char**argv)
                       << options << std::endl;
             return 1;
         }
-
-        po::notify(variables);
 
         test_results results;
 
