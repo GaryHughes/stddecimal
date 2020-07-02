@@ -21,7 +21,7 @@ jobs:
         ln -s `find . -type f -name test_runner`
     
     - name: test subset decimal32
-      run: LD_LIBRARY_PATH=/usr/local/lib ./test_runner --bits 32 general_decimal_arithmetic/tests/subset/* > subset_32_results.md
+      run: LD_LIBRARY_PATH=/usr/local/lib ./test_runner --bits 32 general_decimal_arithmetic/test_cases/subset/* > subset_32_results.md
     
     - name: Generate README.md
       run: ./generate_README.sh
