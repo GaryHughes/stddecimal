@@ -22,7 +22,13 @@ jobs:
     
     - name: test subset decimal32
       run: LD_LIBRARY_PATH=/usr/local/lib ./test_runner --bits 32 general_decimal_arithmetic/test_cases/subset_arithmetic/* > subset_32_results.md
-    
+
+    - name: test subset decimal64
+      run: LD_LIBRARY_PATH=/usr/local/lib ./test_runner --bits 64 general_decimal_arithmetic/test_cases/subset_arithmetic/* > subset_64_results.md
+
+    - name: test subset decimal128
+      run: LD_LIBRARY_PATH=/usr/local/lib ./test_runner --bits 128 general_decimal_arithmetic/test_cases/subset_arithmetic/* > subset_128_results.md
+
     - name: Generate README.md
       run: ./generate_README.sh
       
