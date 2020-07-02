@@ -3,6 +3,7 @@
 #include <regex>
 #include <iostream>
 #include <boost/algorithm/string/trim_all.hpp>
+#include "test_context.hpp"
 
 void test_file::process(const std::string& filename)
 {
@@ -22,6 +23,8 @@ void test_file::process(const std::string& filename)
     // id operation operand1 operand2 operand3 -> result conditions
     const std::regex test_regex("^\\s*(\\S+)\\s+(\\S+)\\s+((\\S+)\\s+){1,3}->\\s+(\\S+)\\s*(.*)");
     
+    test_context context;
+
     while (is) 
     {
         std::string line;
@@ -43,7 +46,9 @@ void test_file::process(const std::string& filename)
         std::smatch match;
 
         if (std::regex_match(line, match, directive_regex)) {
-            std::cout << "DIRECTIVE " << match[1].str() << " : " << match[2].str() << std::endl;
+            if (context.apply_directive(match[1].str(), match[2].str())) {
+                std::cout << context << std::endl;
+            }
             continue;
         }
 

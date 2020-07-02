@@ -10,6 +10,7 @@ find_package(Boost ${BOOST_VERSION_REQUIRED} EXACT
 
 include_directories(
     "/usr/local/include"
+    "${CMAKE_SOURCE_DIR}/libdecimal"
 )
 
 link_directories(
@@ -32,7 +33,8 @@ endif()
 
 add_executable(test_runner
                main.cpp
-               test_file.hpp test_file.cpp)
+               test_file.hpp test_file.cpp
+               test_context.hpp test_context.cpp)
 
 target_link_libraries(test_runner
                       decimal
