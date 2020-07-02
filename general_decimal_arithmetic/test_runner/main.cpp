@@ -61,14 +61,14 @@ int main(int argc, char**argv)
 
         // |decimal32|0|0|0|
         std::cout << "decimal" << bits << "|" << results.passed() << "|" << results.failed() << "|" << results.skipped() << "|" << std::endl;
-
-        return results.failed() > 0;
     }
     catch (std::exception& ex)
     {
         std::cerr << ex.what() << std::endl;    
         return 1;
     }
+
+    return 0;
 }
 
 
