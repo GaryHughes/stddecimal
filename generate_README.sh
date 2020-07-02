@@ -13,7 +13,7 @@ if [ -f subset_64_results.md ]; then
 fi
 
 if [ -f subset_128_results.md ]; then
-    cat subset128_results.md >> README.md
+    cat subset_128_results.md >> README.md
 fi
 
 cat README_extended_header.md >> README.md
