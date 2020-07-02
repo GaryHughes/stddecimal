@@ -51,7 +51,7 @@ int main(int argc, char**argv)
             {
                 test_file file(filename, results);
                 file.process();
-                std::cout << filename << std::endl;
+                std::cerr << filename << std::endl;
             }
             catch(const std::exception& e)
             {

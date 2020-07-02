@@ -53,7 +53,7 @@ void test_file::process()
 
         if (std::regex_match(line, match, directive_regex)) {
             if (context.apply_directive(match[1].str(), match[2].str())) {
-                std::cout << context << std::endl;
+                std::cerr << context << std::endl;
             }
             continue;
         }
@@ -90,7 +90,7 @@ result test_file::process_test(const test& test)
         return result::fail;
     }
     
-    std::cout << "skipping: " << test.id << '\n';
+    std::cerr << "skipping: " << test.id << '\n';
 
     return result::skip;
 }
