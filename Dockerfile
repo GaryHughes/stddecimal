@@ -10,7 +10,8 @@ RUN apt-get update && apt-get install -y \
     cmake \
     curl \
     vim \
-    libtinfo5
+    libtinfo5 \
+    git
 
 #
 # Clang
