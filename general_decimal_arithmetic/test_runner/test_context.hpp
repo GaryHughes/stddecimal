@@ -15,6 +15,7 @@ public:
     const std::optional<unsigned int>& precision() const;
     const std::optional<int>& min_exponent() const;
     const std::optional<unsigned int>& max_exponent() const;
+    bool clamp() const;
 
 private:
 
@@ -22,11 +23,13 @@ private:
     int parse_min_exponent(const std::string& input) const;
     unsigned int parse_max_exponent(const std::string& input) const;
     unsigned int parse_precision(const std::string& input) const;
+    bool parse_clamp(const std::string& value) const;
 
     std::optional<int> m_rounding;
     std::optional<unsigned int> m_max_exponent;
     std::optional<int> m_min_exponent;
     std::optional<unsigned int> m_precision;
+    bool m_clamp = false;
 
 };
 

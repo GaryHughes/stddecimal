@@ -73,10 +73,26 @@ unsigned int test_context::parse_precision(const std::string& input) const
     }
 }
 
+bool test_context::parse_clamp(const std::string& input) const
+{
+    std::string value{input};
+    boost::algorithm::trim(value);
+    try {
+        return std::stoi(value) != 0;
+    }
+    catch (std::exception& ex) {
+        throw std::runtime_error("unable to parse clamp: " + value);        
+    }
+}
+
 bool test_context::apply_directive(const std::string& name, const std::string& value)
 {
     auto directive{name};
     boost::algorithm::to_lower(directive);
+
+    if (directive == "dectest") {
+        return false;
+    }
 
     if (directive == "version") {
         return false;
@@ -106,6 +122,11 @@ bool test_context::apply_directive(const std::string& name, const std::string& v
         return true;
     }
 
+    if (directive == "clamp") {
+        m_clamp = parse_clamp(value);
+        return true;
+    }
+
     throw std::runtime_error("unhandled directive: " + name);
 }
 
@@ -129,13 +150,19 @@ const std::optional<unsigned int>& test_context::max_exponent() const
     return m_max_exponent;
 }
 
+bool test_context::clamp() const
+{
+    return m_clamp;
+}
+
 std::ostream& operator<<(std::ostream& os, test_context& context)
 {
     os  << "context {\n"
-        << "    rounding :     " << (context.rounding() ? std::to_string(*context.rounding()) : "") << '\n'
-        << "    precision :    " << (context.precision() ? std::to_string(*context.precision()) : "") << '\n'
+        << "    rounding     : " << (context.rounding() ? std::to_string(*context.rounding()) : "") << '\n'
+        << "    precision    : " << (context.precision() ? std::to_string(*context.precision()) : "") << '\n'
         << "    min exponent : " << (context.min_exponent() ? std::to_string(*context.min_exponent()) : "") << '\n'
         << "    max exponent : " << (context.max_exponent() ? std::to_string(*context.max_exponent()) : "") << '\n'
+        << "    clamp:       : " << context.clamp() << '\n'
         << "}";
     return os;
 }
