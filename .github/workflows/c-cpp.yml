@@ -21,4 +21,17 @@ jobs:
         ln -s `find . -type f -name test_runner`
     
     - name: test subset decimal32
-      run: LD_LIBRARY_PATH=/usr/local/lib ./test_runner --bits 32 general_decimal_arithmetic/tests/subset/* > subset_32_results.md.
+      run: LD_LIBRARY_PATH=/usr/local/lib ./test_runner --bits 32 general_decimal_arithmetic/tests/subset/* > subset_32_results.md
+    
+    - name: Generate README.md
+      run: ./generate_README.sh
+      
+    - name: Commit README.md
+      uses: EndBug/add-and-commit@v4
+      with:
+        author_name: stddecmal
+        author_email: stddecimal@example.com
+        message: "Update test results"
+        add: "README.md"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
