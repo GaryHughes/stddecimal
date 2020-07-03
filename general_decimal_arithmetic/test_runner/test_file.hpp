@@ -168,6 +168,37 @@ private:
             return abs_test<typename traits::decimal_type>::run(test);
         }
 
+        if (test.operation == "plus") {
+            return plus_test<typename traits::decimal_type>::run(test);
+        }
+
+        // comparetotal0.decTest	
+        // fma0.decTest		
+        // max0.decTest		
+        // randoms0.decTest	
+        // rescale0.decTest	
+        // inexact0.decTest	
+        // min0.decTest		
+        // power0.decTest		
+        // reduce0.decTest		
+        // rounding0.decTest	
+        // testall0.decTest
+        // base0.decTest		
+        // divideint0.decTest	
+        // ln0.decTest		
+        // minus0.decTest		
+        // quantize0.decTest	
+        // remainder0.decTest	
+        // samequantum0.decTest	
+        // tointegral0.decTest
+        // compare0.decTest	
+        // exp0.decTest		
+        // log100.decTest		
+        // randombound320.decTest	
+        // remaindernear0.decTest	
+        // squareroot0.decTest	
+        // trim0.decTest
+
         std::cerr << "skipping: " << test.id << '\n';
 
         return result::skip;

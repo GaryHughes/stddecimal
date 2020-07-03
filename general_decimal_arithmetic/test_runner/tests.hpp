@@ -233,5 +233,21 @@ public:
 
 };
 
+template<typename DecimalType>
+class plus_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
+        auto actual = +x;
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
 
 #endif
