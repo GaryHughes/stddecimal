@@ -16,9 +16,9 @@ The library is validated using the [General Decimal Arithmetic Test Cases](http:
 
 |Type|Passed|Failed|Skipped|
 |----|:----:|:----:|:-----:|
-decimal32|0|4623|10840|
-decimal64|0|4623|10840|
-decimal128|0|4623|10840|
+decimal32|3270|1353|10840|
+decimal64|2529|2094|10840|
+decimal128|1875|2748|10840|
 ## Extended Arithmetic
 
 |Type|Passed|Failed|Skipped|
