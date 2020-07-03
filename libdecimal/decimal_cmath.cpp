@@ -84,6 +84,39 @@ decimal128 quantized128(decimal128 x, decimal128 y)
     return quantize(x, y);
 }
 
+decimal32 log10d32(decimal32 x)
+{
+    fenv_t env;
+    // TODO
+    fe_dec_getenv(&env);
+    decimal32 result;
+    bid32_log10(x.value(), env.round, &env.flags);
+    fe_dec_setenv(&env);
+    return result;
+} 
+
+decimal64 log10d64(decimal64 x)
+{
+    fenv_t env;
+    // TODO
+    fe_dec_getenv(&env);
+    decimal64 result;
+    bid64_log10(x.value(), env.round, &env.flags);
+    fe_dec_setenv(&env);
+    return result;
+} 
+
+decimal128 log10d128(decimal128 x)
+{
+    fenv_t env;
+    // TODO
+    fe_dec_getenv(&env);
+    decimal128 result;
+    bid128_log10(x.value(), env.round, &env.flags);
+    fe_dec_setenv(&env);
+    return result;
+}
+
 decimal32 powd32(decimal32 x, decimal32 y)
 {
     fenv_t env;

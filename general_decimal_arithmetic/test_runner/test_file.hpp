@@ -184,6 +184,10 @@ private:
             return quantize_test<typename traits::decimal_type>::run(test);
         }
 
+        if (test.operation == "log10") {
+            return log10_test<typename traits::decimal_type>::run(test);
+        }
+
         // comparetotal0.decTest	
         // fma0.decTest		
         // max0.decTest		
@@ -202,7 +206,6 @@ private:
         // tointegral0.decTest
         // compare0.decTest	
         // exp0.decTest		
-        // log100.decTest		
         // randombound320.decTest	
         // remaindernear0.decTest	
         // squareroot0.decTest	

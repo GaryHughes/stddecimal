@@ -117,9 +117,11 @@ decimal128 quantized128 (decimal128 x, decimal128 y);
 // decimal32 logd32 (decimal32 x); 
 // decimal64 logd64 (decimal64 x); 
 // decimal128 logd128 (decimal128 x);
-// decimal32 log10d32 (decimal32 x); 
-// decimal64 log10d64 (decimal64 x); 
-// decimal128 log10d128 (decimal128 x);
+
+decimal32 log10d32(decimal32 x); 
+decimal64 log10d64(decimal64 x); 
+decimal128 log10d128(decimal128 x);
+
 // decimal32 log1pd32 (decimal32 x); 
 // decimal64 log1pd64 (decimal64 x); 
 // decimal128 log1pd128 (decimal128 x);

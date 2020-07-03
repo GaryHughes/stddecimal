@@ -336,4 +336,55 @@ public:
 
 };
 
+template<typename DecimalType>
+class log10_test;
+
+template<>
+class log10_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = std::decimal::log10d32(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class log10_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = std::decimal::log10d64(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class log10_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = std::decimal::log10d128(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
 #endif
