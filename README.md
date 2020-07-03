@@ -23,6 +23,9 @@ decimal128|6047|2630|6786|
 
 |Type|Passed|Failed|Skipped|
 |----|:----:|:----:|:-----:|
+decimal32|10992|3158|38578|
+decimal64|11003|3147|38578|
+decimal128|11068|3082|38578|
 # Building
 
 * std::decimal currently requires a C++ 17 compiler. It is built and tested on macOS with Apple Clang from the latest Xcode and on Ubuntu with Clang 10.
