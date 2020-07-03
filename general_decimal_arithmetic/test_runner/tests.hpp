@@ -17,8 +17,8 @@ struct test
 
     void validate_operands(size_t required_count) const
     {
-        if (operands.size() != 2) {
-            throw std::runtime_error("incorrect number of operands, expected 2 got " + std::to_string(operands.size()));
+        if (operands.size() != required_count) {
+            throw std::runtime_error("incorrect number of operands, expected " + std::to_string(required_count) + " got " + std::to_string(operands.size()));
         }
     }
 };
