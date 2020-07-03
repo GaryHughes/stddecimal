@@ -49,8 +49,19 @@ int main(int argc, char**argv)
         {
             try
             {
-                test_file file(filename, results);
-                file.process();
+                if (bits == 32) {
+                    test_file<32> file(filename, results);
+                    file.process();
+                }
+                else if (bits == 64) {
+                    test_file<64> file(filename, results);
+                    file.process();
+                }
+                else if (bits == 128) {
+                    test_file<128> file(filename, results);
+                    file.process();
+                }
+
                 std::cerr << filename << std::endl;
             }
             catch(const std::exception& e)

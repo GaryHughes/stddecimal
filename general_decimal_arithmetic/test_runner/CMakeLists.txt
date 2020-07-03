@@ -33,7 +33,7 @@ endif()
 
 add_executable(test_runner
                main.cpp
-               test_file.hpp test_file.cpp
+               test_file.hpp
                test_context.hpp test_context.cpp
                test_results.hpp)
 

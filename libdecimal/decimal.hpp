@@ -1,4 +1,4 @@
-#include <iosfwd>
+#include <ios>
 #include <exception>
 #include <string>
 #include <IntelRDFPMathLib20U2/LIBRARY/src/bid_conf.h>
@@ -711,7 +711,26 @@ bool operator>=(LHS lhs, RHS rhs)
 template <class charT, class traits>
 std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal32 & d) 
 {
-    // TODO 
+    // TODO
+    std::string buffer;
+    if (!(is >> buffer)) {
+        return is;
+    }
+    
+    fenv_t fpenv;
+    
+    if (fe_dec_getenv(&fpenv)) {
+        is.setstate(std::ios::failbit);
+    }
+  
+    auto value = bid32_from_string(const_cast<char*>(buffer.c_str()), fe_dec_getround(), &fpenv.flags);
+  
+    if (fe_dec_setenv(&fpenv)) {
+        is.setstate(std::ios::failbit);
+    }
+
+    d.value(value);
+
     return is; 
 }
 
@@ -719,6 +738,25 @@ template <class charT, class traits>
 std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal64 & d) 
 {
     // TODO 
+    std::string buffer;
+    if (!(is >> buffer)) {
+        return is;
+    }
+    
+    fenv_t fpenv;
+    
+    if (fe_dec_getenv(&fpenv)) {
+        is.setstate(std::ios::failbit);
+    }
+  
+    auto value = bid64_from_string(const_cast<char*>(buffer.c_str()), fe_dec_getround(), &fpenv.flags);
+  
+    if (fe_dec_setenv(&fpenv)) {
+        is.setstate(std::ios::failbit);
+    }
+
+    d.value(value);
+
     return is; 
 }
 
@@ -726,7 +764,26 @@ template <class charT, class traits>
 std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal128 & d) 
 {
     // TODO 
-    return is; 
+    std::string buffer;
+    if (!(is >> buffer)) {
+        return is;
+    }
+    
+    fenv_t fpenv;
+    
+    if (fe_dec_getenv(&fpenv)) {
+        is.setstate(std::ios::failbit);
+    }
+  
+    auto value = bid128_from_string(const_cast<char*>(buffer.c_str()), fe_dec_getround(), &fpenv.flags);
+  
+    if (fe_dec_setenv(&fpenv)) {
+        is.setstate(std::ios::failbit);
+    }
+
+    d.value(value);
+
+    return is;  
 }
 
 // 3.2.11 Formatted output:
