@@ -172,6 +172,10 @@ private:
             return plus_test<typename traits::decimal_type>::run(test);
         }
 
+        if (test.operation == "minus") {
+            return minus_test<typename traits::decimal_type>::run(test);
+        }
+
         // comparetotal0.decTest	
         // fma0.decTest		
         // max0.decTest		
@@ -186,7 +190,6 @@ private:
         // base0.decTest		
         // divideint0.decTest	
         // ln0.decTest		
-        // minus0.decTest		
         // quantize0.decTest	
         // remainder0.decTest	
         // samequantum0.decTest	
