@@ -69,6 +69,12 @@ public:
             }
 
             if (std::regex_match(line, match, test_regex)) {
+
+                if (context.clamp()) {
+                    m_results.record(result::skip);
+                    continue;
+                }
+
                 test test;
                 test.id = match[1].str();
                 test.operation = match[2].str();
@@ -77,12 +83,23 @@ public:
                 boost::trim(operand_string);
                 boost::split(test.operands, operand_string, boost::is_any_of("\t "), boost::token_compress_on);
                 test.expected_result = match[4];
-                auto condition_string{match[5].str()};
-                boost::trim(condition_string);
-                boost::split(test.conditions, condition_string, boost::is_any_of("\t "), boost::token_compress_on);
+                test.expected_conditions_string = match[5].str();
+                boost::trim(test.expected_conditions_string);
+                boost::algorithm::to_lower(test.expected_conditions_string);
+                test.expected_conditions = parse_conditions(test.expected_conditions_string);
                 try {
                     context.apply_rounding();
+                    std::decimal::set_exceptions(std::decimal::FE_DEC_ALL_EXCEPT);
                     m_results.record(process_test(test));
+                }
+                catch (std::decimal::exception& ex) {
+                    if (ex.flags() != test.expected_conditions) {
+                        report_failure(test, ex.flags());
+                        m_results.record(result::fail);
+                    }
+                    else {
+                        m_results.record(result::pass);
+                    }
                 }
                 catch (std::exception& ex) {
                     m_results.record(result::fail);
@@ -93,6 +110,32 @@ public:
 
             throw std::runtime_error("Unrecognised line [" + line + "]");
         }
+    }
+
+    std::decimal::fexcept_t parse_conditions(const std::string& condition_string)
+    {
+        std::vector<std::string> conditions;
+        boost::split(conditions, condition_string, boost::is_any_of("\t "), boost::token_compress_on);
+        std::decimal::fexcept_t res = 0;
+        for (const auto& condition : conditions) {
+
+                // clamped                 NA
+            if (condition == "conversion_syntax")           {   res |= std::decimal::FE_DEC_INVALID;    }
+            else if (condition == "division_by_zero") 	    {   res |= std::decimal::FE_DEC_DIVBYZERO;  }
+            else if (condition == "division_impossible")    {   res |= std::decimal::FE_DEC_INVALID;    }
+            else if (condition == "division_undefined")     {   res |= std::decimal::FE_DEC_INVALID;    }
+            else if (condition == "inexact")	            {   res |= std::decimal::FE_DEC_INEXACT;    }
+            else if (condition == "insufficient_storage")   {   res |= std::decimal::FE_DEC_INVALID;    }
+            else if (condition == "invalid_context")        {   res |= std::decimal::FE_DEC_INVALID;    }
+            else if (condition == "invalid_operation")      {   res |= std::decimal::FE_DEC_INVALID;    }
+                // lost_digits	            (no equivalent)
+            else if (condition == "overflow")               {   res |= std::decimal::FE_DEC_OVERFLOW;   } 
+            // TODO dectest says IEEE has no equivalent, we get inexact so use that for now and investigate later
+            else if (condition == "rounded")                {   res |= std::decimal::FE_DEC_INEXACT;    } 
+                // subnormal	        	(no equivalent)
+            else if (condition == "underflow")              {   res |= std::decimal::FE_DEC_UNDERFLOW;  }
+        }
+        return res;
     }
 
 private:

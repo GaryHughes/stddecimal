@@ -2,7 +2,7 @@
 #define stddecimal_general_decimal_arithmetic_test_runner_tests_hpp
 
 #include <vector>
-#include <string>
+#include <set>
 #include <decimal.hpp>
 #include <decimal_cmath.hpp> 
 #include "test_results.hpp"
@@ -10,10 +10,11 @@
 struct test
 {
     std::string id;
-    std::string operation; 
+    std::string operation;
     std::vector<std::string> operands; 
     std::string expected_result;
-    std::vector<std::string> conditions;
+    std::string expected_conditions_string;
+    std::decimal::fexcept_t expected_conditions;
 
     void validate_operands(size_t required_count) const
     {
@@ -49,9 +50,28 @@ void report_failure(const test& test, DecimalType expected, DecimalType actual)
     for (const auto& operand : test.operands) {
         std::cerr << operand << " ";
     }
-    std::cerr << "-> " << test.expected_result;
-    // conditions
+    std::cerr << "-> " << test.expected_result << " " << test.expected_conditions_string;
+    // for (const auto& condition : test.conditions) {
+    //     std::cerr << condition << " ";
+    // }
     std::cerr << " (actual " << actual << ")\n";
+}
+
+void report_failure(const test& test, std::decimal::fexcept_t actual) 
+{
+    std::cerr << "FAILURE " << test.expected_conditions_string << " expected " << test.expected_conditions << " (";
+    if (test.expected_conditions & std::decimal::FE_DEC_DIVBYZERO) { std::cerr << "FE_DEC_DIVBYZERO "; } 
+    if (test.expected_conditions & std::decimal::FE_DEC_INEXACT) { std::cerr << "FE_DEC_INEXACT "; }
+    if (test.expected_conditions & std::decimal::FE_DEC_INVALID) { std::cerr << "FE_DEC_INVALID "; }
+    if (test.expected_conditions & std::decimal::FE_DEC_OVERFLOW) { std::cerr << "FE_DEC_OVERFLOW "; }
+    if (test.expected_conditions & std::decimal::FE_DEC_UNDERFLOW) { std::cerr << "FE_DEC_UNDERFLOW "; }
+    std::cerr << ") actual " << actual << " (";
+    if (actual & std::decimal::FE_DEC_DIVBYZERO) { std::cerr << "FE_DEC_DIVBYZERO "; } 
+    if (actual & std::decimal::FE_DEC_INEXACT) { std::cerr << "FE_DEC_INEXACT "; }
+    if (actual & std::decimal::FE_DEC_INVALID) { std::cerr << "FE_DEC_INVALID "; }
+    if (actual & std::decimal::FE_DEC_OVERFLOW) { std::cerr << "FE_DEC_OVERFLOW "; }
+    if (actual & std::decimal::FE_DEC_UNDERFLOW) { std::cerr << "FE_DEC_UNDERFLOW "; }
+    std::cerr << ")\n";
 }
 
 template<typename DecimalType>
