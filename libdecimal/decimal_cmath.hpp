@@ -147,13 +147,14 @@ namespace decimal {
 // decimal32 hypotd32 (decimal32 x, decimal32 y); 
 // decimal64 hypotd64 (decimal64 x, decimal64 y); 
 // decimal128 hypotd128 (decimal128 x, decimal128 y);
-// decimal32 powd32 (decimal32 x, decimal32 y); 
-// decimal64 powd64 (decimal64 x, decimal64 y); 
-// decimal128 powd128 (decimal128 x, decimal128 y);
 
-decimal32 sqrtd32 (decimal32 x); 
-decimal64 sqrtd64 (decimal64 x); 
-decimal128 sqrtd128 (decimal128 x);
+decimal32 powd32(decimal32 x, decimal32 y); 
+decimal64 powd64(decimal64 x, decimal64 y); 
+decimal128 powd128(decimal128 x, decimal128 y);
+
+decimal32 sqrtd32(decimal32 x); 
+decimal64 sqrtd64(decimal64 x); 
+decimal128 sqrtd128(decimal128 x);
 
 // error and gamma functions: decimal32 erfd32 (decimal32 x); decimal64 erfd64 (decimal64 x); decimal128 erfd128 (decimal128 x);
 // decimal32 erfcd32 (decimal32 x); 

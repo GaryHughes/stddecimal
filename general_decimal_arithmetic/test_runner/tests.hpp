@@ -265,5 +265,58 @@ public:
 
 };
 
+template<typename DecimalType>
+class power_test;
+
+template<>
+class power_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal32>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = std::decimal::powd32(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class power_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal64>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = std::decimal::powd64(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class power_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal128>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = std::decimal::powd128(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
 
 #endif

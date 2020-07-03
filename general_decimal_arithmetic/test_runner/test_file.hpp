@@ -176,6 +176,10 @@ private:
             return minus_test<typename traits::decimal_type>::run(test);
         }
 
+        if (test.operation == "power") {
+            return power_test<typename traits::decimal_type>::run(test);
+        }
+
         // comparetotal0.decTest	
         // fma0.decTest		
         // max0.decTest		
@@ -183,7 +187,6 @@ private:
         // rescale0.decTest	
         // inexact0.decTest	
         // min0.decTest		
-        // power0.decTest		
         // reduce0.decTest		
         // rounding0.decTest	
         // testall0.decTest

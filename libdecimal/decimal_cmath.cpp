@@ -36,30 +36,69 @@ bool isnan(decimal::decimal128 value)
 namespace decimal
 {
 
+decimal32 powd32(decimal32 x, decimal32 y)
+{
+    fenv_t env;
+    // TODO
+    fe_dec_getenv(&env);
+    decimal32 result;
+    result.value(bid32_pow(x.value(), y.value(), env.round, &env.flags));
+    fe_dec_setenv(&env);
+    return result;
+} 
+
+decimal64 powd64(decimal64 x, decimal64 y)
+{
+    fenv_t env;
+    // TODO
+    fe_dec_getenv(&env);
+    decimal64 result;
+    result.value(bid64_pow(x.value(), y.value(), env.round, &env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
+decimal128 powd128(decimal128 x, decimal128 y)
+{
+    fenv_t env;
+    // TODO
+    fe_dec_getenv(&env);
+    decimal128 result;
+    result.value(bid128_pow(x.value(), y.value(), env.round, &env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
 decimal32 sqrtd32 (decimal32 value)
 {
     fenv_t env;
+    // TODO
     fe_dec_getenv(&env);
     decimal32 result;
     result.value(bid32_sqrt(value.value(), env.round, &env.flags));
+    fe_dec_setenv(&env);
     return result;
 } 
 
 decimal64 sqrtd64 (decimal64 value)
 {
     fenv_t env;
+    // TODO
     fe_dec_getenv(&env);
     decimal64 result;
     result.value(bid64_sqrt(value.value(), env.round, &env.flags));
+    fe_dec_setenv(&env);
     return result;
 } 
 
 decimal128 sqrtd128 (decimal128 value)
 {
     fenv_t env;
+    // TODO
     fe_dec_getenv(&env);
     decimal128 result;
     result.value(bid128_sqrt(value.value(), env.round, &env.flags));
+    fe_dec_setenv(&env);
     return result;
 }
 
