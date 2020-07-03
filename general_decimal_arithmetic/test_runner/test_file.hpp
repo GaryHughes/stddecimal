@@ -160,6 +160,14 @@ private:
             return multiply_test<typename traits::decimal_type>::run(test);
         }
 
+        if (test.operation == "squareroot") {
+            return square_root_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "abs") {
+            return abs_test<typename traits::decimal_type>::run(test);
+        }
+
         std::cerr << "skipping: " << test.id << '\n';
 
         return result::skip;

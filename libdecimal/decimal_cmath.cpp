@@ -33,5 +33,58 @@ bool isnan(decimal::decimal128 value)
     return bid128_isNaN(value.value());
 }
 
+namespace decimal
+{
+
+decimal32 sqrtd32 (decimal32 value)
+{
+    fenv_t env;
+    fe_dec_getenv(&env);
+    decimal32 result;
+    result.value(bid32_sqrt(value.value(), env.round, &env.flags));
+    return result;
+} 
+
+decimal64 sqrtd64 (decimal64 value)
+{
+    fenv_t env;
+    fe_dec_getenv(&env);
+    decimal64 result;
+    result.value(bid64_sqrt(value.value(), env.round, &env.flags));
+    return result;
+} 
+
+decimal128 sqrtd128 (decimal128 value)
+{
+    fenv_t env;
+    fe_dec_getenv(&env);
+    decimal128 result;
+    result.value(bid128_sqrt(value.value(), env.round, &env.flags));
+    return result;
+}
+
+decimal32 abs(decimal32 d)
+{
+    decimal32 result;
+    result.value(bid32_abs(d.value()));
+    return result;
+} 
+
+decimal64 abs(decimal64 d)
+{
+    decimal64 result;
+    result.value(bid64_abs(d.value()));
+    return result;
+} 
+
+decimal128 abs(decimal128 d)
+{
+    decimal128 result;
+    result.value(bid128_abs(d.value()));
+    return result;
+}
+
+}
+
 }
 

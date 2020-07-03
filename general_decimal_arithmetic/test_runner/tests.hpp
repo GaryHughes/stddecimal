@@ -109,6 +109,7 @@ public:
         auto rhs = boost::lexical_cast<DecimalType>(test.operands[1]);
         auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
         auto actual = lhs + rhs;
+        // TODO - we can catch construction inexact for the operands but how can we do it in a tidy manner for the result?
         return evaluate_result(test, expected, actual);
     }
 
@@ -165,6 +166,72 @@ public:
 
 };
 
+template<typename DecimalType>
+class square_root_test;
+
+template<>
+class square_root_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = sqrtd32(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class square_root_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = sqrtd64(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class square_root_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = sqrtd128(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class abs_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
+        auto actual = std::decimal::abs(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
 
 
 #endif

@@ -284,7 +284,7 @@ public:
     explicit decimal32(decimal64 d64);
     explicit decimal32(decimal128 d128);
     explicit decimal32(float r);
-    explicit decimal32(double r); 
+    explicit decimal32(double r);
     explicit decimal32(long double r);
 
     // 3.2.2.3 conversion from integral type: 
