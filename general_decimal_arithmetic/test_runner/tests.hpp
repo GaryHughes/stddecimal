@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <decimal.hpp>
+#include <decimal_cmath.hpp> 
 #include "test_results.hpp"
 
 struct test
@@ -20,7 +21,6 @@ struct test
             throw std::runtime_error("incorrect number of operands, expected 2 got " + std::to_string(operands.size()));
         }
     }
-
 };
 
 struct operation_32bit {
@@ -40,6 +40,25 @@ template<> struct operation_traits<32>  : public operation_32bit {};
 template<> struct operation_traits<64>  : public operation_64bit {};
 template<> struct operation_traits<128>  : public operation_128bit {};
 
+template<typename DecimalType>
+result evaluate_result(DecimalType expected, DecimalType actual)
+{
+    if (std::isnan(expected)) {
+        if (!std::isnan(actual)) {
+            return result::fail;
+        }    
+    }
+    else if (std::isinf(expected)) {
+        if (!std::isinf(actual)) {
+            return result::fail;
+        }
+    }
+    else if (expected != actual) {
+        return result::fail;        
+    }
+
+    return result::pass;
+}    
 
 template<typename DecimalType>
 class add_test
@@ -53,11 +72,11 @@ public:
         auto rhs = boost::lexical_cast<DecimalType>(test.operands[1]);
         auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
         auto actual = lhs + rhs;
-        if (expected == actual) {
-            return result::pass;
+        if (evaluate_result(expected, actual) == result::fail) {
+            std::cerr << "FAIL " << lhs << " + " << rhs << " = " << actual << " (expected " << expected << ")" << std::endl;
+            return result::fail;
         }
-        std::cerr << "FAIL " << lhs << " + " << rhs << " = " << actual << " (expected " << expected << ")" << std::endl;
-        return result::fail;        
+        return result::pass;
     }
 
 };
@@ -74,10 +93,11 @@ public:
         auto rhs = boost::lexical_cast<DecimalType>(test.operands[1]);
         auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
         auto actual = lhs - rhs;
-        if (expected == actual) {
-            return result::pass;
+        if (evaluate_result(expected, actual) == result::fail) {
+            std::cerr << "FAIL " << lhs << " - " << rhs << " = " << actual << " (expected " << expected << ")" << std::endl;
+            return result::fail;
         }
-        return result::fail;        
+        return result::pass;
     }
 
 };
@@ -94,10 +114,11 @@ public:
         auto rhs = boost::lexical_cast<DecimalType>(test.operands[1]);
         auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
         auto actual = lhs * rhs;
-        if (expected == actual) {
-            return result::pass;
+        if (evaluate_result(expected, actual) == result::fail) {
+            std::cerr << "FAIL " << lhs << " * " << rhs << " = " << actual << " (expected " << expected << ")" << std::endl;
+            return result::fail;
         }
-        return result::fail;        
+        return result::pass;
     }
 
 };
@@ -114,10 +135,11 @@ public:
         auto rhs = boost::lexical_cast<DecimalType>(test.operands[1]);
         auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
         auto actual = lhs / rhs;
-        if (expected == actual) {
-            return result::pass;
+        if (evaluate_result(expected, actual) == result::fail) {
+            std::cerr << "FAIL " << lhs << " / " << rhs << " = " << actual << " (expected " << expected << ")" << std::endl;
+            return result::fail;
         }
-        return result::fail;        
+        return result::pass;
     }
 
 };

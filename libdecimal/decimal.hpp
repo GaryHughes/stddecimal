@@ -1,3 +1,6 @@
+#ifndef stddecimal_libdecimal_decimal_hpp
+#define stddecimal_libdecimal_decimal_hpp
+
 #include <ios>
 #include <exception>
 #include <string>
@@ -821,3 +824,5 @@ std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> 
 }
 
 } // namespace std::decimal
+
+#endif

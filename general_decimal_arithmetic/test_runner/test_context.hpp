@@ -17,6 +17,8 @@ public:
     const std::optional<unsigned int>& max_exponent() const;
     bool clamp() const;
 
+    void apply_rounding();
+
 private:
 
     int parse_rounding(const std::string& value) const;

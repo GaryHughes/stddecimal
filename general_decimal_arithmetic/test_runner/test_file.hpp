@@ -81,6 +81,7 @@ public:
                 boost::trim(condition_string);
                 boost::split(test.conditions, condition_string, boost::is_any_of("\t "), boost::token_compress_on);
                 try {
+                    context.apply_rounding();
                     m_results.record(process_test(test));
                 }
                 catch (std::exception& ex) {

@@ -155,6 +155,17 @@ bool test_context::clamp() const
     return m_clamp;
 }
 
+void test_context::apply_rounding()
+{
+    if (!rounding()) {
+        return;
+    }
+
+    if (std::decimal::fe_dec_setround(*rounding())) {
+        throw std::runtime_error("Error setting rounding mode: " + std::to_string(*rounding()));
+    }
+}
+
 std::ostream& operator<<(std::ostream& os, test_context& context)
 {
     os  << "context {\n"
