@@ -183,6 +183,39 @@ decimal128 sqrtd128 (decimal128 value)
     return result;
 }
 
+decimal32 fmad32(decimal32 x, decimal32 y, decimal32 z)
+{
+    fenv_t env;
+    // TODO
+    fe_dec_getenv(&env);
+    decimal32 result;
+    result.value(bid32_fma(x.value(), y.value(), z.value(), env.round, &env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
+decimal64 fmad64(decimal64 x, decimal64 y, decimal64 z)
+{
+    fenv_t env;
+    // TODO
+    fe_dec_getenv(&env);
+    decimal64 result;
+    result.value(bid64_fma(x.value(), y.value(), z.value(), env.round, &env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
+decimal128 fmad128(decimal128 x, decimal128 y, decimal128 z)
+{
+    fenv_t env;
+    // TODO
+    fe_dec_getenv(&env);
+    decimal128 result;
+    result.value(bid128_fma(x.value(), y.value(), z.value(), env.round, &env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
 decimal32 abs(decimal32 d)
 {
     decimal32 result;

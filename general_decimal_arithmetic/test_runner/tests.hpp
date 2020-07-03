@@ -387,4 +387,61 @@ public:
 
 };
 
+template<typename DecimalType>
+class fma_test;
+
+template<>
+class fma_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(3);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal32>(test.operands[1]);
+        auto z = boost::lexical_cast<std::decimal::decimal32>(test.operands[2]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = std::decimal::fmad32(x, y, z);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class fma_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(3);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal64>(test.operands[1]);
+        auto z = boost::lexical_cast<std::decimal::decimal64>(test.operands[2]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = std::decimal::fmad64(x, y, z);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class fma_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(3);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal128>(test.operands[1]);
+        auto z = boost::lexical_cast<std::decimal::decimal128>(test.operands[2]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = std::decimal::fmad128(x, y, z);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
 #endif

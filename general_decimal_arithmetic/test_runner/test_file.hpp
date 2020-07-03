@@ -188,8 +188,11 @@ private:
             return log10_test<typename traits::decimal_type>::run(test);
         }
 
+        if (test.operation == "fma") {
+            return fma_test<typename traits::decimal_type>::run(test);
+        }
+
         // comparetotal0.decTest	
-        // fma0.decTest		
         // max0.decTest		
         // randoms0.decTest	
         // rescale0.decTest	
@@ -208,7 +211,6 @@ private:
         // exp0.decTest		
         // randombound320.decTest	
         // remaindernear0.decTest	
-        // squareroot0.decTest	
         // trim0.decTest
 
         std::cerr << "skipping: " << test.id << '\n';

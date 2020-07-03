@@ -237,12 +237,12 @@ decimal128 sqrtd128(decimal128 x);
 // decimal64 fmind64 (decimal64 x, decimal64 y); 
 // decimal128 fmind128 (decimal128 x, decimal128 y);
 
-// // floating multiply-add:
-// decimal32 fmad32 (decimal32 x, decimal32 y, decimal32 z); 
-// decimal64 fmad64 (decimal64 x, decimal64 y, decimal64 z); 
-// decimal128 fmad128 (decimal128 x, decimal128 y, decimal128 z);
+// floating multiply-add:
+decimal32 fmad32(decimal32 x, decimal32 y, decimal32 z); 
+decimal64 fmad64(decimal64 x, decimal64 y, decimal64 z); 
+decimal128 fmad128(decimal128 x, decimal128 y, decimal128 z);
 
-// // 3.6.6.1 abs function overloads 
+// 3.6.6.1 abs function overloads 
 decimal32 abs(decimal32 d); 
 decimal64 abs(decimal64 d); 
 decimal128 abs(decimal128 d);
