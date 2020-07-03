@@ -39,14 +39,14 @@ namespace decimal {
 // bool samequantumd128 (decimal128 x, decimal128 y);
 
 // // 3.6.5 quantize functions:
-// decimal32 quantize (decimal32 x, decimal32 y); 
-// decimal32 quantized32 (decimal32 x, decimal32 y);
+decimal32 quantize (decimal32 x, decimal32 y); 
+decimal32 quantized32 (decimal32 x, decimal32 y);
 
-// decimal64 quantize (decimal64 x, decimal64 y); 
-// decimal64 quantized64 (decimal64 x, decimal64 y);
+decimal64 quantize (decimal64 x, decimal64 y); 
+decimal64 quantized64 (decimal64 x, decimal64 y);
 
-// decimal128 quantize (decimal128 x, decimal128 y); 
-// decimal128 quantized128 (decimal128 x, decimal128 y);
+decimal128 quantize (decimal128 x, decimal128 y); 
+decimal128 quantized128 (decimal128 x, decimal128 y);
 
 // // 3.6.6 elementary functions:
 // // trigonometric functions: 

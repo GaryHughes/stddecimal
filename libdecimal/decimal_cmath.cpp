@@ -36,6 +36,54 @@ bool isnan(decimal::decimal128 value)
 namespace decimal
 {
 
+decimal32 quantize(decimal32 x, decimal32 y)
+{
+    fenv_t env;
+    // TODO
+    fe_dec_getenv(&env);
+    decimal32 result;
+    bid32_quantize(x.value(), y.value(), env.round, &env.flags);
+    fe_dec_setenv(&env);
+    return result;
+} 
+
+decimal32 quantized32(decimal32 x, decimal32 y)
+{
+    return quantize(x, y);
+}
+
+decimal64 quantize(decimal64 x, decimal64 y)
+{
+    fenv_t env;
+    // TODO
+    fe_dec_getenv(&env);
+    decimal64 result;
+    bid64_quantize(x.value(), y.value(), env.round, &env.flags);
+    fe_dec_setenv(&env);
+    return result;
+}
+
+decimal64 quantized64(decimal64 x, decimal64 y)
+{
+    return quantize(x, y);
+}
+
+decimal128 quantize(decimal128 x, decimal128 y)
+{
+    fenv_t env;
+    // TODO
+    fe_dec_getenv(&env);
+    decimal128 result;
+    bid128_quantize(x.value(), y.value(), env.round, &env.flags);
+    fe_dec_setenv(&env);
+    return result;
+}
+
+decimal128 quantized128(decimal128 x, decimal128 y)
+{
+    return quantize(x, y);
+}
+
 decimal32 powd32(decimal32 x, decimal32 y)
 {
     fenv_t env;

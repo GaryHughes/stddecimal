@@ -180,6 +180,10 @@ private:
             return power_test<typename traits::decimal_type>::run(test);
         }
 
+        if (test.operation == "quantize") {
+            return quantize_test<typename traits::decimal_type>::run(test);
+        }
+
         // comparetotal0.decTest	
         // fma0.decTest		
         // max0.decTest		
@@ -193,7 +197,6 @@ private:
         // base0.decTest		
         // divideint0.decTest	
         // ln0.decTest		
-        // quantize0.decTest	
         // remainder0.decTest	
         // samequantum0.decTest	
         // tointegral0.decTest
