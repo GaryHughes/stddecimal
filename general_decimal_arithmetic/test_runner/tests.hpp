@@ -44,7 +44,7 @@ template<> struct operation_traits<128>  : public operation_128bit {};
 template<typename DecimalType>
 void report_failure(const test& test, DecimalType expected, DecimalType actual)
 {
-    std::cerr << "FAILURE " 
+    std::cerr << "RESULT FAILURE " 
               << test.id << " " 
               << test.operation << " ";
     for (const auto& operand : test.operands) {
@@ -59,7 +59,7 @@ void report_failure(const test& test, DecimalType expected, DecimalType actual)
 
 void report_failure(const test& test, std::decimal::fexcept_t actual) 
 {
-    std::cerr << "FAILURE " << test.id << " " << test.operation << " " << test.expected_conditions_string << " expected " << test.expected_conditions << " (";
+    std::cerr << "EXCEPT FAILURE " << test.id << " " << test.operation << " " << test.expected_conditions_string << " expected " << test.expected_conditions << " (";
     if (test.expected_conditions & std::decimal::FE_DEC_DIVBYZERO) { std::cerr << "FE_DEC_DIVBYZERO "; } 
     if (test.expected_conditions & std::decimal::FE_DEC_INEXACT) { std::cerr << "FE_DEC_INEXACT "; }
     if (test.expected_conditions & std::decimal::FE_DEC_INVALID) { std::cerr << "FE_DEC_INVALID "; }
@@ -109,7 +109,6 @@ public:
         auto rhs = boost::lexical_cast<DecimalType>(test.operands[1]);
         auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
         auto actual = lhs + rhs;
-        // TODO - we can catch construction inexact for the operands but how can we do it in a tidy manner for the result?
         return evaluate_result(test, expected, actual);
     }
 

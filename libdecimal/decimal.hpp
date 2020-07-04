@@ -7,6 +7,9 @@
 #include <IntelRDFPMathLib20U2/LIBRARY/src/bid_conf.h>
 #include <IntelRDFPMathLib20U2/LIBRARY/src/bid_functions.h>
 
+
+#include <iostream>
+
 namespace std::decimal
 {
 
@@ -714,6 +717,43 @@ bool operator>=(LHS lhs, RHS rhs)
 template <class charT, class traits>
 std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal32 & d) 
 {
+    /*
+    std::string buffer;
+    if (!(is >> buffer)) {
+        return is;
+    }
+
+    auto value = std::strtold(buffer.data(), 0);
+
+    if (value == 0) {
+        std::cerr << "FAIL strold(" << buffer << ")" << std::endl;
+        is.setstate(std::ios::failbit);
+        return is;    
+    }
+    */
+    /*
+    long double value;
+
+    is >> value;
+
+    if (!is) {
+        return is;
+    }
+
+    fenv_t fpenv;
+    
+    if (fe_dec_getenv(&fpenv)) {
+        is.setstate(std::ios::failbit);
+    }
+
+    d.value(binary80_to_bid32(value, fpenv.round, &fpenv.flags));
+
+    if (fe_dec_setenv(&fpenv)) {
+        std::cerr << "FAIL binary80_to_bid32(" << value << ")" << std::endl;
+        is.setstate(std::ios::failbit);
+    }
+    */
+    
     // TODO
     std::string buffer;
     if (!(is >> buffer)) {
@@ -727,19 +767,60 @@ std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> 
     }
   
     auto value = bid32_from_string(const_cast<char*>(buffer.c_str()), fe_dec_getround(), &fpenv.flags);
+
+    if (fe_dec_testexcept(FE_DEC_INEXACT)) {
+        std::cout << "INEXACT 32 READ " << buffer << std::endl;
+    }
   
     if (fe_dec_setenv(&fpenv)) {
         is.setstate(std::ios::failbit);
     }
 
     d.value(value);
-
+    
     return is; 
 }
 
 template <class charT, class traits>
 std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal64 & d) 
 {
+    /*
+    std::string buffer;
+    if (!(is >> buffer)) {
+        return is;
+    }
+   
+    auto value = std::strtold(buffer.data(), 0);
+
+    if (value == 0) {
+        std::cerr << "FAIL strold(" << buffer << ")" << std::endl;
+        is.setstate(std::ios::failbit);
+        return is;    
+    }
+    */
+   /*
+    long double value;
+
+    is >> value;
+
+    if (!is) {
+        return is;
+    }
+
+    fenv_t fpenv;
+    
+    if (fe_dec_getenv(&fpenv)) {
+        is.setstate(std::ios::failbit);
+    }
+
+    d.value(binary80_to_bid64(value, fpenv.round, &fpenv.flags));
+
+    if (fe_dec_setenv(&fpenv)) {
+        std::cerr << "FAIL binary80_to_bid64(" << value << ")" << std::endl; 
+        is.setstate(std::ios::failbit);
+    }
+    */
+    
     // TODO 
     std::string buffer;
     if (!(is >> buffer)) {
@@ -759,13 +840,50 @@ std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> 
     }
 
     d.value(value);
-
+    
     return is; 
 }
 
 template <class charT, class traits>
 std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> & is, decimal128 & d) 
 {
+    /*
+    std::string buffer;
+    if (!(is >> buffer)) {
+        return is;
+    }
+
+    auto value = std::strtold(buffer.data(), 0);
+
+    if (value == 0) {
+        std::cerr << "FAIL strold(" << buffer << ")" << std::endl;
+        is.setstate(std::ios::failbit);
+        return is;    
+    }
+    */
+   /*
+   long double value;
+
+    is >> value;
+
+    if (!is) {
+        return is;
+    }
+
+    fenv_t fpenv;
+    
+    if (fe_dec_getenv(&fpenv)) {
+        is.setstate(std::ios::failbit);
+    }
+
+    d.value(binary80_to_bid128(value, fpenv.round, &fpenv.flags));
+
+    if (fe_dec_setenv(&fpenv)) {
+        std::cerr << "FAIL binary80_to_bid128(" << value << ")" << std::endl;
+        is.setstate(std::ios::failbit);
+    }
+    */
+    
     // TODO 
     std::string buffer;
     if (!(is >> buffer)) {
@@ -785,7 +903,7 @@ std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> 
     }
 
     d.value(value);
-
+    
     return is;  
 }
 
