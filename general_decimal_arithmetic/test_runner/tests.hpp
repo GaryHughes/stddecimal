@@ -59,7 +59,7 @@ void report_failure(const test& test, DecimalType expected, DecimalType actual)
 
 void report_failure(const test& test, std::decimal::fexcept_t actual) 
 {
-    std::cerr << "FAILURE " << test.expected_conditions_string << " expected " << test.expected_conditions << " (";
+    std::cerr << "FAILURE " << test.id << " " << test.operation << " " << test.expected_conditions_string << " expected " << test.expected_conditions << " (";
     if (test.expected_conditions & std::decimal::FE_DEC_DIVBYZERO) { std::cerr << "FE_DEC_DIVBYZERO "; } 
     if (test.expected_conditions & std::decimal::FE_DEC_INEXACT) { std::cerr << "FE_DEC_INEXACT "; }
     if (test.expected_conditions & std::decimal::FE_DEC_INVALID) { std::cerr << "FE_DEC_INVALID "; }

@@ -79,14 +79,22 @@ public:
                 test.id = match[1].str();
                 test.operation = match[2].str();
                 boost::algorithm::to_lower(test.operation);
+
                 auto operand_string{match[3].str()};
                 boost::trim(operand_string);
                 boost::split(test.operands, operand_string, boost::is_any_of("\t "), boost::token_compress_on);
+                for (auto& operand : test.operands) {
+                    boost::erase_all(operand, "'");
+                }
+                
                 test.expected_result = match[4];
+                boost::erase_all(test.expected_result, "'");
+                
                 test.expected_conditions_string = match[5].str();
                 boost::trim(test.expected_conditions_string);
                 boost::algorithm::to_lower(test.expected_conditions_string);
                 test.expected_conditions = parse_conditions(test.expected_conditions_string);
+                
                 try {
                     context.apply_rounding();
                     std::decimal::set_exceptions(std::decimal::FE_DEC_ALL_EXCEPT);
