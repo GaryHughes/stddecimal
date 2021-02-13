@@ -769,7 +769,7 @@ std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> 
     auto value = bid32_from_string(const_cast<char*>(buffer.c_str()), fe_dec_getround(), &fpenv.flags);
 
     if (fe_dec_testexcept(FE_DEC_INEXACT)) {
-        std::cout << "INEXACT 32 READ " << buffer << std::endl;
+        // std::cout << "INEXACT 32 READ " << buffer << std::endl;
     }
   
     if (fe_dec_setenv(&fpenv)) {
