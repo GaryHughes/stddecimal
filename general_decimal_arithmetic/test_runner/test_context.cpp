@@ -3,41 +3,45 @@
 #include <iostream>
 #include <boost/algorithm/string.hpp>
 
-int test_context::parse_rounding(const std::string& input) const
+int test_context::parse_rounding(const std::string& input)
 {
     std::string value{input};
     
     boost::algorithm::trim(value);
     boost::algorithm::to_lower(value);
    
-    if (value == "ceiling") {
+    if (value == "ceiling" || value == "up") {
         return std::decimal::FE_DEC_UPWARD;
     }
-    else if (value == "down") {
+
+    if (value == "down") {
         return std::decimal::FE_DEC_DOWNWARD;
     }
-    else if (value == "floor") {
+
+    if (value == "floor") {
         return std::decimal::FE_DEC_TOWARD_ZERO;
     } 
-    // else if (value == "half_down") {
+    // if (value == "half_down") {
     //     // return = ;
     // }
-    else if (value == "half_even") {
+    
+    if (value == "half_even") {
         return std::decimal::FE_DEC_TONEAREST;
     }
-    else if (value == "half_up") {
+
+    if (value == "half_up") {
         return std::decimal::FE_DEC_TONEARESTFROMZERO;
     }
-    else if (value == "up") {
-        return std::decimal::FE_DEC_UPWARD;
-    } 
+    // else if (value == "up") {
+    //     return std::decimal::FE_DEC_UPWARD;
+    // } 
     // else if (value == "05up") {
     // }
 
     throw std::runtime_error("unhandled rounding: " + value);
 }
 
-int test_context::parse_min_exponent(const std::string& input) const
+int test_context::parse_min_exponent(const std::string& input)
 {
     std::string value{input};
     boost::algorithm::trim(value);
@@ -49,7 +53,7 @@ int test_context::parse_min_exponent(const std::string& input) const
     }
 }
 
-unsigned int test_context::parse_max_exponent(const std::string& input) const 
+unsigned int test_context::parse_max_exponent(const std::string& input)
 {
     std::string value{input};
     boost::algorithm::trim(value);
@@ -61,7 +65,7 @@ unsigned int test_context::parse_max_exponent(const std::string& input) const
     }
 }
 
-unsigned int test_context::parse_precision(const std::string& input) const
+unsigned int test_context::parse_precision(const std::string& input)
 {
     std::string value{input};
     boost::algorithm::trim(value);
@@ -73,7 +77,7 @@ unsigned int test_context::parse_precision(const std::string& input) const
     }
 }
 
-bool test_context::parse_clamp(const std::string& input) const
+bool test_context::parse_clamp(const std::string& input)
 {
     std::string value{input};
     boost::algorithm::trim(value);
@@ -155,13 +159,13 @@ bool test_context::clamp() const
     return m_clamp;
 }
 
-void test_context::apply_rounding()
+void test_context::apply_rounding() const
 {
     if (!rounding()) {
         return;
     }
 
-    if (std::decimal::fe_dec_setround(*rounding())) {
+    if (std::decimal::fe_dec_setround(*rounding()) != 0) {
         throw std::runtime_error("Error setting rounding mode: " + std::to_string(*rounding()));
     }
 }

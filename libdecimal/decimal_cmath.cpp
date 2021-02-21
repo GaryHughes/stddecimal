@@ -38,7 +38,7 @@ namespace decimal
 
 decimal32 quantize(decimal32 x, decimal32 y)
 {
-    fenv_t env;
+    fenv_t env {};
     // TODO
     fe_dec_getenv(&env);
     decimal32 result;
@@ -54,7 +54,7 @@ decimal32 quantized32(decimal32 x, decimal32 y)
 
 decimal64 quantize(decimal64 x, decimal64 y)
 {
-    fenv_t env;
+    fenv_t env {};
     // TODO
     fe_dec_getenv(&env);
     decimal64 result;
@@ -70,7 +70,7 @@ decimal64 quantized64(decimal64 x, decimal64 y)
 
 decimal128 quantize(decimal128 x, decimal128 y)
 {
-    fenv_t env;
+    fenv_t env {};
     // TODO
     fe_dec_getenv(&env);
     decimal128 result;
@@ -86,7 +86,7 @@ decimal128 quantized128(decimal128 x, decimal128 y)
 
 decimal32 log10d32(decimal32 x)
 {
-    fenv_t env;
+    fenv_t env {};
     // TODO
     fe_dec_getenv(&env);
     decimal32 result;
@@ -97,7 +97,7 @@ decimal32 log10d32(decimal32 x)
 
 decimal64 log10d64(decimal64 x)
 {
-    fenv_t env;
+    fenv_t env {};
     // TODO
     fe_dec_getenv(&env);
     decimal64 result;
@@ -108,7 +108,7 @@ decimal64 log10d64(decimal64 x)
 
 decimal128 log10d128(decimal128 x)
 {
-    fenv_t env;
+    fenv_t env {};
     // TODO
     fe_dec_getenv(&env);
     decimal128 result;
@@ -119,7 +119,7 @@ decimal128 log10d128(decimal128 x)
 
 decimal32 powd32(decimal32 x, decimal32 y)
 {
-    fenv_t env;
+    fenv_t env {};
     // TODO
     fe_dec_getenv(&env);
     decimal32 result;
@@ -130,7 +130,7 @@ decimal32 powd32(decimal32 x, decimal32 y)
 
 decimal64 powd64(decimal64 x, decimal64 y)
 {
-    fenv_t env;
+    fenv_t env {};
     // TODO
     fe_dec_getenv(&env);
     decimal64 result;
@@ -141,7 +141,7 @@ decimal64 powd64(decimal64 x, decimal64 y)
 
 decimal128 powd128(decimal128 x, decimal128 y)
 {
-    fenv_t env;
+    fenv_t env {};
     // TODO
     fe_dec_getenv(&env);
     decimal128 result;
@@ -150,42 +150,42 @@ decimal128 powd128(decimal128 x, decimal128 y)
     return result;
 }
 
-decimal32 sqrtd32 (decimal32 value)
+decimal32 sqrtd32 (decimal32 x)
 {
-    fenv_t env;
+    fenv_t env {};
     // TODO
     fe_dec_getenv(&env);
     decimal32 result;
-    result.value(bid32_sqrt(value.value(), env.round, &env.flags));
+    result.value(bid32_sqrt(x.value(), env.round, &env.flags));
     fe_dec_setenv(&env);
     return result;
 } 
 
-decimal64 sqrtd64 (decimal64 value)
+decimal64 sqrtd64 (decimal64 x)
 {
-    fenv_t env;
+    fenv_t env {};
     // TODO
     fe_dec_getenv(&env);
     decimal64 result;
-    result.value(bid64_sqrt(value.value(), env.round, &env.flags));
+    result.value(bid64_sqrt(x.value(), env.round, &env.flags));
     fe_dec_setenv(&env);
     return result;
 } 
 
-decimal128 sqrtd128 (decimal128 value)
+decimal128 sqrtd128 (decimal128 x)
 {
-    fenv_t env;
+    fenv_t env {};
     // TODO
     fe_dec_getenv(&env);
     decimal128 result;
-    result.value(bid128_sqrt(value.value(), env.round, &env.flags));
+    result.value(bid128_sqrt(x.value(), env.round, &env.flags));
     fe_dec_setenv(&env);
     return result;
 }
 
 decimal32 fmad32(decimal32 x, decimal32 y, decimal32 z)
 {
-    fenv_t env;
+    fenv_t env {};
     // TODO
     fe_dec_getenv(&env);
     decimal32 result;
@@ -196,7 +196,7 @@ decimal32 fmad32(decimal32 x, decimal32 y, decimal32 z)
 
 decimal64 fmad64(decimal64 x, decimal64 y, decimal64 z)
 {
-    fenv_t env;
+    fenv_t env {};
     // TODO
     fe_dec_getenv(&env);
     decimal64 result;
@@ -207,7 +207,7 @@ decimal64 fmad64(decimal64 x, decimal64 y, decimal64 z)
 
 decimal128 fmad128(decimal128 x, decimal128 y, decimal128 z)
 {
-    fenv_t env;
+    fenv_t env {};
     // TODO
     fe_dec_getenv(&env);
     decimal128 result;

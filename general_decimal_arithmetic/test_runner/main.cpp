@@ -7,9 +7,9 @@
 
 namespace po = boost::program_options;
 
-static const char* option_help = "help";
-static const char* option_bits = "bits";
-static const char* option_files = "files";
+static const char * const option_help = "help";
+static const char * const option_bits = "bits";
+static const char * const option_files = "files";
 
 using input_file_collection = std::vector<std::string>;
 
@@ -19,7 +19,7 @@ int main(int argc, char**argv)
     {
         po::options_description options;
 
-        unsigned int bits;
+        unsigned int bits = 0;
     
         options.add_options()
             (option_help, "display usage")
@@ -34,11 +34,11 @@ int main(int argc, char**argv)
        
         po::notify(variables);
 
-        if (variables.count(option_help) || 
-            !variables.count(option_files) ||
+        if (variables.count(option_help) != 0U || 
+            variables.count(option_files) == 0U ||
             (bits != 32 && bits != 64 && bits != 128))
         {
-            std::cout << "usage: " << basename(const_cast<char*>(argv[0])) << " [--help] --bits 32|64|128 FILE...\n" 
+            std::cout << "usage: " << basename(static_cast<char*>(*argv)) << " [--help] --bits 32|64|128 FILE...\n" 
                       << options << std::endl;
             return 1;
         }

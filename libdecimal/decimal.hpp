@@ -291,12 +291,12 @@ public:
     explicit decimal32(long double r);
 
     // 3.2.2.3 conversion from integral type: 
-    explicit decimal32(int z);
-    explicit decimal32(unsigned int z);
-    explicit decimal32(long z);
-    explicit decimal32(unsigned long z); 
-    explicit decimal32(long long z); 
-    explicit decimal32(unsigned long long z);
+    explicit decimal32(int r);
+    explicit decimal32(unsigned int r);
+    explicit decimal32(long r);
+    explicit decimal32(unsigned long r); 
+    explicit decimal32(long long r); 
+    explicit decimal32(unsigned long long r);
     
     // 3.2.2.4 conversion to integral type: 
     explicit operator long long() const;
@@ -385,12 +385,12 @@ public:
     explicit decimal64(long double r);
     
     // 3.2.3.3 conversion from integral type: 
-    explicit decimal64(int z);
-    explicit decimal64(unsigned int z);
-    explicit decimal64(long z);
-    explicit decimal64(unsigned long z); 
-    explicit decimal64(long long z); 
-    explicit decimal64(unsigned long long z);
+    explicit decimal64(int r);
+    explicit decimal64(unsigned int r);
+    explicit decimal64(long r);
+    explicit decimal64(unsigned long r); 
+    explicit decimal64(long long r); 
+    explicit decimal64(unsigned long long r);
     
     // 3.2.3.4 conversion to integral type: 
     explicit operator long long() const;
@@ -479,12 +479,12 @@ public:
     explicit decimal128(long double r);
     
     // 3.2.4.3 conversion from integral type: 
-    explicit decimal128(int z);
-    explicit decimal128(unsigned int z); 
-    explicit decimal128(long z);
-    explicit decimal128(unsigned long z); 
-    explicit decimal128(long long z); 
-    explicit decimal128(unsigned long long z);
+    explicit decimal128(int r);
+    explicit decimal128(unsigned int r); 
+    explicit decimal128(long r);
+    explicit decimal128(unsigned long r); 
+    explicit decimal128(long long r); 
+    explicit decimal128(unsigned long long r);
     
     // 3.2.4.4 conversion to integral type: 
     explicit operator long long() const;

@@ -8,6 +8,10 @@ const fenv_t default_environment { FE_DEC_TONEAREST, 0, false, 0 };
 thread_local fenv_t environment = default_environment;
 thread_local unsigned int hold_flags;
 
+const size_t bytes_in_32_bit_decimal = 4;
+const size_t bytes_in_64_bit_decimal = 8;
+const size_t bytes_in_128_bit_decimal = 16;
+
 unsigned int* environment_flags()
 {
     if (environment.hold) {
@@ -33,7 +37,7 @@ int fe_dec_raiseexcept(int except)
 
 int fe_dec_getexceptflag(fexcept_t *pflag, int except)
 {
-    if (!pflag) {
+    if (pflag == nullptr) {
         return 1;
     }
 
@@ -44,7 +48,7 @@ int fe_dec_getexceptflag(fexcept_t *pflag, int except)
 
 int fe_dec_setexceptflag(const fexcept_t *pflag, int except)
 {
-    if (!pflag) {
+    if (pflag == nullptr) {
         return 1;
     }
 
@@ -57,12 +61,12 @@ int fe_dec_setexceptflag(const fexcept_t *pflag, int except)
 
 int fe_dec_testexcept(int except)
 {
-    return environment.flags & except;
+    return int(environment.flags & except);
 }
 
 int fe_dec_getenv(fenv_t *penv)
 {
-    if (!penv) {
+    if (penv == nullptr) {
         return 1;
     }
 
@@ -73,7 +77,7 @@ int fe_dec_getenv(fenv_t *penv)
 
 int fe_dec_setenv(const fenv_t *penv)
 {
-    if (!penv) {
+    if (penv == nullptr) {
         return 1;
     }
 
@@ -84,7 +88,7 @@ int fe_dec_setenv(const fenv_t *penv)
 
 int fe_dec_holdexcept(fenv_t *penv)
 {
-    if (fe_dec_getenv(penv)) {
+    if (fe_dec_getenv(penv) != 0) {
         return 1;
     }
 
@@ -97,13 +101,13 @@ int fe_dec_holdexcept(fenv_t *penv)
 
 int fe_dec_updateenv(const fenv_t *penv)
 {
-    fexcept_t saved_flags;
+    fexcept_t saved_flags = 0;
 
-    if (fe_dec_getexceptflag(&saved_flags, FE_DEC_ALL_EXCEPT)) {
+    if (fe_dec_getexceptflag(&saved_flags, FE_DEC_ALL_EXCEPT) != 0) {
         return 1;
     }
 
-    if (fe_dec_setenv(penv)) {
+    if (fe_dec_setenv(penv) != 0) {
         return 1;
     }
 
@@ -135,26 +139,26 @@ int fe_dec_setround(int round)
 exception::exception(fexcept_t flags)
 :   m_flags(flags)
 {
-    if (m_flags & FE_DEC_DIVBYZERO) {
+    if ((m_flags & FE_DEC_DIVBYZERO) != 0) {
         m_what += "divide by zero";
     } 
 
-    if (m_flags & FE_DEC_OVERFLOW) {
+    if ((m_flags & FE_DEC_OVERFLOW) != 0) {
         if (!m_what.empty()) { m_what += ", "; }
         m_what += "overflow";
     }
 
-    if (m_flags & FE_DEC_UNDERFLOW) {
+    if ((m_flags & FE_DEC_UNDERFLOW) != 0) {
         if (!m_what.empty()) { m_what += ", "; }
         m_what += "underflow";
     } 
 
-    if (m_flags & FE_DEC_INEXACT) {
+    if ((m_flags & FE_DEC_INEXACT) != 0) {
         if (!m_what.empty()) { m_what += ", "; }
         m_what += "inexact";
     } 
 
-    if (m_flags & FE_DEC_INVALID) {
+    if ((m_flags & FE_DEC_INVALID) != 0) {
         if (!m_what.empty()) { m_what += ", "; }
         m_what += "invalid";
     } 
@@ -173,14 +177,14 @@ void clear_exceptions(int except) noexcept
 
 int get_exceptions() noexcept
 {
-    return environment.exceptions;
+    return int(environment.exceptions);
 }
 
 void check_exceptions()
 {
-    int raised_exceptions = environment.flags & environment.exceptions;
+    int raised_exceptions = int(environment.flags & environment.exceptions);
 
-    if (raised_exceptions) {
+    if (raised_exceptions != 0) {
         fe_dec_clearexcept(raised_exceptions);
         throw std::decimal::exception(raised_exceptions);
     }
@@ -734,21 +738,22 @@ decimal32::decimal32(decimal128 d128)
 decimal32::decimal32(float r)
 :   m_value(binary32_to_bid32(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 4);
+    static_assert(sizeof(r) == bytes_in_32_bit_decimal);
     check_exceptions();
 }
 
 decimal32::decimal32(double r)
 :   m_value(binary64_to_bid32(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 8);
+    static_assert(sizeof(r) == bytes_in_64_bit_decimal);
     check_exceptions();
 }
 
 decimal32::decimal32(long double r)
 :   m_value(binary80_to_bid32(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 16);
+    static_assert(sizeof(r) == bytes_in_128_bit_decimal);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
     static_assert(std::numeric_limits<long double>::digits10 == 18); // 80 bit Intel extended precision
     check_exceptions();
 }
@@ -756,42 +761,42 @@ decimal32::decimal32(long double r)
 decimal32::decimal32(int r)
 :   m_value(bid32_from_int32(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 4);
+    static_assert(sizeof(r) == bytes_in_32_bit_decimal);
     check_exceptions();
 }
 
 decimal32::decimal32(unsigned int r)
 :   m_value(bid32_from_uint32(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 4);
+    static_assert(sizeof(r) == bytes_in_32_bit_decimal);
     check_exceptions();
 }
 
 decimal32::decimal32(long r)
 :   m_value(bid32_from_int64(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 8);
+    static_assert(sizeof(r) == bytes_in_64_bit_decimal);
     check_exceptions();
 }
 
 decimal32::decimal32(unsigned long r)
 :   m_value(bid32_from_uint64(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 8);
+    static_assert(sizeof(r) == bytes_in_64_bit_decimal);
     check_exceptions();
 }
 
 decimal32::decimal32(long long r)
 :   m_value(bid32_from_int64(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 8);
+    static_assert(sizeof(r) == bytes_in_64_bit_decimal);
     check_exceptions();
 }
 
 decimal32::decimal32(unsigned long long r)
 :   m_value(bid32_from_uint64(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 8);
+    static_assert(sizeof(r) == bytes_in_64_bit_decimal);
     check_exceptions();
 }
 
@@ -866,21 +871,22 @@ decimal64::decimal64(decimal128 d128)
 decimal64::decimal64(float r)
 :   m_value(binary32_to_bid64(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 4);
+    static_assert(sizeof(r) == bytes_in_32_bit_decimal);
     check_exceptions();
 } 
 
 decimal64::decimal64(double r)
 :   m_value(binary64_to_bid64(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 8);
+    static_assert(sizeof(r) == bytes_in_64_bit_decimal);
     check_exceptions();
 } 
 
 decimal64::decimal64(long double r)
 :   m_value(binary80_to_bid64(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 16);
+    static_assert(sizeof(r) == bytes_in_128_bit_decimal);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
     static_assert(std::numeric_limits<long double>::digits10 == 18); // 80 bit Intel extended precision
     check_exceptions();
 }
@@ -888,42 +894,42 @@ decimal64::decimal64(long double r)
 decimal64::decimal64(int r)
 :   m_value(bid64_from_int32(r))
 {
-    static_assert(sizeof(r) == 4);
+    static_assert(sizeof(r) == bytes_in_32_bit_decimal);
     check_exceptions();
 }
 
 decimal64::decimal64(unsigned int r)
 :   m_value(bid64_from_uint32(r))
 {
-    static_assert(sizeof(r) == 4);
+    static_assert(sizeof(r) == bytes_in_32_bit_decimal);
     check_exceptions();
 }
 
 decimal64::decimal64(long r)
 :   m_value(bid64_from_int64(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 8);
+    static_assert(sizeof(r) == bytes_in_64_bit_decimal);
     check_exceptions();
 }
 
 decimal64::decimal64(unsigned long r)
 :   m_value(bid64_from_uint64(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 8);
+    static_assert(sizeof(r) == bytes_in_64_bit_decimal);
     check_exceptions();
 } 
 
 decimal64::decimal64(long long r)
 :   m_value(bid64_from_int64(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 8);
+    static_assert(sizeof(r) == bytes_in_64_bit_decimal);
     check_exceptions();
 } 
 
 decimal64::decimal64(unsigned long long r)
 :   m_value(bid64_from_uint64(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 8);
+    static_assert(sizeof(r) == bytes_in_64_bit_decimal);
     check_exceptions();
 }
     
@@ -998,21 +1004,22 @@ decimal128::decimal128(decimal64 d64)
 decimal128::decimal128(float r)
 :   m_value(binary32_to_bid128(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 4);
+    static_assert(sizeof(r) == bytes_in_32_bit_decimal);
     check_exceptions();
 }
 
 decimal128::decimal128(double r)
 :   m_value(binary64_to_bid128(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 8);
+    static_assert(sizeof(r) == bytes_in_64_bit_decimal);
     check_exceptions();
 } 
 
 decimal128::decimal128(long double r)
 :   m_value(binary80_to_bid128(r, environment.round, environment_flags()))
 {
-    static_assert(sizeof(r) == 16);
+    static_assert(sizeof(r) == bytes_in_128_bit_decimal);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
     static_assert(std::numeric_limits<long double>::digits10 == 18); // 80 bit Intel extended precision
     check_exceptions();
 }
@@ -1020,42 +1027,42 @@ decimal128::decimal128(long double r)
 decimal128::decimal128(int r)
 :   m_value(bid128_from_int32(r))
 {
-    static_assert(sizeof(r) == 4);
+    static_assert(sizeof(r) == bytes_in_32_bit_decimal);
     check_exceptions();
 }
 
 decimal128::decimal128(unsigned int r)
 :   m_value(bid128_from_uint32(r))
 {
-    static_assert(sizeof(r) == 4);
+    static_assert(sizeof(r) == bytes_in_32_bit_decimal);
     check_exceptions();
 } 
 
 decimal128::decimal128(long r)
 :   m_value(bid128_from_int64(r))
 {
-    static_assert(sizeof(r) == 8);
+    static_assert(sizeof(r) == bytes_in_64_bit_decimal);
     check_exceptions();
 }
 
 decimal128::decimal128(unsigned long r)
 :   m_value(bid128_from_uint64(r))
 {
-    static_assert(sizeof(r) == 8);
+    static_assert(sizeof(r) == bytes_in_64_bit_decimal);
     check_exceptions();
 }
 
 decimal128::decimal128(long long r)
 :   m_value(bid128_from_int64(r))
 {
-    static_assert(sizeof(r) == 8);
+    static_assert(sizeof(r) == bytes_in_64_bit_decimal);
     check_exceptions();
 }
 
 decimal128::decimal128(unsigned long long r)
 :   m_value(bid128_from_uint64(r))
 {
-    static_assert(sizeof(r) == 8);
+    static_assert(sizeof(r) == bytes_in_64_bit_decimal);
     check_exceptions();
 }
 

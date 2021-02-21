@@ -17,15 +17,15 @@ public:
     const std::optional<unsigned int>& max_exponent() const;
     bool clamp() const;
 
-    void apply_rounding();
+    void apply_rounding() const;
 
 private:
 
-    int parse_rounding(const std::string& value) const;
-    int parse_min_exponent(const std::string& input) const;
-    unsigned int parse_max_exponent(const std::string& input) const;
-    unsigned int parse_precision(const std::string& input) const;
-    bool parse_clamp(const std::string& value) const;
+    static int parse_rounding(const std::string& input);
+    static int parse_min_exponent(const std::string& input);
+    static unsigned int parse_max_exponent(const std::string& input);
+    static unsigned int parse_precision(const std::string& input);
+    static bool parse_clamp(const std::string& input);
 
     std::optional<int> m_rounding;
     std::optional<unsigned int> m_max_exponent;
