@@ -11,7 +11,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     vim \
     libtinfo5 \
-    git
+    git \
+    clang-tidy
 
 #
 # Clang
