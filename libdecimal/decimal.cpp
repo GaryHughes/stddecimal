@@ -505,8 +505,8 @@ BID_UINT128 compound_result_traits_128::resize(BID_UINT128 value) {
 
 // ---------------------------------------------------------
 
-template<typename DecimalType>
-DecimalType make_decimal(long long coeff, int exponent)
+template<typename DecimalType, typename InputType>
+DecimalType make_decimal(InputType coeff, int exponent)
 {
     DecimalType multiplier;
     DecimalType power{1};
