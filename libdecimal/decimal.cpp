@@ -5,8 +5,8 @@ namespace std::decimal
 {
 
 const fenv_t default_environment { FE_DEC_TONEAREST, 0, false, 0 };
-thread_local fenv_t environment = default_environment;
-thread_local unsigned int hold_flags;
+thread_local fenv_t environment = default_environment; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+thread_local unsigned int hold_flags; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 
 const size_t bytes_in_32_bit_decimal = 4;
 const size_t bytes_in_64_bit_decimal = 8;
@@ -347,7 +347,8 @@ BID_UINT64 operator_64bit::resize(unsigned int value) {
 }
 
 BID_UINT64 operator_64bit::resize(long value) {
-    return bid64_from_int32(value);
+    
+    return bid64_from_int64(value, environment.round, environment_flags());
 }
 
 BID_UINT64 operator_64bit::resize(unsigned long value) {
@@ -355,7 +356,7 @@ BID_UINT64 operator_64bit::resize(unsigned long value) {
 }
 
 BID_UINT64 operator_64bit::resize(long long value) {
-    return bid64_from_int32(value);
+    return bid64_from_int64(value, environment.round, environment_flags());
 }
 
 BID_UINT64 operator_64bit::resize(unsigned long long value) {
