@@ -5,7 +5,8 @@ project(stddecimal)
 set(CMAKE_CXX_CLANG_TIDY
     clang-tidy;
     -checks=-*,clang-analyzer-*,bugprone-*,concurrency-*,cppcoreguidelines-*,misc-*,modernize-*,performance-*,portability-*,readability-*,-modernize-use-trailing-return-type,-readability-magic-numbers,-cppcoreguidelines-avoid-magic-numbers;
-    -warnings-as-errors=*;)
+    -warnings-as-errors=*;
+    -line-filter=[{"name":"catch.hpp"}])
 
 # Don't embed build tree paths
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)

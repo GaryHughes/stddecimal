@@ -4,6 +4,7 @@
 #include <ios>
 #include <exception>
 #include <string>
+#include <array>
 #include <IntelRDFPMathLib20U2/LIBRARY/src/bid_conf.h>
 #include <IntelRDFPMathLib20U2/LIBRARY/src/bid_functions.h>
 
@@ -101,8 +102,8 @@ class exception : public std::exception
 public:
 
     exception(fexcept_t flags);
-    constexpr fexcept_t flags() const { return m_flags; }
-    const char* what() const noexcept override { return m_what.c_str(); }
+    [[nodiscard]] constexpr fexcept_t flags() const { return m_flags; }
+    [[nodiscard]] const char* what() const noexcept override { return m_what.c_str(); }
 
 private:
 
@@ -281,7 +282,7 @@ public:
     using value_type = BID_UINT32;
 
     // 3.2.2.1 construct/copy/destroy: 
-    decimal32();
+    decimal32() = default;
     
     // 3.2.2.2 conversion from floating-point type: 
     explicit decimal32(decimal64 d64);
@@ -360,11 +361,11 @@ public:
     }
 
     void value(value_type value) { m_value = value; }
-    const value_type value() const { return m_value; }
+    [[nodiscard]] value_type value() const { return m_value; }
 
 private:
 
-    value_type m_value;
+    value_type m_value = 0;
    
 };
 
@@ -454,7 +455,7 @@ public:
     }
 
     void value(value_type value) { m_value = value; }
-    const value_type value() const { return m_value; }
+    [[nodiscard]] value_type value() const { return m_value; }
 
 private:
 
@@ -548,7 +549,7 @@ public:
     }
 
     void value(value_type value) { m_value = value; }
-    const value_type value() const { return m_value; }
+    [[nodiscard]] value_type value() const { return m_value; }
 
 private:
 
@@ -760,13 +761,13 @@ std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> 
         return is;
     }
     
-    fenv_t fpenv;
+    fenv_t fpenv {};
     
     if (fe_dec_getenv(&fpenv)) {
         is.setstate(std::ios::failbit);
     }
   
-    auto value = bid32_from_string(const_cast<char*>(buffer.c_str()), fe_dec_getround(), &fpenv.flags);
+    auto value = bid32_from_string(const_cast<char*>(buffer.c_str()), fe_dec_getround(), &fpenv.flags); // NOLINT(cppcoreguidelines-pro-type-const-cast)
 
     if (fe_dec_testexcept(FE_DEC_INEXACT)) {
         // std::cout << "INEXACT 32 READ " << buffer << std::endl;
@@ -827,13 +828,13 @@ std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> 
         return is;
     }
     
-    fenv_t fpenv;
+    fenv_t fpenv {};
     
     if (fe_dec_getenv(&fpenv)) {
         is.setstate(std::ios::failbit);
     }
   
-    auto value = bid64_from_string(const_cast<char*>(buffer.c_str()), fe_dec_getround(), &fpenv.flags);
+    auto value = bid64_from_string(const_cast<char*>(buffer.c_str()), fe_dec_getround(), &fpenv.flags); // NOLINT(cppcoreguidelines-pro-type-const-cast)
   
     if (fe_dec_setenv(&fpenv)) {
         is.setstate(std::ios::failbit);
@@ -890,13 +891,13 @@ std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> 
         return is;
     }
     
-    fenv_t fpenv;
+    fenv_t fpenv {};
     
     if (fe_dec_getenv(&fpenv)) {
         is.setstate(std::ios::failbit);
     }
   
-    auto value = bid128_from_string(const_cast<char*>(buffer.c_str()), fe_dec_getround(), &fpenv.flags);
+    auto value = bid128_from_string(const_cast<char*>(buffer.c_str()), fe_dec_getround(), &fpenv.flags); // NOLINT(cppcoreguidelines-pro-type-const-cast)
   
     if (fe_dec_setenv(&fpenv)) {
         is.setstate(std::ios::failbit);
@@ -912,10 +913,10 @@ template <class charT, class traits>
 std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal32 d) 
 { 
     // TODO
-    char buffer[256];
+    std::array<char, 256> buffer {};
     _IDEC_flags flags = 0;
-    bid32_to_string(buffer, d.value(), &flags);
-    os << buffer;
+    bid32_to_string(buffer.data(), d.value(), &flags);
+    os << buffer.data();
     return os; 
 }
 
@@ -923,10 +924,10 @@ template <class charT, class traits>
 std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal64 d) 
 { 
     // TODO
-    char buffer[256];
+    std::array<char, 256> buffer {};
     _IDEC_flags flags = 0;
-    bid64_to_string(buffer, d.value(), &flags);
-    os << buffer;
+    bid64_to_string(buffer.data(), d.value(), &flags);
+    os << buffer.data();
     return os; 
 };
 
@@ -934,10 +935,10 @@ template <class charT, class traits>
 std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal128 d) 
 { 
     // TODO
-    char buffer[256];
+    std::array<char, 256> buffer {};
     _IDEC_flags flags = 0;
-    bid128_to_string(buffer, d.value(), &flags);
-    os << buffer;
+    bid128_to_string(buffer.data(), d.value(), &flags);
+    os << buffer.data();
     return os; 
 }
 

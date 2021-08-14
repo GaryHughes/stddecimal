@@ -92,6 +92,13 @@
         "typeindex": "cpp",
         "unordered_set": "cpp",
         "pointers": "cpp",
-        "cfloat": "cpp"
+        "cfloat": "cpp",
+        "*.tcc": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "memory_resource": "cpp",
+        "ranges": "cpp",
+        "stop_token": "cpp",
+        "cfenv": "cpp"
     }
 }

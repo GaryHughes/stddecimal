@@ -41,7 +41,7 @@ int fe_dec_getexceptflag(fexcept_t *pflag, int except)
         return 1;
     }
 
-    *pflag = environment.flags & except;
+    *pflag = fexcept_t(environment.flags & except);
     
     return 0;
 }
@@ -718,11 +718,6 @@ decimal128 operator-(decimal128 lhs)
 }
 
 // decimal32 ------------------------------------------------------------------
-
-decimal32::decimal32()
-:   m_value(0)
-{
-}
 
 decimal32::decimal32(decimal64 d64)
 :   m_value(bid64_to_bid32(d64.value(), environment.round, environment_flags()))
