@@ -3,6 +3,9 @@
 
 #include <cstddef>
 
+namespace gda
+{
+
 enum class result
 {
     pass,
@@ -46,5 +49,7 @@ private:
     size_t m_skipped = 0;
 
 };
+
+} // namespace gda
 
 #endif

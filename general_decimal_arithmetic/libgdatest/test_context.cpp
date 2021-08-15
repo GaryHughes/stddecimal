@@ -3,6 +3,9 @@
 #include <iostream>
 #include <boost/algorithm/string.hpp>
 
+namespace gda
+{
+
 int test_context::parse_rounding(const std::string& input)
 {
     std::string value{input};
@@ -170,7 +173,9 @@ void test_context::apply_rounding() const
     }
 }
 
-std::ostream& operator<<(std::ostream& os, test_context& context)
+} // namespace gda
+
+std::ostream& operator<<(std::ostream& os, gda::test_context& context)
 {
     os  << "context {\n"
         << "    rounding     : " << (context.rounding() ? std::to_string(*context.rounding()) : "") << '\n'

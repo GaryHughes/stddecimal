@@ -14,6 +14,9 @@
 #include "test_context.hpp"
 #include <decimal_numeric_limits.hpp>
 
+namespace gda
+{
+
 template<int Bits>
 class test_file
 {
@@ -259,5 +262,7 @@ private:
     test_results& m_results;
 
 };
+
+} // namespace gda
 
 #endif

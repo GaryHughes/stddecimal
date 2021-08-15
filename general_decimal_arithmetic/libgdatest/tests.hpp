@@ -7,6 +7,9 @@
 #include <decimal_cmath.hpp> 
 #include "test_results.hpp"
 
+namespace gda
+{
+
 struct test
 {
     std::string id;
@@ -442,5 +445,7 @@ public:
     }
 
 };
+
+} // namespace gda
 
 #endif

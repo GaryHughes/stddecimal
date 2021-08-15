@@ -43,24 +43,24 @@ int main(int argc, char**argv)
             return 1;
         }
 
-        test_results total_results;
+        gda::test_results total_results;
 
         for (const auto& filename : variables[option_files].as<input_file_collection>())
         {
-            test_results file_results;
+            gda::test_results file_results;
     
             try
             {
                 if (bits == 32) {
-                    test_file<32> file(filename, file_results);
+                    gda::test_file<32> file(filename, file_results);
                     file.process();
                 }
                 else if (bits == 64) {
-                    test_file<64> file(filename, file_results);
+                    gda::test_file<64> file(filename, file_results);
                     file.process();
                 }
                 else if (bits == 128) {
-                    test_file<128> file(filename, file_results);
+                    gda::test_file<128> file(filename, file_results);
                     file.process();
                 }
 

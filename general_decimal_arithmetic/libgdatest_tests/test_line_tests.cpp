@@ -1,12 +1,10 @@
 #include <catch.hpp>
-#include <libdecimal/decimal.hpp>
-#include <thread>
-
-using namespace std::decimal;
+#include <libgdatest/test_line.hpp>
 
 TEST_CASE("test line", "gdatest") 
 {
     SECTION("test empty line")
     {
+        
     }
 }

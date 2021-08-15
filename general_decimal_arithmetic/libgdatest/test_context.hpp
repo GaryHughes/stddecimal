@@ -5,6 +5,9 @@
 #include <string>
 #include <optional>
 
+namespace gda
+{
+
 class test_context
 {
 public:
@@ -35,7 +38,9 @@ private:
 
 };
 
-std::ostream& operator<<(std::ostream& os, test_context& context);
+} // namespace gda
+
+std::ostream& operator<<(std::ostream& os, gda::test_context& context);
 
 #endif
 
