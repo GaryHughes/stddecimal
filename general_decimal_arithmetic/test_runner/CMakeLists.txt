@@ -11,32 +11,30 @@ find_package(Boost ${BOOST_VERSION_REQUIRED} EXACT
 include_directories(
     "/usr/local/include"
     "${CMAKE_SOURCE_DIR}/libdecimal"
-)
-
-link_directories(
-    ${Boost_LIBRARY_DIRS}
+    "${CMAKE_SOURCE_DIR}/general_decimal_arithmetic/libgdatest"
 )
 
 if(APPLE)
 
     set(BOOST_LIBS
         libboost_program_options-mt.dylib
+        libboost_refex-mt.dylib
     )
 
 else()
 
     set(BOOST_LIBS
         libboost_program_options.so
+        libboost_regex.so
     )
         
 endif()
 
 add_executable(test_runner
                main.cpp
-               test_file.hpp
-               test_context.hpp test_context.cpp
-               test_results.hpp)
+               )
 
 target_link_libraries(test_runner
+                      gdatest
                       decimal
                       ${BOOST_LIBS})

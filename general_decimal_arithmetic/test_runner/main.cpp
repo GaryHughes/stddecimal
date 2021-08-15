@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <libgen.h>
 #include <boost/program_options.hpp>
-#include "test_file.hpp"
+#include <test_file.hpp>
 
 namespace po = boost::program_options;
 
@@ -43,35 +43,41 @@ int main(int argc, char**argv)
             return 1;
         }
 
-        test_results results;
+        test_results total_results;
 
         for (const auto& filename : variables[option_files].as<input_file_collection>())
         {
+            test_results file_results;
+    
             try
             {
                 if (bits == 32) {
-                    test_file<32> file(filename, results);
+                    test_file<32> file(filename, file_results);
                     file.process();
                 }
                 else if (bits == 64) {
-                    test_file<64> file(filename, results);
+                    test_file<64> file(filename, file_results);
                     file.process();
                 }
                 else if (bits == 128) {
-                    test_file<128> file(filename, results);
+                    test_file<128> file(filename, file_results);
                     file.process();
                 }
 
-                std::cerr << filename << std::endl;
+                //std::cerr << filename << std::endl;
             }
             catch(const std::exception& e)
             {
                 std::cerr << "ERROR processing file " << filename << " : " << e.what() << std::endl;
             }
+
+            std::cerr << "decimal" << bits << " " << basename(const_cast<char*>(filename.c_str())) << " passed=" << file_results.passed() << " failed=" << file_results.failed() << " skipped=" << file_results.skipped() << std::endl;
+        
+            total_results.record(file_results);
         }
 
         // |decimal32|0|0|0|
-        std::cout << "decimal" << bits << "|" << results.passed() << "|" << results.failed() << "|" << results.skipped() << "|" << std::endl;
+        std::cout << "decimal" << bits << "|" << total_results.passed() << "|" << total_results.failed() << "|" << total_results.skipped() << "|" << std::endl;
     }
     catch (std::exception& ex)
     {

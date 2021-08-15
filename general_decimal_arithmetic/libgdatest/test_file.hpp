@@ -6,11 +6,11 @@
 #include <fstream>
 #include "test_results.hpp"
 #include "tests.hpp"
-#include <regex>
 #include <iostream>
 #include <boost/algorithm/string/trim_all.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/regex.hpp>
 #include "test_context.hpp"
 #include <decimal_numeric_limits.hpp>
 
@@ -31,14 +31,16 @@ public:
     void process()
     {
         // Lines with no characters, or only space characters. These lines are treated as commentary and are ignored.
-        const std::regex empty_line_regex("^\\s*");
+        const boost::regex empty_line_regex("^\\s*");
         // If the first two characters of a token are two hyphens (--) the token indicates the start of a comment. The two-hyphen 
         // sequence and any characters that follow it, up to the end of the line on which the sequence occurs, are ignored
-        const std::regex comment_regex("^\\s*--.*");
+        const boost::regex comment_regex("^\\s*--.*");
         // keyword: value
-        const std::regex directive_regex("^([^:]+):(.+)");
+        const boost::regex directive_regex("^([^:]+):(.+)");
         // id operation operand1 operand2 operand3 -> result conditions
-        const std::regex test_regex("^\\s*(\\S+)\\s+(\\S+)\\s+(.+\\s+){1,3}->\\s+(\\S+)\\s*(.*)");
+        // [\\.\\+\\-\\'\"#\\?a-zA-Z0-9]
+        // add060 add '10000e+9'  '70000' -> '1.00000E+13' Inexact Rounded
+        //const boost::regex test_regex("^\\s*(\\S+)\\s+(\\S+)\\s+([\\S]+\\s+){1,3}->\\s+(\\S+)\\s*(.*)");
         
         test_context context;
 
@@ -50,26 +52,33 @@ public:
                 break;
             }
 
-            if (std::regex_match(line, empty_line_regex)) {
+            if (boost::regex_match(line, empty_line_regex)) {
                 continue;
             }
 
             boost::algorithm::trim(line);
 
-            if (std::regex_match(line, comment_regex)) {
+            if (boost::regex_match(line, comment_regex)) {
                 continue;
             }
 
-            std::smatch match;
+            boost::smatch match;
 
-            if (std::regex_match(line, match, directive_regex)) {
+            if (boost::regex_match(line, match, directive_regex)) {
                 if (context.apply_directive(match[1].str(), match[2].str())) {
-                    std::cerr << context << std::endl;
+                     // std::cerr << context << std::endl;
                 }
                 continue;
             }
 
-            if (std::regex_match(line, match, test_regex)) {
+            // add060 add '10000e+9'  '70000' -> '1.00000E+13' Inexact Rounded
+            //const boost::regex test_regex("^\\s*(\\S+)\\s+(\\S+)\\s+([\\S]+\\s+){1,3}->\\s+(\\S+)\\s*(.*)");
+
+
+            
+
+
+            // if (boost::regex_match(line, match, test_regex)) {
 
                 if (context.clamp()) {
                     m_results.record(result::skip);
@@ -110,7 +119,7 @@ public:
                     context.apply_rounding();
                     // std::decimal::clear_exceptions(std::decimal::FE_DEC_ALL_EXCEPT);
                     std::decimal::set_exceptions(std::decimal::FE_DEC_DIVBYZERO | 
-                                                 // FE_DEC_INEXACT | 
+                                                 std::decimal::FE_DEC_INEXACT | 
                                                  std::decimal::FE_DEC_INVALID | 
                                                  std::decimal::FE_DEC_OVERFLOW | 
                                                  std::decimal::FE_DEC_UNDERFLOW);
@@ -129,11 +138,12 @@ public:
                     std::cerr << "GENERIC EXCEPTION " << test.id << " " << ex.what() << std::endl;
                     m_results.record(result::skip);
                 }
-                continue;
-            }
+           
+            //     continue;
+            // }
 
 
-            throw std::runtime_error("Unrecognised line [" + line + "]");
+            // throw std::runtime_error("Unrecognised line [" + line + "]");
         }
     }
 
@@ -149,14 +159,14 @@ public:
             else if (condition == "division_by_zero") 	    {   res |= std::decimal::FE_DEC_DIVBYZERO;  }
             else if (condition == "division_impossible")    {   res |= std::decimal::FE_DEC_INVALID;    }
             else if (condition == "division_undefined")     {   res |= std::decimal::FE_DEC_INVALID;    }
-            // else if (condition == "inexact")	            {   res |= std::decimal::FE_DEC_INEXACT;    }
+            else if (condition == "inexact")	            {   res |= std::decimal::FE_DEC_INEXACT;    }
             else if (condition == "insufficient_storage")   {   res |= std::decimal::FE_DEC_INVALID;    }
             else if (condition == "invalid_context")        {   res |= std::decimal::FE_DEC_INVALID;    }
             else if (condition == "invalid_operation")      {   res |= std::decimal::FE_DEC_INVALID;    }
                 // lost_digits	            (no equivalent)
             else if (condition == "overflow")               {   res |= std::decimal::FE_DEC_OVERFLOW;   } 
             // TODO dectest says IEEE has no equivalent, we get inexact so use that for now and investigate later
-            // else if (condition == "rounded")                {   res |= std::decimal::FE_DEC_INEXACT;    } 
+            else if (condition == "rounded")                {   res |= std::decimal::FE_DEC_INEXACT;    } 
                 // subnormal	        	(no equivalent)
             else if (condition == "underflow")              {   res |= std::decimal::FE_DEC_UNDERFLOW;  }
         }
@@ -173,6 +183,7 @@ private:
             return add_test<typename traits::decimal_type>::run(test);
         }
 
+        /*
         if (test.operation == "subtract") {
             return subtract_test<typename traits::decimal_type>::run(test);
         }
@@ -216,6 +227,7 @@ private:
         if (test.operation == "fma") {
             return fma_test<typename traits::decimal_type>::run(test);
         }
+        */
 
         // comparetotal0.decTest	
         // max0.decTest		
@@ -238,7 +250,7 @@ private:
         // remaindernear0.decTest	
         // trim0.decTest
 
-        std::cerr << "skipping: " << test.id << '\n';
+       // std::cerr << "skipping: " << test.id << '\n';
 
         return result::skip;
     }

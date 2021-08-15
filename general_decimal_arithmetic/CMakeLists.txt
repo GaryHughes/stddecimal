@@ -1,1 +1,3 @@
+add_subdirectory(libgdatest)
+add_subdirectory(libgdatest_tests)
 add_subdirectory(test_runner)

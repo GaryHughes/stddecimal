@@ -28,6 +28,13 @@ public:
         }
     }
 
+    void record(const test_results& results)
+    {
+        m_passed += results.passed();
+        m_failed += results.failed();
+        m_skipped += results.skipped();     
+    }
+
     size_t passed() const { return m_passed; }
     size_t failed() const { return m_failed; }
     size_t skipped() const { return m_skipped; }
