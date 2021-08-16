@@ -108,7 +108,6 @@ The library is validated using the [General Decimal Arithmetic Test Cases](http:
 * Test cases that are not applicable or not yet supported will be explicitly skipped so this column will likely never get to zero.
 
 ## Subset Arithmetic
-
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
 decimal32|abs0|16|1|42|
@@ -144,6 +143,9 @@ decimal32|testall0|0|0|0|
 decimal32|tointegral0|0|0|70|
 decimal32|trim0|0|0|93|
 decimal32| |3406|307|12449|
+
+|Type|Operation|Passed|Failed|Skipped|
+|:---|:--------|:----:|:----:|:-----:|
 decimal64|abs0|56|3|0|
 decimal64|add0|229|163|0|
 decimal64|base0|0|0|772|
@@ -177,6 +179,9 @@ decimal64|testall0|0|0|0|
 decimal64|tointegral0|0|0|70|
 decimal64|trim0|0|0|93|
 decimal64| |5290|3148|7724|
+
+|Type|Operation|Passed|Failed|Skipped|
+|:---|:--------|:----:|:----:|:-----:|
 decimal128|abs0|56|3|0|
 decimal128|add0|224|168|0|
 decimal128|base0|0|0|772|
@@ -210,8 +215,8 @@ decimal128|testall0|0|0|0|
 decimal128|tointegral0|0|0|70|
 decimal128|trim0|0|0|93|
 decimal128| |6517|3545|6100|
-## Extended Arithmetic
 
+## Extended Arithmetic
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
 decimal32|abs|29|10|50|
@@ -359,6 +364,9 @@ decimal32|tointegralx|0|0|180|
 decimal32|trim|0|0|110|
 decimal32|xor|0|0|277|
 decimal32| |7499|1283|56331|
+
+|Type|Operation|Passed|Failed|Skipped|
+|:---|:--------|:----:|:----:|:-----:|
 decimal64|abs|76|13|0|
 decimal64|add|1710|357|33|
 decimal64|and|0|0|279|
@@ -504,6 +512,9 @@ decimal64|tointegralx|0|0|180|
 decimal64|trim|0|0|110|
 decimal64|xor|0|0|277|
 decimal64| |14081|4720|46312|
+
+|Type|Operation|Passed|Failed|Skipped|
+|:---|:--------|:----:|:----:|:-----:|
 decimal128|abs|74|15|0|
 decimal128|add|1273|820|7|
 decimal128|and|0|0|279|
@@ -649,3 +660,4 @@ decimal128|tointegralx|0|0|180|
 decimal128|trim|0|0|110|
 decimal128|xor|0|0|277|
 decimal128| |14735|5980|44398|
+
