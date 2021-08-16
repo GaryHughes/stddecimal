@@ -78,10 +78,11 @@ public:
                     using traits = operation_traits<Bits>;
                     using limits = std::decimal::numeric_limits<typename traits::decimal_type>;
 
-                    if (context.precision() > limits::digits) {
-                        m_results.record(result::skip);
-                        continue;    
-                    }
+                    // if (context.precision() > limits::digits) {
+                    //     std::cerr << "skipping due to precision " << *context.precision() << " v " << limits::digits << "\n"; 
+                    //     m_results.record(result::skip);
+                    //     continue;    
+                    // }
 
                     try {
                         context.apply_rounding();
@@ -109,6 +110,8 @@ public:
 
                     continue;
                 }
+
+                std::cerr << "failed to process line: " << text << '\n';
             }
             catch (std::exception& ex)
             {
@@ -194,7 +197,7 @@ private:
         // remaindernear0.decTest	
         // trim0.decTest
 
-        // std::cerr << "skipping: " << test.id << '\n';
+        std::cerr << "skipping: " << test.id << '\n';
 
         return result::skip;
     }
