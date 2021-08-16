@@ -9,14 +9,6 @@ This is an implementation of the proposed C++ [ISO/IEC JTC1 SC22 WG21 N2849](htt
 
 I've used [this implementation](https://sourceforge.net/p/stddecimal/code/HEAD/tree/trunk/) successfully in the past however I wanted build a modern version that relied on templates instead of macros to generate the numerous operators required.
 
-# Testing
-
-The library is validated using the [General Decimal Arithmetic Test Cases](http://speleotrove.com/decimal/dectest.html).
-
-* I'm currently in the process of building the test harness and implementing what is needed to run as many tests as possible so there are a lot of failures.
-* Failing tests are currently more likely to be problems mapping exceptions between the specification and the Intel library than real problems with the calculations.
-* Test cases that are not applicable or not yet supported will be explicitly skipped so this column will likely never get to zero.
-
 # Building
 
 * std::decimal currently requires a C++ 17 compiler. It is built and tested on macOS with Apple Clang from the latest Xcode and on Ubuntu with Clang 10.
@@ -106,3 +98,12 @@ private:
 }
 
 ```
+
+# Testing
+
+The library is validated using the [General Decimal Arithmetic Test Cases](http://speleotrove.com/decimal/dectest.html).
+
+* I'm currently in the process of building the test harness and implementing what is needed to run as many tests as possible so there are a lot of failures.
+* Failing tests are currently more likely to be problems mapping exceptions between the specification and the Intel library than real problems with the calculations.
+* Test cases that are not applicable or not yet supported will be explicitly skipped so this column will likely never get to zero.
+
