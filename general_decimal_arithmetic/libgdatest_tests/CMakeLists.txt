@@ -4,13 +4,30 @@ add_executable(libgdatest_tests
 )
 
 include_directories(
+    "${CMAKE_SOURCE_DIR}/libdecimal"
     "${CMAKE_SOURCE_DIR}/general_decimal_arithmetic"
 )
 
+if(APPLE)
+
+    set(BOOST_LIBS
+        libboost_program_options-mt.dylib
+        libboost_regex-mt.dylib
+    )
+
+else()
+
+    set(BOOST_LIBS
+        libboost_program_options.so
+        libboost_regex.so
+    )
+        
+endif()
 
 target_link_libraries(libgdatest_tests
     gdatest 
     ${DECIMAL_EXTRA_LIBRARIES}
+    ${BOOST_LIBS}
 )
 
 catch_discover_tests(libgdatest_tests)
