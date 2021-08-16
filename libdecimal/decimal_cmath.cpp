@@ -183,6 +183,89 @@ decimal128 sqrtd128 (decimal128 x)
     return result;
 }
 
+// maximum, minimum, and positive difference functions: 
+/*
+decimal32 fdimd32 (decimal32 x, decimal32 y)
+{
+
+}
+
+decimal64 fdimd64 (decimal64 x, decimal64 y)
+{
+
+} 
+
+decimal128 fdimd128 (decimal128 x, decimal128 y)
+{
+
+}
+*/
+decimal32 fmaxd32 (decimal32 x, decimal32 y)
+{
+    fenv_t env {};
+    // TODO
+    fe_dec_getenv(&env);
+    decimal32 result;
+    result.value(bid32_maxnum(x.value(), y.value(), &env.flags));
+    fe_dec_setenv(&env);
+    return result;
+} 
+
+decimal64 fmaxd64 (decimal64 x, decimal64 y)
+{
+    fenv_t env {};
+    // TODO
+    fe_dec_getenv(&env);
+    decimal64 result;
+    result.value(bid64_maxnum(x.value(), y.value(), &env.flags));
+    fe_dec_setenv(&env);
+    return result;
+} 
+
+decimal128 fmaxd128 (decimal128 x, decimal128 y)
+{
+    fenv_t env {};
+    // TODO
+    fe_dec_getenv(&env);
+    decimal128 result;
+    result.value(bid128_maxnum(x.value(), y.value(), &env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
+decimal32 fmind32 (decimal32 x, decimal32 y)
+{
+    fenv_t env {};
+    // TODO
+    fe_dec_getenv(&env);
+    decimal32 result;
+    result.value(bid32_minnum(x.value(), y.value(), &env.flags));
+    fe_dec_setenv(&env);
+    return result;
+} 
+
+decimal64 fmind64 (decimal64 x, decimal64 y)
+{
+    fenv_t env {};
+    // TODO
+    fe_dec_getenv(&env);
+    decimal64 result;
+    result.value(bid64_minnum(x.value(), y.value(), &env.flags));
+    fe_dec_setenv(&env);
+    return result;
+} 
+
+decimal128 fmind128 (decimal128 x, decimal128 y)
+{
+    fenv_t env {};
+    // TODO
+    fe_dec_getenv(&env);
+    decimal128 result;
+    result.value(bid128_minnum(x.value(), y.value(), &env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
 decimal32 fmad32(decimal32 x, decimal32 y, decimal32 z)
 {
     fenv_t env {};

@@ -226,16 +226,16 @@ decimal128 sqrtd128(decimal128 x);
 // decimal64 nexttowardd64 (decimal64 x, decimal64 y); 
 // decimal128 nexttowardd128 (decimal128 x, decimal128 y);
 
-// // maximum, minimum, and positive difference functions: 
+// maximum, minimum, and positive difference functions: 
 // decimal32 fdimd32 (decimal32 x, decimal32 y); 
 // decimal64 fdimd64 (decimal64 x, decimal64 y); 
 // decimal128 fdimd128 (decimal128 x, decimal128 y);
-// decimal32 fmaxd32 (decimal32 x, decimal32 y); 
-// decimal64 fmaxd64 (decimal64 x, decimal64 y); 
-// decimal128 fmaxd128 (decimal128 x, decimal128 y);
-// decimal32 fmind32 (decimal32 x, decimal32 y); 
-// decimal64 fmind64 (decimal64 x, decimal64 y); 
-// decimal128 fmind128 (decimal128 x, decimal128 y);
+decimal32 fmaxd32 (decimal32 x, decimal32 y); 
+decimal64 fmaxd64 (decimal64 x, decimal64 y); 
+decimal128 fmaxd128 (decimal128 x, decimal128 y);
+decimal32 fmind32 (decimal32 x, decimal32 y); 
+decimal64 fmind64 (decimal64 x, decimal64 y); 
+decimal128 fmind128 (decimal128 x, decimal128 y);
 
 // floating multiply-add:
 decimal32 fmad32(decimal32 x, decimal32 y, decimal32 z); 

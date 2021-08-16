@@ -446,6 +446,114 @@ public:
 
 };
 
+template<typename DecimalType>
+class min_test;
+
+template<>
+class min_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal32>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = std::decimal::fmind32(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class min_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal64>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = std::decimal::fmind64(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class min_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal128>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = std::decimal::fmind128(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class max_test;
+
+template<>
+class max_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal32>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = std::decimal::fmaxd32(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class max_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal64>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = std::decimal::fmaxd64(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class max_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal128>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = std::decimal::fmaxd128(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
 } // namespace gda
 
 #endif

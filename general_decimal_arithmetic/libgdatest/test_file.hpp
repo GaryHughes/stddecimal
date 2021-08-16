@@ -175,7 +175,15 @@ private:
         if (test.operation == "fma") {
             return fma_test<typename traits::decimal_type>::run(test);
         }
-      
+
+        if (test.operation == "min") {
+            return min_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "max") {
+            return max_test<typename traits::decimal_type>::run(test);
+        }
+
         // comparetotal0.decTest	
         // max0.decTest		
         // randoms0.decTest	
