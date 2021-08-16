@@ -183,6 +183,40 @@ decimal128 sqrtd128 (decimal128 x)
     return result;
 }
 
+// remainder functions:
+decimal32 remainderd32 (decimal32 x, decimal32 y)
+{
+    fenv_t env {};
+    // TODO
+    fe_dec_getenv(&env);
+    decimal32 result;
+    result.value(bid32_rem(x.value(), y.value(), &env.flags));
+    fe_dec_setenv(&env);
+    return result;
+} 
+
+decimal64 remainderd64 (decimal64 x, decimal64 y)
+{
+    fenv_t env {};
+    // TODO
+    fe_dec_getenv(&env);
+    decimal64 result;
+    result.value(bid64_rem(x.value(), y.value(), &env.flags));
+    fe_dec_setenv(&env);
+    return result;
+} 
+
+decimal128 remainderd128 (decimal128 x, decimal128 y)
+{
+    fenv_t env {};
+    // TODO
+    fe_dec_getenv(&env);
+    decimal128 result;
+    result.value(bid128_rem(x.value(), y.value(), &env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
 // maximum, minimum, and positive difference functions: 
 /*
 decimal32 fdimd32 (decimal32 x, decimal32 y)

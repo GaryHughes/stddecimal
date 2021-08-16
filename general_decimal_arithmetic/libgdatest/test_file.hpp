@@ -184,6 +184,10 @@ private:
             return max_test<typename traits::decimal_type>::run(test);
         }
 
+        if (test.operation == "remainder") {
+            return remainder_test<typename traits::decimal_type>::run(test);
+        }
+
         // comparetotal0.decTest	
         // max0.decTest		
         // randoms0.decTest	

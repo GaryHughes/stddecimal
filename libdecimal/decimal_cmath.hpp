@@ -198,13 +198,13 @@ decimal128 sqrtd128(decimal128 x);
 // decimal64 truncd64 (decimal64 x); 
 // decimal128 truncd128 (decimal128 x);
 
-// // remainder functions:
+// remainder functions:
 // decimal32 fmodd32 (decimal32 x, decimal32 y); 
 // decimal64 fmodd64 (decimal64 x, decimal64 y); 
 // decimal128 fmodd128 (decimal128 x, decimal128 y);
-// decimal32 remainderd32 (decimal32 x, decimal32 y); 
-// decimal64 remainderd64 (decimal64 x, decimal64 y); 
-// decimal128 remainderd128 (decimal128 x, decimal128 y);
+decimal32 remainderd32 (decimal32 x, decimal32 y); 
+decimal64 remainderd64 (decimal64 x, decimal64 y); 
+decimal128 remainderd128 (decimal128 x, decimal128 y);
 // decimal32 remquod32 (decimal32 x, decimal32 y, int * quo); 
 // decimal64 remquod64 (decimal64 x, decimal64 y, int * quo); 
 // decimal128 remquod128 (decimal128 x, decimal128 y, int * quo);
