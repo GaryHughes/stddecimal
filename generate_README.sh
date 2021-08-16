@@ -29,5 +29,3 @@ fi
 if [ -f extended_128_results.md ]; then
     cat extended_128_results.md >> README.md
 fi
-
-cat README_footer.md >> README.md
