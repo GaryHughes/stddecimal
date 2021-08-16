@@ -11,7 +11,7 @@ const boost::regex comment_regex("^\\s*--.*");
 // keyword: value
 const boost::regex directive_regex("^([^:]+):(.+)");
 // add060 add '10000e+9'  '70000' -> '1.00000E+13' Inexact Rounded
-const boost::regex test_regex("^\\s*(\\S+)\\s+(\\S+)\\s+(\\.+\\s+){1,3}->\\s+(\\S+)\\s*(.*)");
+const boost::regex test_regex("^\\s*(\\S+)\\s+(\\S+)\\s+(\\.+\\s+){1,3}->\\s+(\\.+)\\s*(.*)");
 
 test_line::test_line(std::string line)
 {
@@ -37,43 +37,89 @@ test_line::test_line(std::string line)
         m_value = match[2].str();
         boost::algorithm::trim_all(m_value);
         return;
-    }  
-
-    if (boost::regex_match(line, match, test_regex)) {
-    
-        m_type = line_type::test;
-        m_id = match[1].str();
-    
-        m_operation = match[2].str();
-        boost::algorithm::to_lower(m_operation);
-
-        auto operand_string{match[3].str()};
-        boost::trim(operand_string);
-        boost::split(m_operands, operand_string, boost::is_any_of("\t "), boost::token_compress_on);
-        for (auto& operand : m_operands) {
-            boost::erase_all(operand, "'");
-        }
-        
-        m_expected_result = match[4];
-        boost::erase_all(m_expected_result, "'");
-    
-        auto expected_conditions_string = match[5].str();
-        boost::trim(expected_conditions_string);
-        boost::algorithm::to_lower(expected_conditions_string);
-        m_expected_conditions = parse_conditions(expected_conditions_string);
-        return;
     }
 
-    throw std::runtime_error("unrecognised line: " + line);
+    std::string arrow = "->";
+    auto arrow_pos = line.find(arrow);
+
+    if (arrow_pos == std::string::npos) {
+        throw std::runtime_error("failed to find -> on line: " + line);
+    }
+
+    auto left = line.substr(0, arrow_pos);
+    auto right = line.substr(arrow_pos + arrow.length());
+
+    std::vector<std::string> tokens;
+    tokenise(left, tokens);
+
+    if (tokens.size() < 3 || tokens.size() > 5) {
+        throw std::runtime_error("there can only be between 3 and 5 tokens on the left of the arrow: " + line);
+    }
+
+    m_id = tokens[0];
+    m_operation = tokens[1];
+    m_operands.push_back(tokens[2]);
+    if (tokens.size() > 3) {
+        m_operands.push_back(tokens[3]);
+        if (tokens.size() > 4) {
+            m_operands.push_back(tokens[4]);
+        }
+    }
+
+    tokens.clear();
+    tokenise(right, tokens);
+
+    if (tokens.size() < 1) {
+        throw std::runtime_error("there must be atleast 1 token on the right of the arrow: " + line);
+    }
+
+    m_expected_result = tokens[0];
+    m_expected_conditions = parse_conditions(std::vector<std::string>(++tokens.begin(), tokens.end()));
+
+    m_type = line_type::test;
 }
 
-std::decimal::fexcept_t test_line::parse_conditions(const std::string& condition_string)
+void test_line::tokenise(const std::string text, std::vector<std::string>& tokens)
 {
-    std::vector<std::string> conditions;
-    boost::split(conditions, condition_string, boost::is_any_of("\t "), boost::token_compress_on);
-    std::decimal::fexcept_t res = 0;
-    for (const auto& condition : conditions) {
+    std::string token;
+    const char not_space = 'a';
+    char previous = not_space;
+    bool quoted_token = false;
 
+    for (char c : text) {
+        
+        if ((std::isspace(c) && !std::isspace(previous)) || (c == '\'' && previous != '\'')) {
+            if (!token.empty()) {
+                tokens.push_back(token);
+                token = "";
+                previous = not_space;
+            }
+            continue;
+        }
+
+        if (!std::isspace(c)) {
+            if (token.empty() && c == '\'') {
+                quoted_token = true;
+            }
+            else {
+                token += c;
+            }        
+        }
+
+        previous = c;
+    }
+
+    if (!token.empty()) {
+        tokens.push_back(token);
+    }
+}
+
+std::decimal::fexcept_t test_line::parse_conditions(const std::vector<std::string>& conditions)
+{
+    std::decimal::fexcept_t res = 0;
+    for (const auto& text : conditions) {
+        std::string condition = text;
+        boost::algorithm::to_lower(condition);
             // clamped                 NA
         if (condition == "conversion_syntax")           {   res |= std::decimal::FE_DEC_INVALID;    }
         else if (condition == "division_by_zero") 	    {   res |= std::decimal::FE_DEC_DIVBYZERO;  }
@@ -96,6 +142,26 @@ std::decimal::fexcept_t test_line::parse_conditions(const std::string& condition
 test_line::line_type test_line::type() const
 {
     return m_type;
+}
+
+bool test_line::is_blank() const
+{
+    return type() == line_type::blank;
+}
+
+bool test_line::is_comment() const
+{
+    return type() == line_type::comment;
+}
+
+bool test_line::is_directive() const
+{
+    return type() == line_type::directive;
+}
+
+bool test_line::is_test() const
+{
+    return type() == line_type::test;
 }
 
 const std::string& test_line::keyword() const

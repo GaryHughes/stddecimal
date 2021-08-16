@@ -44,73 +44,76 @@ public:
                 break;
             }
 
-            test_line line(text);
+            try
+            {
+                test_line line(text);
 
-            if (line.type() == test_line::line_type::blank) {
-                continue;
-            }
-
-            if (line.type() == test_line::line_type::comment) {
-                continue;
-            }
-
-            if (line.type() == test_line::line_type::directive) {
-                if (context.apply_directive(line.keyword(), line.value())) {
-                     // std::cerr << context << std::endl;
-                }
-                continue;
-            }
-
-            if (line.type() == test_line::line_type::test) {
-
-                if (context.clamp()) {
-                    m_results.record(result::skip);
+                if (line.is_blank()) {
                     continue;
                 }
 
-                test test;
-                test.id = line.id();
-                test.operation = line.operation();
-                test.operands = line.operands();
-                test.expected_result = line.expected_result();
-                test.expected_conditions = line.expected_conditions();
-
-                using traits = operation_traits<Bits>;
-                using limits = std::decimal::numeric_limits<typename traits::decimal_type>;
-
-                if (context.precision() > limits::digits) {
-                    m_results.record(result::skip);
-                    continue;    
+                if (line.is_comment()) {
+                    continue;
                 }
 
-                try {
-                    context.apply_rounding();
-                    // std::decimal::clear_exceptions(std::decimal::FE_DEC_ALL_EXCEPT);
-                    std::decimal::set_exceptions(std::decimal::FE_DEC_DIVBYZERO | 
-                                                 std::decimal::FE_DEC_INEXACT | 
-                                                 std::decimal::FE_DEC_INVALID | 
-                                                 std::decimal::FE_DEC_OVERFLOW | 
-                                                 std::decimal::FE_DEC_UNDERFLOW);
-                    m_results.record(process_test(test));
+                if (line.is_directive()) {
+                    context.apply_directive(line.keyword(), line.value());
+                    continue;
                 }
-                catch (std::decimal::exception& ex) {
-                    if (ex.flags() != test.expected_conditions) {
-                        report_failure(test, ex.flags());
-                        m_results.record(result::fail);
+
+                if (line.is_test()) {
+
+                    if (context.clamp()) {
+                        m_results.record(result::skip);
+                        continue;
                     }
-                    else {
-                        m_results.record(result::pass);
-                    }
-                }
-                catch (std::exception& ex) {
-                    std::cerr << "GENERIC EXCEPTION " << test.id << " " << ex.what() << std::endl;
-                    m_results.record(result::skip);
-                }
 
-                continue;
+                    test test;
+                    test.id = line.id();
+                    test.operation = line.operation();
+                    test.operands = line.operands();
+                    test.expected_result = line.expected_result();
+                    test.expected_conditions = line.expected_conditions();
+
+                    using traits = operation_traits<Bits>;
+                    using limits = std::decimal::numeric_limits<typename traits::decimal_type>;
+
+                    if (context.precision() > limits::digits) {
+                        m_results.record(result::skip);
+                        continue;    
+                    }
+
+                    try {
+                        context.apply_rounding();
+                        // std::decimal::clear_exceptions(std::decimal::FE_DEC_ALL_EXCEPT);
+                        std::decimal::set_exceptions(std::decimal::FE_DEC_DIVBYZERO | 
+                                                    std::decimal::FE_DEC_INEXACT | 
+                                                    std::decimal::FE_DEC_INVALID | 
+                                                    std::decimal::FE_DEC_OVERFLOW | 
+                                                    std::decimal::FE_DEC_UNDERFLOW);
+                        m_results.record(process_test(test));
+                    }
+                    catch (std::decimal::exception& ex) {
+                        if (ex.flags() != test.expected_conditions) {
+                            report_failure(test, ex.flags());
+                            m_results.record(result::fail);
+                        }
+                        else {
+                            m_results.record(result::pass);
+                        }
+                    }
+                    catch (std::exception& ex) {
+                        std::cerr << "GENERIC EXCEPTION " << test.id << " " << ex.what() << std::endl;
+                        m_results.record(result::skip);
+                    }
+
+                    continue;
+                }
             }
-
-
+            catch (std::exception& ex)
+            {
+                std::cerr << "failed to parse line: " + text << '\n';
+            }   
         }
     }
 
@@ -126,7 +129,6 @@ private:
             return add_test<typename traits::decimal_type>::run(test);
         }
 
-        /*
         if (test.operation == "subtract") {
             return subtract_test<typename traits::decimal_type>::run(test);
         }
@@ -170,8 +172,7 @@ private:
         if (test.operation == "fma") {
             return fma_test<typename traits::decimal_type>::run(test);
         }
-        */
-
+      
         // comparetotal0.decTest	
         // max0.decTest		
         // randoms0.decTest	

@@ -28,6 +28,10 @@ public:
     test_line(std::string line);
 
     line_type type() const;
+    bool is_blank() const;
+    bool is_comment() const;
+    bool is_directive() const;
+    bool is_test() const;
 
     // type() == directive
     const std::string& keyword() const;
@@ -42,7 +46,8 @@ public:
 
 private:
 
-    std::decimal::fexcept_t parse_conditions(const std::string& condition_string);
+    std::decimal::fexcept_t parse_conditions(const std::vector<std::string>& conditions);
+    void tokenise(const std::string text, std::vector<std::string>& tokens);
 
     line_type m_type;
 
@@ -55,7 +60,7 @@ private:
     std::string m_operation;
     std::vector<std::string> m_operands;
     std::string m_expected_result;
-    std::decimal::fexcept_t m_expected_conditions;
+    std::decimal::fexcept_t m_expected_conditions = 0;
 
 };
 
