@@ -13,6 +13,13 @@ static const char * const option_files = "files";
 
 using input_file_collection = std::vector<std::string>;
 
+std::string tidy_filename(const std::string& filename)
+{
+    const std::string suffix = ".decTest";
+    auto suffix_pos = filename.find(suffix);
+    return filename.substr(0, suffix_pos);
+}
+
 int main(int argc, char**argv)
 {
     try
@@ -71,13 +78,13 @@ int main(int argc, char**argv)
                 std::cerr << "ERROR processing file " << filename << " : " << e.what() << std::endl;
             }
 
-            std::cerr << "decimal" << bits << " " << basename(const_cast<char*>(filename.c_str())) << " passed=" << file_results.passed() << " failed=" << file_results.failed() << " skipped=" << file_results.skipped() << std::endl;
+            std::cout << "decimal" << bits << "|" << tidy_filename(basename(const_cast<char*>(filename.c_str()))) << "|" << file_results.passed() << "|" << file_results.failed() << "|" << file_results.skipped() << "|" << std::endl;
         
             total_results.record(file_results);
         }
 
-        // |decimal32|0|0|0|
-        std::cout << "decimal" << bits << "|" << total_results.passed() << "|" << total_results.failed() << "|" << total_results.skipped() << "|" << std::endl;
+        // |decimal32| |0|0|0|
+        std::cout << "decimal" << bits << "| |" << total_results.passed() << "|" << total_results.failed() << "|" << total_results.skipped() << "|" << std::endl;
     }
     catch (std::exception& ex)
     {

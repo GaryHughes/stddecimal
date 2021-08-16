@@ -1,4 +1,4 @@
 ## Subset Arithmetic
 
-|Type|Passed|Failed|Skipped|
-|----|:----:|:----:|:-----:|
+|Type|Operation|Passed|Failed|Skipped|
+|:---|:--------|:----:|:----:|:-----:|
