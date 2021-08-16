@@ -20,16 +20,16 @@ The library is validated using the [General Decimal Arithmetic Test Cases](http:
 
 |Type|Passed|Failed|Skipped|
 |----|:----:|:----:|:-----:|
-decimal32|234|2778|12451|
-decimal64|1604|6133|7726|
-decimal128|2004|7357|6102|
+decimal32|3406|307|12449|
+decimal64|5290|3148|7724|
+decimal128|6517|3545|6100|
 ## Extended Arithmetic
 
 |Type|Passed|Failed|Skipped|
 |----|:----:|:----:|:-----:|
-decimal32|1085|6294|45349|
-decimal64|4099|10046|38583|
-decimal128|4499|11508|36721|
+decimal32|7499|1283|56331|
+decimal64|14081|4720|46312|
+decimal128|14735|5980|44398|
 # Building
 
 * std::decimal currently requires a C++ 17 compiler. It is built and tested on macOS with Apple Clang from the latest Xcode and on Ubuntu with Clang 12.
