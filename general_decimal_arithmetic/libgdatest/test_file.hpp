@@ -188,23 +188,23 @@ private:
             return remainder_test<typename traits::decimal_type>::run(test);
         }
 
+        if (test.operation == "exp") {
+            return exp_test<typename traits::decimal_type>::run(test);
+        }
+
         // comparetotal0.decTest	
-        // max0.decTest		
         // randoms0.decTest	
         // rescale0.decTest	
         // inexact0.decTest	
-        // min0.decTest		
         // reduce0.decTest		
         // rounding0.decTest	
         // testall0.decTest
         // base0.decTest		
         // divideint0.decTest	
         // ln0.decTest		
-        // remainder0.decTest	
         // samequantum0.decTest	
         // tointegral0.decTest
         // compare0.decTest	
-        // exp0.decTest		
         // randombound320.decTest	
         // remaindernear0.decTest	
         // trim0.decTest

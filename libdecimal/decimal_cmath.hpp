@@ -98,7 +98,10 @@ decimal128 quantized128 (decimal128 x, decimal128 y);
 // decimal64 tanhd64 (decimal64 x); 
 // decimal128 tanhd128 (decimal128 x);
 
-// // exponential and logarithmic functions: decimal32 expd32 (decimal32 x); decimal64 expd64 (decimal64 x); decimal128 expd128 (decimal128 x);
+// exponential and logarithmic functions: 
+decimal32 expd32(decimal32 x); 
+decimal64 expd64(decimal64 x); 
+decimal128 expd128(decimal128 x);
 // decimal32 exp2d32 (decimal32 x); 
 // decimal64 exp2d64 (decimal64 x); 
 // decimal128 exp2d128 (decimal128 x);
