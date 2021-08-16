@@ -117,22 +117,22 @@ decimal32|compare|0|0|413|
 decimal32|comparetotal|0|0|455|
 decimal32|divide|139|51|0|
 decimal32|divideint|0|0|173|
-decimal32|exp|0|0|319|
+decimal32|exp|275|44|0|
 decimal32|fma|2|7|0|
 decimal32|inexact|90|23|7|
-decimal32|ln|0|0|313|
+decimal32|ln|251|62|0|
 decimal32|log10|252|61|0|
-decimal32|max|0|0|67|
-decimal32|min|0|0|67|
+decimal32|max|47|20|0|
+decimal32|min|47|20|0|
 decimal32|minus|38|7|0|
 decimal32|multiply|140|52|0|
 decimal32|plus|57|7|0|
 decimal32|power|175|84|0|
 decimal32|quantize|221|207|0|
-decimal32|randombound32|743|757|900|
-decimal32|randoms|1073|1427|1500|
+decimal32|randombound32|819|981|600|
+decimal32|randoms|1218|1782|1000|
 decimal32|reduce|0|0|106|
-decimal32|remainder|0|0|249|
+decimal32|remainder|189|60|0|
 decimal32|remaindernear|0|0|263|
 decimal32|rescale|0|0|203|
 decimal32|rounding|511|217|0|
@@ -142,7 +142,7 @@ decimal32|subtract|439|80|0|
 decimal32|testall|0|0|0|
 decimal32|tointegral|0|0|70|
 decimal32|trim|0|0|93|
-decimal32| |7029|3099|6034|
+decimal32| |8059|3884|4219|
 
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
@@ -153,22 +153,22 @@ decimal64|compare|0|0|413|
 decimal64|comparetotal|0|0|455|
 decimal64|divide|158|32|0|
 decimal64|divideint|0|0|173|
-decimal64|exp|0|0|319|
+decimal64|exp|285|34|0|
 decimal64|fma|2|7|0|
 decimal64|inexact|67|46|7|
-decimal64|ln|0|0|313|
+decimal64|ln|271|42|0|
 decimal64|log10|258|55|0|
-decimal64|max|0|0|67|
-decimal64|min|0|0|67|
+decimal64|max|59|8|0|
+decimal64|min|59|8|0|
 decimal64|minus|42|3|0|
 decimal64|multiply|136|56|0|
 decimal64|plus|61|3|0|
 decimal64|power|175|84|0|
 decimal64|quantize|233|195|0|
-decimal64|randombound32|1119|381|900|
-decimal64|randoms|715|1785|1500|
+decimal64|randombound32|1119|681|600|
+decimal64|randoms|876|2124|1000|
 decimal64|reduce|0|0|106|
-decimal64|remainder|0|0|249|
+decimal64|remainder|179|70|0|
 decimal64|remaindernear|0|0|263|
 decimal64|rescale|0|0|203|
 decimal64|rounding|224|504|0|
@@ -178,7 +178,7 @@ decimal64|subtract|303|216|0|
 decimal64|testall|0|0|0|
 decimal64|tointegral|0|0|70|
 decimal64|trim|0|0|93|
-decimal64| |6593|3535|6034|
+decimal64| |7607|4336|4219|
 
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
@@ -189,22 +189,22 @@ decimal128|compare|0|0|413|
 decimal128|comparetotal|0|0|455|
 decimal128|divide|159|31|0|
 decimal128|divideint|0|0|173|
-decimal128|exp|0|0|319|
+decimal128|exp|283|36|0|
 decimal128|fma|2|7|0|
 decimal128|inexact|50|63|7|
-decimal128|ln|0|0|313|
+decimal128|ln|267|46|0|
 decimal128|log10|267|46|0|
-decimal128|max|0|0|67|
-decimal128|min|0|0|67|
+decimal128|max|59|8|0|
+decimal128|min|59|8|0|
 decimal128|minus|42|3|0|
 decimal128|multiply|134|58|0|
 decimal128|plus|61|3|0|
 decimal128|power|175|84|0|
 decimal128|quantize|241|187|0|
-decimal128|randombound32|1332|168|900|
-decimal128|randoms|541|1959|1500|
+decimal128|randombound32|1512|288|600|
+decimal128|randoms|702|2298|1000|
 decimal128|reduce|0|0|106|
-decimal128|remainder|0|0|249|
+decimal128|remainder|180|69|0|
 decimal128|remaindernear|0|0|263|
 decimal128|rescale|0|0|203|
 decimal128|rounding|210|518|0|
@@ -214,7 +214,7 @@ decimal128|subtract|269|250|0|
 decimal128|testall|0|0|0|
 decimal128|tointegral|0|0|70|
 decimal128|trim|0|0|93|
-decimal128| |6578|3550|6034|
+decimal128| |7767|4176|4219|
 
 ## Extended Arithmetic
 |Type|Operation|Passed|Failed|Skipped|
@@ -324,16 +324,16 @@ decimal32|dqToIntegral|0|0|178|
 decimal32|dqXor|0|0|348|
 decimal32|dsBase|0|0|907|
 decimal32|dsEncode|0|0|268|
-decimal32|exp|0|0|440|
+decimal32|exp|361|79|0|
 decimal32|fma|2002|608|2|
 decimal32|inexact|116|29|7|
 decimal32|invert|0|0|128|
-decimal32|ln|0|0|414|
+decimal32|ln|326|88|0|
 decimal32|log10|265|124|0|
 decimal32|logb|0|0|128|
-decimal32|max|0|0|327|
+decimal32|max|264|63|0|
 decimal32|maxmag|0|0|312|
-decimal32|min|0|0|317|
+decimal32|min|254|63|0|
 decimal32|minmag|0|0|303|
 decimal32|minus|97|16|0|
 decimal32|multiply|412|109|0|
@@ -345,10 +345,10 @@ decimal32|plus|101|21|0|
 decimal32|power|943|264|0|
 decimal32|powersqrt|2826|30|0|
 decimal32|quantize|284|491|0|
-decimal32|randombound32|790|710|900|
-decimal32|randoms|1184|1316|1500|
+decimal32|randombound32|866|934|600|
+decimal32|randoms|1329|1671|1000|
 decimal32|reduce|0|0|168|
-decimal32|remainder|0|0|517|
+decimal32|remainder|406|111|0|
 decimal32|remaindernear|0|0|446|
 decimal32|rescale|0|0|617|
 decimal32|rotate|0|0|195|
@@ -363,7 +363,7 @@ decimal32|tointegral|0|0|168|
 decimal32|tointegralx|0|0|180|
 decimal32|trim|0|0|110|
 decimal32|xor|0|0|277|
-decimal32| |15670|5158|44285|
+decimal32| |17502|6141|41470|
 
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
@@ -472,16 +472,16 @@ decimal64|dqToIntegral|0|0|178|
 decimal64|dqXor|0|0|348|
 decimal64|dsBase|0|0|907|
 decimal64|dsEncode|0|0|268|
-decimal64|exp|0|0|440|
+decimal64|exp|383|57|0|
 decimal64|fma|2171|439|2|
 decimal64|inexact|85|60|7|
 decimal64|invert|0|0|128|
-decimal64|ln|0|0|414|
+decimal64|ln|345|69|0|
 decimal64|log10|281|108|0|
 decimal64|logb|0|0|128|
-decimal64|max|0|0|327|
+decimal64|max|268|59|0|
 decimal64|maxmag|0|0|312|
-decimal64|min|0|0|317|
+decimal64|min|258|59|0|
 decimal64|minmag|0|0|303|
 decimal64|minus|100|13|0|
 decimal64|multiply|400|121|0|
@@ -493,10 +493,10 @@ decimal64|plus|109|13|0|
 decimal64|power|987|220|0|
 decimal64|powersqrt|2847|9|0|
 decimal64|quantize|296|479|0|
-decimal64|randombound32|1119|381|900|
-decimal64|randoms|748|1752|1500|
+decimal64|randombound32|1119|681|600|
+decimal64|randoms|909|2091|1000|
 decimal64|reduce|0|0|168|
-decimal64|remainder|0|0|517|
+decimal64|remainder|411|106|0|
 decimal64|remaindernear|0|0|446|
 decimal64|rescale|0|0|617|
 decimal64|rotate|0|0|195|
@@ -511,7 +511,7 @@ decimal64|tointegral|0|0|168|
 decimal64|tointegralx|0|0|180|
 decimal64|trim|0|0|110|
 decimal64|xor|0|0|277|
-decimal64| |15699|5129|44285|
+decimal64| |17525|6118|41470|
 
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
@@ -620,16 +620,16 @@ decimal128|dqToIntegral|0|0|178|
 decimal128|dqXor|0|0|348|
 decimal128|dsBase|0|0|907|
 decimal128|dsEncode|0|0|268|
-decimal128|exp|0|0|440|
+decimal128|exp|366|74|0|
 decimal128|fma|1694|916|2|
 decimal128|inexact|68|77|7|
 decimal128|invert|0|0|128|
-decimal128|ln|0|0|414|
+decimal128|ln|333|81|0|
 decimal128|log10|290|99|0|
 decimal128|logb|0|0|128|
-decimal128|max|0|0|327|
+decimal128|max|278|49|0|
 decimal128|maxmag|0|0|312|
-decimal128|min|0|0|317|
+decimal128|min|268|49|0|
 decimal128|minmag|0|0|303|
 decimal128|minus|98|15|0|
 decimal128|multiply|388|133|0|
@@ -641,10 +641,10 @@ decimal128|plus|103|19|0|
 decimal128|power|993|214|0|
 decimal128|powersqrt|2847|9|0|
 decimal128|quantize|340|435|0|
-decimal128|randombound32|1419|81|900|
-decimal128|randoms|574|1926|1500|
+decimal128|randombound32|1599|201|600|
+decimal128|randoms|735|2265|1000|
 decimal128|reduce|0|0|168|
-decimal128|remainder|0|0|517|
+decimal128|remainder|424|93|0|
 decimal128|remaindernear|0|0|446|
 decimal128|rescale|0|0|617|
 decimal128|rotate|0|0|195|
@@ -659,5 +659,5 @@ decimal128|tointegral|0|0|168|
 decimal128|tointegralx|0|0|180|
 decimal128|trim|0|0|110|
 decimal128|xor|0|0|277|
-decimal128| |14825|6003|44285|
+decimal128| |16835|6808|41470|
 
