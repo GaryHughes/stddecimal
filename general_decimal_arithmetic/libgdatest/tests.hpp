@@ -339,6 +339,57 @@ public:
 };
 
 template<typename DecimalType>
+class log_test;
+
+template<>
+class log_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = std::decimal::logd32(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class log_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = std::decimal::logd64(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class log_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = std::decimal::logd128(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<typename DecimalType>
 class log10_test;
 
 template<>

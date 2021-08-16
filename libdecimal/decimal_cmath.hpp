@@ -117,9 +117,9 @@ decimal128 expd128(decimal128 x);
 // decimal32 ldexpd32 (decimal32 x, int exp); 
 // decimal64 ldexpd64 (decimal64 x, int exp); 
 // decimal128 ldexpd128 (decimal128 x, int exp);
-// decimal32 logd32 (decimal32 x); 
-// decimal64 logd64 (decimal64 x); 
-// decimal128 logd128 (decimal128 x);
+decimal32 logd32 (decimal32 x); 
+decimal64 logd64 (decimal64 x); 
+decimal128 logd128 (decimal128 x);
 
 decimal32 log10d32(decimal32 x); 
 decimal64 log10d64(decimal64 x); 
