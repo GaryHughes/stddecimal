@@ -111,6 +111,33 @@ result evaluate_result(const test& test, bool expected, bool actual)
     return result::pass;
 }
 
+template<>
+result evaluate_result(const test& test, int expected, int actual)
+{
+    if (expected != actual) {
+        report_failure(test, expected, actual);
+        return result::fail;        
+    }
+
+    return result::pass;
+}
+
+template<typename DecimalType>
+class compare_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto lhs = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto rhs = boost::lexical_cast<DecimalType>(test.operands[1]);
+        auto expected = boost::lexical_cast<int>(test.expected_result);
+        auto actual = lhs < rhs ? -1 : (lhs > rhs ? 1 : 0);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
 
 template<typename DecimalType>
 class add_test
