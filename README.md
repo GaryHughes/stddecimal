@@ -136,13 +136,13 @@ decimal32|remainder|189|60|0|
 decimal32|remaindernear|0|0|263|
 decimal32|rescale|0|0|203|
 decimal32|rounding|511|217|0|
-decimal32|samequantum|0|0|64|
+decimal32|samequantum|64|0|0|
 decimal32|squareroot|2796|21|0|
 decimal32|subtract|439|80|0|
 decimal32|testall|0|0|0|
 decimal32|tointegral|0|0|70|
 decimal32|trim|0|0|93|
-decimal32| |8059|3884|4219|
+decimal32| |8123|3884|4155|
 
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
@@ -172,13 +172,13 @@ decimal64|remainder|179|70|0|
 decimal64|remaindernear|0|0|263|
 decimal64|rescale|0|0|203|
 decimal64|rounding|224|504|0|
-decimal64|samequantum|0|0|64|
+decimal64|samequantum|64|0|0|
 decimal64|squareroot|2815|2|0|
 decimal64|subtract|303|216|0|
 decimal64|testall|0|0|0|
 decimal64|tointegral|0|0|70|
 decimal64|trim|0|0|93|
-decimal64| |7607|4336|4219|
+decimal64| |7671|4336|4155|
 
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
@@ -208,13 +208,13 @@ decimal128|remainder|180|69|0|
 decimal128|remaindernear|0|0|263|
 decimal128|rescale|0|0|203|
 decimal128|rounding|210|518|0|
-decimal128|samequantum|0|0|64|
+decimal128|samequantum|64|0|0|
 decimal128|squareroot|2815|2|0|
 decimal128|subtract|269|250|0|
 decimal128|testall|0|0|0|
 decimal128|tointegral|0|0|70|
 decimal128|trim|0|0|93|
-decimal128| |7767|4176|4219|
+decimal128| |7831|4176|4155|
 
 ## Extended Arithmetic
 |Type|Operation|Passed|Failed|Skipped|
@@ -353,7 +353,7 @@ decimal32|remaindernear|0|0|446|
 decimal32|rescale|0|0|617|
 decimal32|rotate|0|0|195|
 decimal32|rounding|766|264|0|
-decimal32|samequantum|0|0|333|
+decimal32|samequantum|325|8|0|
 decimal32|scaleb|0|0|155|
 decimal32|shift|0|0|200|
 decimal32|squareroot|3204|359|23|
@@ -363,7 +363,7 @@ decimal32|tointegral|0|0|168|
 decimal32|tointegralx|0|0|180|
 decimal32|trim|0|0|110|
 decimal32|xor|0|0|277|
-decimal32| |17502|6141|41470|
+decimal32| |17827|6149|41137|
 
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
@@ -501,7 +501,7 @@ decimal64|remaindernear|0|0|446|
 decimal64|rescale|0|0|617|
 decimal64|rotate|0|0|195|
 decimal64|rounding|398|632|0|
-decimal64|samequantum|0|0|333|
+decimal64|samequantum|301|32|0|
 decimal64|scaleb|0|0|155|
 decimal64|shift|0|0|200|
 decimal64|squareroot|3254|309|23|
@@ -511,7 +511,7 @@ decimal64|tointegral|0|0|168|
 decimal64|tointegralx|0|0|180|
 decimal64|trim|0|0|110|
 decimal64|xor|0|0|277|
-decimal64| |17525|6118|41470|
+decimal64| |17826|6150|41137|
 
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
@@ -649,7 +649,7 @@ decimal128|remaindernear|0|0|446|
 decimal128|rescale|0|0|617|
 decimal128|rotate|0|0|195|
 decimal128|rounding|382|648|0|
-decimal128|samequantum|0|0|333|
+decimal128|samequantum|333|0|0|
 decimal128|scaleb|0|0|155|
 decimal128|shift|0|0|200|
 decimal128|squareroot|3224|339|23|
@@ -659,5 +659,5 @@ decimal128|tointegral|0|0|168|
 decimal128|tointegralx|0|0|180|
 decimal128|trim|0|0|110|
 decimal128|xor|0|0|277|
-decimal128| |16835|6808|41470|
+decimal128| |17168|6808|41137|
 
