@@ -200,18 +200,19 @@ private:
             return samequantum_test<typename traits::decimal_type>::run(test);
         }
 
+        if (test.operation == "compare") {
+            return compare_test<typename traits::decimal_type>::run(test);
+        }
+
         // comparetotal0.decTest	
         // randoms0.decTest	
         // rescale0.decTest	
         // inexact0.decTest	
         // reduce0.decTest		
-        // rounding0.decTest	
         // testall0.decTest
         // base0.decTest		
         // divideint0.decTest	
         // tointegral0.decTest
-        // compare0.decTest	
-        // randombound320.decTest	
         // remaindernear0.decTest	
         // trim0.decTest
 
