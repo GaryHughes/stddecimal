@@ -36,6 +36,36 @@ bool isnan(decimal::decimal128 value)
 namespace decimal
 {
 
+bool samequantum(decimal32 x, decimal32 y)
+{
+    return samequantumd32(x, y);
+} 
+
+bool samequantumd32(decimal32 x, decimal32 y)
+{
+    return bid32_sameQuantum(x.value(), y.value());
+}
+
+bool samequantum(decimal64 x, decimal64 y)
+{
+    return samequantumd64(x, y);
+} 
+
+bool samequantumd64(decimal64 x, decimal64 y)
+{
+    return bid64_sameQuantum(x.value(), y.value());
+}
+
+bool samequantum(decimal128 x, decimal128 y)
+{
+    return samequantumd128(x, y);
+} 
+
+bool samequantumd128 (decimal128 x, decimal128 y)
+{
+    return bid128_sameQuantum(x.value(), y.value());
+}
+
 decimal32 quantize(decimal32 x, decimal32 y)
 {
     fenv_t env {};

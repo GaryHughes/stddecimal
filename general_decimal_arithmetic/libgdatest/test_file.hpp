@@ -196,6 +196,10 @@ private:
             return log_test<typename traits::decimal_type>::run(test);
         }
 
+        if (test.operation == "samequantum") {
+            return samequantum_test<typename traits::decimal_type>::run(test);
+        }
+
         // comparetotal0.decTest	
         // randoms0.decTest	
         // rescale0.decTest	
@@ -205,7 +209,6 @@ private:
         // testall0.decTest
         // base0.decTest		
         // divideint0.decTest	
-        // samequantum0.decTest	
         // tointegral0.decTest
         // compare0.decTest	
         // randombound320.decTest	

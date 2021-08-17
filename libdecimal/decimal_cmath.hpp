@@ -29,14 +29,14 @@ bool isnan(decimal::decimal128 value);
 namespace decimal {
 
 // 3.6.4 samequantum functions:
-// bool samequantum (decimal32 x, decimal32 y); 
-// bool samequantumd32 (decimal32 x, decimal32 y);
+bool samequantum (decimal32 x, decimal32 y); 
+bool samequantumd32 (decimal32 x, decimal32 y);
 
-// bool samequantum (decimal64 x, decimal64 y); 
-// bool samequantumd64 (decimal64 x, decimal64 y);
+bool samequantum (decimal64 x, decimal64 y); 
+bool samequantumd64 (decimal64 x, decimal64 y);
 
-// bool samequantum (decimal128 x, decimal128 y); 
-// bool samequantumd128 (decimal128 x, decimal128 y);
+bool samequantum (decimal128 x, decimal128 y); 
+bool samequantumd128 (decimal128 x, decimal128 y);
 
 // // 3.6.5 quantize functions:
 decimal32 quantize (decimal32 x, decimal32 y); 

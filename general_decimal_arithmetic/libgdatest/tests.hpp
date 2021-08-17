@@ -100,6 +100,18 @@ result evaluate_result(const test& test, DecimalType expected, DecimalType actua
     return result::pass;
 }    
 
+template<>
+result evaluate_result(const test& test, bool expected, bool actual)
+{
+    if (expected != actual) {
+        report_failure(test, expected, actual);
+        return result::fail;        
+    }
+
+    return result::pass;
+}
+
+
 template<typename DecimalType>
 class add_test
 {
@@ -333,6 +345,23 @@ public:
         auto y = boost::lexical_cast<DecimalType>(test.operands[1]);
         auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
         auto actual = std::decimal::quantize(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class samequantum_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto y = boost::lexical_cast<DecimalType>(test.operands[1]);
+        auto expected = boost::lexical_cast<bool>(test.expected_result);
+        auto actual = std::decimal::samequantum(x, y);
         return evaluate_result(test, expected, actual);
     }
 
