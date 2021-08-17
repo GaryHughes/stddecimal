@@ -113,7 +113,7 @@ The library is validated using the [General Decimal Arithmetic Test Cases](http:
 decimal32|abs|52|7|0|
 decimal32|add|301|91|0|
 decimal32|base|0|0|772|
-decimal32|compare|0|0|413|
+decimal32|compare|361|50|2|
 decimal32|comparetotal|0|0|455|
 decimal32|divide|139|51|0|
 decimal32|divideint|0|0|173|
@@ -129,8 +129,8 @@ decimal32|multiply|140|52|0|
 decimal32|plus|57|7|0|
 decimal32|power|175|84|0|
 decimal32|quantize|221|207|0|
-decimal32|randombound32|819|981|600|
-decimal32|randoms|1218|1782|1000|
+decimal32|randombound32|819|1281|300|
+decimal32|randoms|1218|2282|500|
 decimal32|reduce|0|0|106|
 decimal32|remainder|189|60|0|
 decimal32|remaindernear|0|0|263|
@@ -142,14 +142,14 @@ decimal32|subtract|439|80|0|
 decimal32|testall|0|0|0|
 decimal32|tointegral|0|0|70|
 decimal32|trim|0|0|93|
-decimal32| |8123|3884|4155|
+decimal32| |8484|4734|2944|
 
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
 decimal64|abs|56|3|0|
 decimal64|add|229|163|0|
 decimal64|base|0|0|772|
-decimal64|compare|0|0|413|
+decimal64|compare|393|18|2|
 decimal64|comparetotal|0|0|455|
 decimal64|divide|158|32|0|
 decimal64|divideint|0|0|173|
@@ -165,8 +165,8 @@ decimal64|multiply|136|56|0|
 decimal64|plus|61|3|0|
 decimal64|power|175|84|0|
 decimal64|quantize|233|195|0|
-decimal64|randombound32|1119|681|600|
-decimal64|randoms|876|2124|1000|
+decimal64|randombound32|1119|981|300|
+decimal64|randoms|1096|2404|500|
 decimal64|reduce|0|0|106|
 decimal64|remainder|179|70|0|
 decimal64|remaindernear|0|0|263|
@@ -178,14 +178,14 @@ decimal64|subtract|303|216|0|
 decimal64|testall|0|0|0|
 decimal64|tointegral|0|0|70|
 decimal64|trim|0|0|93|
-decimal64| |7671|4336|4155|
+decimal64| |8284|4934|2944|
 
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
 decimal128|abs|56|3|0|
 decimal128|add|224|168|0|
 decimal128|base|0|0|772|
-decimal128|compare|0|0|413|
+decimal128|compare|407|4|2|
 decimal128|comparetotal|0|0|455|
 decimal128|divide|159|31|0|
 decimal128|divideint|0|0|173|
@@ -201,8 +201,8 @@ decimal128|multiply|134|58|0|
 decimal128|plus|61|3|0|
 decimal128|power|175|84|0|
 decimal128|quantize|241|187|0|
-decimal128|randombound32|1512|288|600|
-decimal128|randoms|702|2298|1000|
+decimal128|randombound32|1812|288|300|
+decimal128|randoms|922|2578|500|
 decimal128|reduce|0|0|106|
 decimal128|remainder|180|69|0|
 decimal128|remaindernear|0|0|263|
@@ -214,7 +214,7 @@ decimal128|subtract|269|250|0|
 decimal128|testall|0|0|0|
 decimal128|tointegral|0|0|70|
 decimal128|trim|0|0|93|
-decimal128| |7831|4176|4155|
+decimal128| |8758|4460|2944|
 
 ## Extended Arithmetic
 |Type|Operation|Passed|Failed|Skipped|
@@ -225,7 +225,7 @@ decimal32|and|0|0|279|
 decimal32|base|0|0|1168|
 decimal32|clamp|0|0|132|
 decimal32|class|0|0|84|
-decimal32|compare|0|0|639|
+decimal32|compare|449|129|61|
 decimal32|comparesig|0|0|625|
 decimal32|comparetotal|0|0|670|
 decimal32|comparetotmag|0|0|664|
@@ -345,8 +345,8 @@ decimal32|plus|101|21|0|
 decimal32|power|943|264|0|
 decimal32|powersqrt|2826|30|0|
 decimal32|quantize|284|491|0|
-decimal32|randombound32|866|934|600|
-decimal32|randoms|1329|1671|1000|
+decimal32|randombound32|866|1234|300|
+decimal32|randoms|1329|2171|500|
 decimal32|reduce|0|0|168|
 decimal32|remainder|406|111|0|
 decimal32|remaindernear|0|0|446|
@@ -363,7 +363,7 @@ decimal32|tointegral|0|0|168|
 decimal32|tointegralx|0|0|180|
 decimal32|trim|0|0|110|
 decimal32|xor|0|0|277|
-decimal32| |17827|6149|41137|
+decimal32| |18276|7078|39759|
 
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
@@ -373,7 +373,7 @@ decimal64|and|0|0|279|
 decimal64|base|0|0|1168|
 decimal64|clamp|0|0|132|
 decimal64|class|0|0|84|
-decimal64|compare|0|0|639|
+decimal64|compare|517|61|61|
 decimal64|comparesig|0|0|625|
 decimal64|comparetotal|0|0|670|
 decimal64|comparetotmag|0|0|664|
@@ -493,8 +493,8 @@ decimal64|plus|109|13|0|
 decimal64|power|987|220|0|
 decimal64|powersqrt|2847|9|0|
 decimal64|quantize|296|479|0|
-decimal64|randombound32|1119|681|600|
-decimal64|randoms|909|2091|1000|
+decimal64|randombound32|1119|981|300|
+decimal64|randoms|1129|2371|500|
 decimal64|reduce|0|0|168|
 decimal64|remainder|411|106|0|
 decimal64|remaindernear|0|0|446|
@@ -511,7 +511,7 @@ decimal64|tointegral|0|0|168|
 decimal64|tointegralx|0|0|180|
 decimal64|trim|0|0|110|
 decimal64|xor|0|0|277|
-decimal64| |17826|6150|41137|
+decimal64| |18563|6791|39759|
 
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
@@ -521,7 +521,7 @@ decimal128|and|0|0|279|
 decimal128|base|0|0|1168|
 decimal128|clamp|0|0|132|
 decimal128|class|0|0|84|
-decimal128|compare|0|0|639|
+decimal128|compare|546|32|61|
 decimal128|comparesig|0|0|625|
 decimal128|comparetotal|0|0|670|
 decimal128|comparetotmag|0|0|664|
@@ -641,8 +641,8 @@ decimal128|plus|103|19|0|
 decimal128|power|993|214|0|
 decimal128|powersqrt|2847|9|0|
 decimal128|quantize|340|435|0|
-decimal128|randombound32|1599|201|600|
-decimal128|randoms|735|2265|1000|
+decimal128|randombound32|1899|201|300|
+decimal128|randoms|955|2545|500|
 decimal128|reduce|0|0|168|
 decimal128|remainder|424|93|0|
 decimal128|remaindernear|0|0|446|
@@ -659,5 +659,5 @@ decimal128|tointegral|0|0|168|
 decimal128|tointegralx|0|0|180|
 decimal128|trim|0|0|110|
 decimal128|xor|0|0|277|
-decimal128| |17168|6808|41137|
+decimal128| |18234|7120|39759|
 
