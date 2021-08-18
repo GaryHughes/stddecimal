@@ -145,7 +145,10 @@ decimal128 log10d128(decimal128 x);
 // decimal64 scalblnd64 (decimal64 x, long int n); 
 // decimal128 scalblnd128 (decimal128 x, long int n);
 
-// // power and absolute-value functions: decimal32 cbrtd32 (decimal32 x); decimal64 cbrtd64 (decimal64 x); decimal128 cbrtd128 (decimal128 x);
+// power and absolute-value functions: 
+// decimal32 cbrtd32 (decimal32 x); 
+// decimal64 cbrtd64 (decimal64 x); 
+// decimal128 cbrtd128 (decimal128 x);
 // decimal32 fabsd32 (decimal32 x); 
 // decimal64 fabsd64 (decimal64 x); 
 // decimal128 fabsd128 (decimal128 x);
@@ -161,7 +164,10 @@ decimal32 sqrtd32(decimal32 x);
 decimal64 sqrtd64(decimal64 x); 
 decimal128 sqrtd128(decimal128 x);
 
-// error and gamma functions: decimal32 erfd32 (decimal32 x); decimal64 erfd64 (decimal64 x); decimal128 erfd128 (decimal128 x);
+// error and gamma functions: 
+// decimal32 erfd32 (decimal32 x); 
+// decimal64 erfd64 (decimal64 x); 
+// decimal128 erfd128 (decimal128 x);
 // decimal32 erfcd32 (decimal32 x); 
 // decimal64 erfcd64 (decimal64 x); 
 // decimal128 erfcd128 (decimal128 x);
@@ -172,7 +178,10 @@ decimal128 sqrtd128(decimal128 x);
 // decimal64 tgammad64 (decimal64 x); 
 // decimal128 tgammad128 (decimal128 x);
 
-// // nearest integer functions: decimal32 ceild32 (decimal32 x); decimal64 ceild64 (decimal64 x); decimal128 ceild128 (decimal128 x);
+// // nearest integer functions: 
+// decimal32 ceild32 (decimal32 x); 
+// decimal64 ceild64 (decimal64 x); 
+// decimal128 ceild128 (decimal128 x);
 // decimal32 floord32 (decimal32 x); 
 // decimal64 floord64 (decimal64 x); 
 // decimal128 floord128 (decimal128 x);
