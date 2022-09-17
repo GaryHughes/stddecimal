@@ -12,12 +12,22 @@ RUN apt-get update && apt-get install -y \
     vim \
     libtinfo5 \
     git \
-    clang-tidy
+    # begin llvm.sh requirements
+    lsb-release \
+    wget \
+    software-properties-common \
+    gnupg
+    # end llvm.sh requirements
 
 #
 # Clang
 #
-RUN curl -SL https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.0/clang+llvm-14.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz | tar --strip-components 1 -xJC /usr
+RUN curl -o llvm.sh https://apt.llvm.org/llvm.sh && \
+    chmod +x llvm.sh && \
+    yes | ./llvm.sh 15 all && \
+    ln -sf /usr/lib/llvm-15/bin/clang /usr/bin && \
+    ln -sf /usr/lib/llvm-15/bin/clang++ /usr/bin && \
+    ln -sf /usr/lib/llvm-15/bin/clang-tidy /usr/bin
 
 #
 # Intel Decimal Floating Point Math Library
@@ -32,8 +42,8 @@ RUN curl -SL http://www.netlib.org/misc/intel/IntelRDFPMathLib20U2.tar.gz | tar 
 #
 # Boost
 #
-RUN curl -SL https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.tar.gz | tar -zxf - && \
-    cd boost_1_79_0 && \
+RUN curl -SL https://boostorg.jfrog.io/artifactory/main/release/1.80.0/source/boost_1_80_0.tar.gz | tar -zxf - && \
+    cd boost_1_80_0 && \
     ./bootstrap.sh --with-toolset=clang --prefix=/usr/local && \
     ./b2 toolset=clang cxxflags="-std=c++17" install
 
