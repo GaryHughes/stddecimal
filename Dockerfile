@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:23.04
 
 # This prevents a prompt regarding timezones.
 ENV DEBIAN_FRONTEND=noninteractive
@@ -24,10 +24,10 @@ RUN apt-get update && apt-get install -y \
 #
 RUN curl -o llvm.sh https://apt.llvm.org/llvm.sh && \
     chmod +x llvm.sh && \
-    yes | ./llvm.sh 15 all && \
-    ln -sf /usr/lib/llvm-15/bin/clang /usr/bin && \
-    ln -sf /usr/lib/llvm-15/bin/clang++ /usr/bin && \
-    ln -sf /usr/lib/llvm-15/bin/clang-tidy /usr/bin
+    yes | ./llvm.sh 16 all && \
+    ln -sf /usr/lib/llvm-16/bin/clang /usr/bin && \
+    ln -sf /usr/lib/llvm-16/bin/clang++ /usr/bin && \
+    ln -sf /usr/lib/llvm-16/bin/clang-tidy /usr/bin
 
 #
 # Intel Decimal Floating Point Math Library
@@ -42,8 +42,8 @@ RUN curl -SL http://www.netlib.org/misc/intel/IntelRDFPMathLib20U2.tar.gz | tar 
 #
 # Boost
 #
-RUN curl -SL https://boostorg.jfrog.io/artifactory/main/release/1.80.0/source/boost_1_80_0.tar.gz | tar -zxf - && \
-    cd boost_1_80_0 && \
+RUN curl -SL https://boostorg.jfrog.io/artifactory/main/release/1.81.0/source/boost_1_81_0.tar.gz | tar -zxf - && \
+    cd boost_1_81_0 && \
     ./bootstrap.sh --with-toolset=clang --prefix=/usr/local && \
-    ./b2 toolset=clang cxxflags="-std=c++17" install
+    ./b2 toolset=clang cxxflags="-std=c++20" install
 
