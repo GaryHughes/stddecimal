@@ -37,7 +37,9 @@ if [ -f subset_128_results.md ]; then
     echo "</details>" >> README.md
 fi
 
+echo "" >> README.md
 echo "## Extended Arithmetic" >> README.md
+echo "" >> README.md
 
 if [ -f extended_32_results.md ]; then
     echo "<details>" >> README.md
