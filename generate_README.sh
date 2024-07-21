@@ -71,3 +71,8 @@ if [ -f extended_128_results.md ]; then
     echo "" >> README.md
     echo "</details>" >> README.md
 fi
+
+# Work around
+# Error: fatal: detected dubious ownership in repository at '/__w/stddecimal/stddecimal'
+# in the subsequent commit step
+git config --global --add safe.directory /__w/stddecimal/stddecimal
