@@ -11,7 +11,7 @@ I've used [this implementation](https://sourceforge.net/p/stddecimal/code/HEAD/t
 
 # Building
 
-* std::decimal currently requires a C++ 17 compiler. It is built and tested on macOS with Apple Clang from the latest Xcode and on Ubuntu with Clang 15.
+* std::decimal currently requires a C++ 17 compiler. It is built and tested on macOS with Apple Clang from the latest Xcode and on Ubuntu with Clang 10.
 * The general_decimal_arithmetic/test_runner requires [boost](https://boost.org). If you don't want to install this just comment it out in the top level CMakeLists.txt
 * Check the supplied [Dockerfile](https://github.com/GaryHughes/stddecimal/blob/main/Dockerfile) for detailed build requirements. This is the environment used to build in Github Actions [here](https://github.com/GaryHughes/stddecimal/actions?query=workflow%3ABuild).
 # Floating Point Environment
@@ -108,6 +108,9 @@ The library is validated using the [General Decimal Arithmetic Test Cases](http:
 * Test cases that are not applicable or not yet supported will be explicitly skipped so this column will likely never get to zero.
 
 ## Subset Arithmetic
+<details>
+<summary>decimal 32</summary>
+
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
 decimal32|abs|46|0|13|
@@ -143,6 +146,10 @@ decimal32|testall|0|0|0|
 decimal32|tointegral|0|0|70|
 decimal32|trim|0|0|93|
 decimal32| |5153|541|10468|
+
+</details>
+<details>
+<summary>decimal 64</summary>
 
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
@@ -180,6 +187,10 @@ decimal64|tointegral|0|0|70|
 decimal64|trim|0|0|93|
 decimal64| |6580|1841|7741|
 
+</details>
+<details>
+<summary>decimal 128</summary>
+
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
 decimal128|abs|55|3|1|
@@ -216,7 +227,11 @@ decimal128|tointegral|0|0|70|
 decimal128|trim|0|0|93|
 decimal128| |8386|2438|5338|
 
+</details>
 ## Extended Arithmetic
+<details>
+<summary>decimal 32</summary>
+
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
 decimal32|abs|54|0|35|
@@ -364,6 +379,10 @@ decimal32|tointegralx|0|0|180|
 decimal32|trim|0|0|110|
 decimal32|xor|0|0|277|
 decimal32| |12542|1266|51305|
+
+</details>
+<details>
+<summary>decimal 64</summary>
 
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
@@ -513,6 +532,10 @@ decimal64|trim|0|0|110|
 decimal64|xor|0|0|277|
 decimal64| |15877|2902|46334|
 
+</details>
+<details>
+<summary>decimal 128</summary>
+
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
 decimal128|abs|73|15|1|
@@ -661,3 +684,4 @@ decimal128|trim|0|0|110|
 decimal128|xor|0|0|277|
 decimal128| |17564|4761|42788|
 
+</details>
