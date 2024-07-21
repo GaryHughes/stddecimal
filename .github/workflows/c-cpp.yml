@@ -43,7 +43,7 @@ jobs:
       run: ./generate_README.sh
       
     - name: Commit README.md
-      uses: EndBug/add-and-commit@v4
+      uses: EndBug/add-and-commit@v9
       with:
         author_name: stddecmal
         author_email: stddecimal@example.com
