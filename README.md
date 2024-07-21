@@ -228,7 +228,9 @@ decimal128|trim|0|0|93|
 decimal128| |8386|2438|5338|
 
 </details>
+
 ## Extended Arithmetic
+
 <details>
 <summary>decimal 32</summary>
 
