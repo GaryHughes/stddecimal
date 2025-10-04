@@ -16,7 +16,6 @@ jobs:
     - name: Build Clang
       run: |
         ln -s /IntelRDFPMathLib20U2 .. 
-        ln -s /IntelRDFPMathLib20U2/LIBRARY/gcc000libbid.a /IntelRDFPMathLib20U2/LIBRARY/libbid.a 
         LD_LIBRARY_PATH=/usr/local/lib ./build_clang.sh all test
         # Make this easy to find regardless of build type which changes the path.
         ln -s `find . -type f -name test_runner`

@@ -2,3 +2,8 @@ build-Debug
 build-Release
 ./test_runner
 build
+CMakeFiles
+*.cmake
+Makefile
+*.tcl
+CMakeCache.txt
