@@ -1,5 +1,4 @@
 add_executable(libdecimal_tests
-    main.cpp
     decimal_tests.cpp
 )
 
@@ -10,6 +9,7 @@ endif()
 target_link_libraries(libdecimal_tests
     decimal
     ${DECIMAL_EXTRA_LIBRARIES}
+    Catch2::Catch2WithMain
 )
 
 catch_discover_tests(libdecimal_tests)

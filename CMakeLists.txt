@@ -14,7 +14,6 @@ set(CMAKE_INSTALL_RPATH "")
 
 include_directories(
     ${CMAKE_SOURCE_DIR}
-    ${CMAKE_SOURCE_DIR}/thirdparty/catch2/include
     # TODO - IntelRDFPMathLib20U2
     ${CMAKE_SOURCE_DIR}/..
 )
@@ -23,10 +22,10 @@ link_directories(
     ${CMAKE_SOURCE_DIR}/../IntelRDFPMathLib20U2/LIBRARY
 )
 
+find_package(Catch2 3 REQUIRED)
+
 enable_testing()
 include(CTest)
-
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/thirdparty/catch2/contrib")
 include(Catch)
 
 add_subdirectory(libdecimal)

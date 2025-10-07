@@ -1,6 +1,6 @@
 set(CLANG_ROOT "/usr")
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_C_COMPILER             "${CLANG_ROOT}/bin/clang")
 set(CMAKE_C_FLAGS                "-Wall")

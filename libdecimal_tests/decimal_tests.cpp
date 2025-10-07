@@ -1,4 +1,4 @@
-#include <catch.hpp>
+#include <catch2/catch_all.hpp>
 #include <libdecimal/decimal.hpp>
 #include <thread>
 
@@ -148,12 +148,12 @@ public:
 
 TEST_CASE_METHOD(decimal_Fixture, "exceptions")
 {
-    REQUIRE_THROWS_MATCHES(decimal32(1) / 0, std::decimal::exception, Catch::Message("divide by zero"));
-    REQUIRE_THROWS_MATCHES(decimal32(1) / 3, std::decimal::exception, Catch::Message("inexact"));
-    REQUIRE_THROWS_MATCHES(make_decimal32(1LL,999999999) + make_decimal32(9LL, 99999999), std::decimal::exception, Catch::Message("overflow, inexact"));
-    REQUIRE_THROWS_MATCHES(make_decimal32(1LL,-999999999) + make_decimal32(1LL, -99999999), std::decimal::exception, Catch::Message("underflow, inexact"));
+    REQUIRE_THROWS_MATCHES(decimal32(1) / 0, std::decimal::exception, Catch::Matchers::Message("divide by zero"));
+    REQUIRE_THROWS_MATCHES(decimal32(1) / 3, std::decimal::exception, Catch::Matchers::Message("inexact"));
+    REQUIRE_THROWS_MATCHES(make_decimal32(1LL,999999999) + make_decimal32(9LL, 99999999), std::decimal::exception, Catch::Matchers::Message("overflow, inexact"));
+    REQUIRE_THROWS_MATCHES(make_decimal32(1LL,-999999999) + make_decimal32(1LL, -99999999), std::decimal::exception, Catch::Matchers::Message("underflow, inexact"));
     // TODO
-    // REQUIRE_THROWS_MATCHES(sqrt(decimal32(-1)), std::decimal::exception, Catch::Message("invalid"));
+    // REQUIRE_THROWS_MATCHES(sqrt(decimal32(-1)), std::decimal::exception, Catch::Matchers::Message("invalid"));
 }
 
 TEST_CASE_METHOD(decimal_Fixture, "constructors")

@@ -1,4 +1,4 @@
-#include <catch.hpp>
+#include <catch2/catch_all.hpp>
 #include <libgdatest/test_line.hpp>
 
 TEST_CASE("test line", "gdatest") 

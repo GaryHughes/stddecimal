@@ -12,6 +12,7 @@ RUN apt update && apt install -y \
     vim \
     git \
     libstdc++-14-dev \
+    catch2 \
     # begin llvm.sh requirements
     lsb-release \
     wget \
