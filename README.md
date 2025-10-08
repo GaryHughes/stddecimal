@@ -11,7 +11,7 @@ I've used [this implementation](https://sourceforge.net/p/stddecimal/code/HEAD/t
 
 # Building
 
-* std::decimal currently requires a C++ 23 compiler. It is built and tested on macOS with Apple Clang from the latest Xcode and on Ubuntu with Clang 21.
+* std::decimal currently requires a C++ 17 compiler. It is built and tested on macOS with Apple Clang from the latest Xcode and on Ubuntu with Clang 10.
 * The general_decimal_arithmetic/test_runner requires [boost](https://boost.org). If you don't want to install this just comment it out in the top level CMakeLists.txt
 * Check the supplied [Dockerfile](https://github.com/GaryHughes/stddecimal/blob/main/Dockerfile) for detailed build requirements. This is the environment used to build in Github Actions [here](https://github.com/GaryHughes/stddecimal/actions?query=workflow%3ABuild).
 # Floating Point Environment
