@@ -729,7 +729,7 @@ std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> 
         return is;
     }
 
-    auto value = bid32_from_string(const_cast<char*>(buffer.c_str()), fe_dec_getround(), &fpenv.flags); // NOLINT(cppcoreguidelines-pro-type-const-cast)
+    auto value = bid32_from_string(buffer.data(), fe_dec_getround(), &fpenv.flags);
 
     if (fe_dec_setenv(&fpenv)) {
         is.setstate(std::ios::failbit);
@@ -760,7 +760,7 @@ std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> 
         return is;
     }
   
-    auto value = bid64_from_string(const_cast<char*>(buffer.c_str()), fe_dec_getround(), &fpenv.flags); // NOLINT(cppcoreguidelines-pro-type-const-cast)
+    auto value = bid64_from_string(buffer.data(), fe_dec_getround(), &fpenv.flags);
   
     if (fe_dec_setenv(&fpenv)) {
         is.setstate(std::ios::failbit);
@@ -791,7 +791,7 @@ std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> 
         return is;
     }
   
-    auto value = bid128_from_string(const_cast<char*>(buffer.c_str()), fe_dec_getround(), &fpenv.flags); // NOLINT(cppcoreguidelines-pro-type-const-cast)
+    auto value = bid128_from_string(buffer.data(), fe_dec_getround(), &fpenv.flags);
   
     if (fe_dec_setenv(&fpenv)) {
         is.setstate(std::ios::failbit);
