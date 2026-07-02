@@ -62,8 +62,8 @@ RUN curl -SL http://www.netlib.org/misc/intel/IntelRDFPMathLib20U2.tar.gz | tar 
 #
 # Boost
 #
-RUN curl -SL https://archives.boost.io/release/1.89.0/source/boost_1_89_0.tar.gz | tar -zxf - && \
-    cd boost_1_89_0 && \
+RUN curl -SL https://archives.boost.io/release/1.90.0/source/boost_1_90_0.tar.gz | tar -zxf - && \
+    cd boost_1_90_0 && \
     ./bootstrap.sh --with-toolset=clang --prefix=/usr/local && \
     ./b2 toolset=clang cxxflags="-std=c++23" install
 
