@@ -5,9 +5,12 @@ add_library(gdatest
     test_results.hpp
 )
 
-include_directories(
+target_include_directories(gdatest PUBLIC
     "/usr/local/include"
-    "${CMAKE_SOURCE_DIR}/libdecimal"
+    "${CMAKE_SOURCE_DIR}/general_decimal_arithmetic"
+    "${CMAKE_SOURCE_DIR}/general_decimal_arithmetic/libgdatest"
 )
 
-
+target_link_libraries(gdatest PUBLIC
+    decimal
+)

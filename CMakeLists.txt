@@ -12,16 +12,6 @@ set(CMAKE_CXX_CLANG_TIDY
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 set(CMAKE_INSTALL_RPATH "")
 
-include_directories(
-    ${CMAKE_SOURCE_DIR}
-    # TODO - IntelRDFPMathLib20U2
-    ${CMAKE_SOURCE_DIR}/..
-)
-
-link_directories(
-    ${CMAKE_SOURCE_DIR}/../IntelRDFPMathLib20U2/LIBRARY
-)
-
 find_package(Catch2 3 REQUIRED)
 
 enable_testing()

@@ -2,11 +2,6 @@ add_executable(libgdatest_tests
     test_line_tests.cpp
 )
 
-include_directories(
-    "${CMAKE_SOURCE_DIR}/libdecimal"
-    "${CMAKE_SOURCE_DIR}/general_decimal_arithmetic"
-)
-
 if(APPLE)
 
     set(BOOST_LIBS

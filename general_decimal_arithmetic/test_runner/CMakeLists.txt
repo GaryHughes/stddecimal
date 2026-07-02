@@ -9,12 +9,6 @@ find_package(Boost ${BOOST_VERSION_REQUIRED} EXACT
     REQUIRED
 )
 
-include_directories(
-    "/usr/local/include"
-    "${CMAKE_SOURCE_DIR}/libdecimal"
-    "${CMAKE_SOURCE_DIR}/general_decimal_arithmetic/libgdatest"
-)
-
 if(APPLE)
 
     set(BOOST_LIBS
