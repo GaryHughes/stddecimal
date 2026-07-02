@@ -1,13 +1,4 @@
-set(BOOST_VERSION_REQUIRED 1.90)
-
 add_definitions(-DBOOST_LOG_DYN_LINK)
-
-find_package(Boost ${BOOST_VERSION_REQUIRED} EXACT
-    COMPONENTS 
-    program_options
-    regex
-    REQUIRED
-)
 
 if(APPLE)
 

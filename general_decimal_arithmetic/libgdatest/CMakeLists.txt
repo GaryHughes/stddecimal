@@ -6,7 +6,7 @@ add_library(gdatest
 )
 
 target_include_directories(gdatest PUBLIC
-    "/usr/local/include"
+    ${Boost_INCLUDE_DIRS}
     "${CMAKE_SOURCE_DIR}/general_decimal_arithmetic"
     "${CMAKE_SOURCE_DIR}/general_decimal_arithmetic/libgdatest"
 )
