@@ -13,7 +13,9 @@ RUN apt update && apt install -y \
     curl \
     vim \
     git \
-    catch2 \
+    zip \
+    ninja-build \
+    pkg-config \
     # begin llvm.sh requirements
     lsb-release \
     wget \
@@ -21,8 +23,14 @@ RUN apt update && apt install -y \
     gnupg
     # end llvm.sh requirements
 
-#  libstdc++-14-dev
-  
+#
+# vcpkg
+#
+RUN git clone https://github.com/microsoft/vcpkg.git \
+    && cd vcpkg \
+    && ./bootstrap-vcpkg.sh
+ENV VCPKG_ROOT=/vcpkg
+ENV PATH=$VCPKG_ROOT:$PATH
 
 #
 # Clang

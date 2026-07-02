@@ -25,3 +25,5 @@ add_definitions(-Wno-pessimizing-move)
 add_definitions(-Wno-mismatched-tags)
 add_definitions(-Wno-delete-non-abstract-non-virtual-dtor)
 add_definitions(-D _WCHAR_T=int)
+
+include($ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
