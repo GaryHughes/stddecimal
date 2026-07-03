@@ -13,4 +13,5 @@ target_include_directories(gdatest PUBLIC
 
 target_link_libraries(gdatest PUBLIC
     decimal
+    Boost::regex
 )
