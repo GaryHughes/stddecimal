@@ -204,9 +204,9 @@ decimal128 sqrtd128(decimal128 x);
 // decimal128 truncd128 (decimal128 x);
 
 // remainder functions:
-// decimal32 fmodd32 (decimal32 x, decimal32 y);
-// decimal64 fmodd64 (decimal64 x, decimal64 y);
-// decimal128 fmodd128 (decimal128 x, decimal128 y);
+decimal32 fmodd32 (decimal32 x, decimal32 y);
+decimal64 fmodd64 (decimal64 x, decimal64 y);
+decimal128 fmodd128 (decimal128 x, decimal128 y);
 decimal32 remainderd32 (decimal32 x, decimal32 y);
 decimal64 remainderd64 (decimal64 x, decimal64 y);
 decimal128 remainderd128 (decimal128 x, decimal128 y);

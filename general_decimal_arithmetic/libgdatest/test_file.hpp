@@ -188,6 +188,10 @@ private:
             return remainder_test<typename traits::decimal_type>::run(test);
         }
 
+        if (test.operation == "remaindernear") {
+            return remainder_near_test<typename traits::decimal_type>::run(test);
+        }
+
         if (test.operation == "exp") {
             return exp_test<typename traits::decimal_type>::run(test);
         }
@@ -211,9 +215,8 @@ private:
         // reduce0.decTest		
         // testall0.decTest
         // base0.decTest		
-        // divideint0.decTest	
+        // divideint0.decTest
         // tointegral0.decTest
-        // remaindernear0.decTest	
         // trim0.decTest
 
         std::cerr << "skipping: " << test.id << '\n';

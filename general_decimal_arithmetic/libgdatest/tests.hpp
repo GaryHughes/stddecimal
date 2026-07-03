@@ -675,7 +675,9 @@ public:
         auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
         auto y = boost::lexical_cast<std::decimal::decimal32>(test.operands[1]);
         auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
-        auto actual = std::decimal::remainderd32(x, y);
+        // The General Decimal Arithmetic "remainder" operation uses truncated-quotient
+        // semantics (like fmod), not IEEE-754 round-to-nearest (see "remainderNear" for that).
+        auto actual = std::decimal::fmodd32(x, y);
         return evaluate_result(test, expected, actual);
     }
 
@@ -692,7 +694,7 @@ public:
         auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
         auto y = boost::lexical_cast<std::decimal::decimal64>(test.operands[1]);
         auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
-        auto actual = std::decimal::remainderd64(x, y);
+        auto actual = std::decimal::fmodd64(x, y);
         return evaluate_result(test, expected, actual);
     }
 
@@ -700,6 +702,60 @@ public:
 
 template<>
 class remainder_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal128>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = std::decimal::fmodd128(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class remainder_near_test;
+
+template<>
+class remainder_near_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal32>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = std::decimal::remainderd32(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class remainder_near_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal64>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = std::decimal::remainderd64(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class remainder_near_test<std::decimal::decimal128>
 {
 public:
 

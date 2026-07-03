@@ -20,6 +20,7 @@ template<> struct cmath_traits<decimal32>
     static BID_UINT32 pow(BID_UINT32 x, BID_UINT32 y, int round, unsigned int& flags) { return bid32_pow(x, y, round, &flags); }
     static BID_UINT32 sqrt(BID_UINT32 x, int round, unsigned int& flags) { return bid32_sqrt(x, round, &flags); }
     static BID_UINT32 rem(BID_UINT32 x, BID_UINT32 y, unsigned int& flags) { return bid32_rem(x, y, &flags); }
+    static BID_UINT32 fmod(BID_UINT32 x, BID_UINT32 y, unsigned int& flags) { return bid32_fmod(x, y, &flags); }
     static BID_UINT32 maxnum(BID_UINT32 x, BID_UINT32 y, unsigned int& flags) { return bid32_maxnum(x, y, &flags); }
     static BID_UINT32 minnum(BID_UINT32 x, BID_UINT32 y, unsigned int& flags) { return bid32_minnum(x, y, &flags); }
     static BID_UINT32 fma(BID_UINT32 x, BID_UINT32 y, BID_UINT32 z, int round, unsigned int& flags) { return bid32_fma(x, y, z, round, &flags); }
@@ -38,6 +39,7 @@ template<> struct cmath_traits<decimal64>
     static BID_UINT64 pow(BID_UINT64 x, BID_UINT64 y, int round, unsigned int& flags) { return bid64_pow(x, y, round, &flags); }
     static BID_UINT64 sqrt(BID_UINT64 x, int round, unsigned int& flags) { return bid64_sqrt(x, round, &flags); }
     static BID_UINT64 rem(BID_UINT64 x, BID_UINT64 y, unsigned int& flags) { return bid64_rem(x, y, &flags); }
+    static BID_UINT64 fmod(BID_UINT64 x, BID_UINT64 y, unsigned int& flags) { return bid64_fmod(x, y, &flags); }
     static BID_UINT64 maxnum(BID_UINT64 x, BID_UINT64 y, unsigned int& flags) { return bid64_maxnum(x, y, &flags); }
     static BID_UINT64 minnum(BID_UINT64 x, BID_UINT64 y, unsigned int& flags) { return bid64_minnum(x, y, &flags); }
     static BID_UINT64 fma(BID_UINT64 x, BID_UINT64 y, BID_UINT64 z, int round, unsigned int& flags) { return bid64_fma(x, y, z, round, &flags); }
@@ -56,6 +58,7 @@ template<> struct cmath_traits<decimal128>
     static BID_UINT128 pow(BID_UINT128 x, BID_UINT128 y, int round, unsigned int& flags) { return bid128_pow(x, y, round, &flags); }
     static BID_UINT128 sqrt(BID_UINT128 x, int round, unsigned int& flags) { return bid128_sqrt(x, round, &flags); }
     static BID_UINT128 rem(BID_UINT128 x, BID_UINT128 y, unsigned int& flags) { return bid128_rem(x, y, &flags); }
+    static BID_UINT128 fmod(BID_UINT128 x, BID_UINT128 y, unsigned int& flags) { return bid128_fmod(x, y, &flags); }
     static BID_UINT128 maxnum(BID_UINT128 x, BID_UINT128 y, unsigned int& flags) { return bid128_maxnum(x, y, &flags); }
     static BID_UINT128 minnum(BID_UINT128 x, BID_UINT128 y, unsigned int& flags) { return bid128_minnum(x, y, &flags); }
     static BID_UINT128 fma(BID_UINT128 x, BID_UINT128 y, BID_UINT128 z, int round, unsigned int& flags) { return bid128_fma(x, y, z, round, &flags); }
@@ -124,6 +127,17 @@ T remainder_impl(T x, T y)
     fe_dec_getenv(&env);
     T result;
     result.value(cmath_traits<T>::rem(x.value(), y.value(), env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
+template<decimal_value_type T>
+T fmod_impl(T x, T y)
+{
+    fenv_t env {};
+    fe_dec_getenv(&env);
+    T result;
+    result.value(cmath_traits<T>::fmod(x.value(), y.value(), env.flags));
     fe_dec_setenv(&env);
     return result;
 }
@@ -239,6 +253,10 @@ decimal128 sqrtd128(decimal128 x) { return sqrt_impl(x); }
 decimal32 remainderd32(decimal32 x, decimal32 y) { return remainder_impl(x, y); }
 decimal64 remainderd64(decimal64 x, decimal64 y) { return remainder_impl(x, y); }
 decimal128 remainderd128(decimal128 x, decimal128 y) { return remainder_impl(x, y); }
+
+decimal32 fmodd32(decimal32 x, decimal32 y) { return fmod_impl(x, y); }
+decimal64 fmodd64(decimal64 x, decimal64 y) { return fmod_impl(x, y); }
+decimal128 fmodd128(decimal128 x, decimal128 y) { return fmod_impl(x, y); }
 
 decimal32 fmaxd32(decimal32 x, decimal32 y) { return fmax_impl(x, y); }
 decimal64 fmaxd64(decimal64 x, decimal64 y) { return fmax_impl(x, y); }
