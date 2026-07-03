@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.17.0)
 
 project(stddecimal)
 
+# Checks and WarningsAsErrors are configured in .clang-tidy; -line-filter has no
+# equivalent there so it stays here.
 set(CMAKE_CXX_CLANG_TIDY
     clang-tidy;
-    -checks=-*,clang-analyzer-*,bugprone-*,concurrency-*,cppcoreguidelines-*,misc-*,modernize-*,performance-*,portability-*,readability-*,-modernize-use-trailing-return-type,-readability-magic-numbers,-cppcoreguidelines-avoid-magic-numbers;
-    -warnings-as-errors=*;
     -line-filter=[{"name":"catch.hpp"}])
 
 # Don't embed build tree paths
