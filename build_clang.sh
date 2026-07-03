@@ -5,13 +5,11 @@ set -e
 build_type=Debug
 build_dir=build-$build_type
 
-if [ ! -d ${build_dir} ]; then
-	mkdir ${build_dir}
-	pushd ${build_dir}
-	cmake -G Ninja -DCMAKE_BUILD_TYPE=${build_type} -DCMAKE_TOOLCHAIN_FILE=../clang_toolchain.cmake ..
-else
-	pushd ${build_dir}
-fi
+# The generator, toolchain file and build type live in CMakePresets.json; this is safe to
+# call every time since cmake only reconfigures when something's actually out of date.
+cmake --preset ${build_type}
+
+pushd ${build_dir}
 
 build_targets=()
 run_tests=0

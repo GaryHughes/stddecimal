@@ -1,0 +1,80 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build-${presetName}",
+      "toolchainFile": "${sourceDir}/clang_toolchain.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "${presetName}"
+      }
+    },
+    {
+      "name": "Debug",
+      "displayName": "Debug",
+      "inherits": "base"
+    },
+    {
+      "name": "Release",
+      "displayName": "Release",
+      "inherits": "base"
+    },
+    {
+      "name": "RelWithDebInfo",
+      "displayName": "Release with debug info",
+      "inherits": "base"
+    },
+    {
+      "name": "MinSizeRel",
+      "displayName": "Minimum size release",
+      "inherits": "base"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "Debug",
+      "configurePreset": "Debug"
+    },
+    {
+      "name": "Release",
+      "configurePreset": "Release"
+    },
+    {
+      "name": "RelWithDebInfo",
+      "configurePreset": "RelWithDebInfo"
+    },
+    {
+      "name": "MinSizeRel",
+      "configurePreset": "MinSizeRel"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "Debug",
+      "configurePreset": "Debug",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "Release",
+      "configurePreset": "Release",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "RelWithDebInfo",
+      "configurePreset": "RelWithDebInfo",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "MinSizeRel",
+      "configurePreset": "MinSizeRel",
+      "output": { "outputOnFailure": true }
+    }
+  ]
+}
