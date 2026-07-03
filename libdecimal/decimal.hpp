@@ -4,7 +4,9 @@
 #include <ios>
 #include <exception>
 #include <string>
+#include <string_view>
 #include <array>
+#include <format>
 #include <IntelRDFPMathLib20U2/LIBRARY/src/bid_conf.h>
 #include <IntelRDFPMathLib20U2/LIBRARY/src/bid_functions.h>
 
@@ -808,38 +810,68 @@ std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> 
     return is;  
 }
 
+} // namespace std::decimal
+
 // 3.2.11 Formatted output:
+
+template <>
+struct std::formatter<std::decimal::decimal32> : std::formatter<std::string_view>
+{
+    auto format(std::decimal::decimal32 d, std::format_context& ctx) const
+    {
+        std::array<char, 256> buffer {};
+        _IDEC_flags flags = 0;
+        bid32_to_string(buffer.data(), d.value(), &flags);
+        return std::formatter<std::string_view>::format(buffer.data(), ctx);
+    }
+};
+
+template <>
+struct std::formatter<std::decimal::decimal64> : std::formatter<std::string_view>
+{
+    auto format(std::decimal::decimal64 d, std::format_context& ctx) const
+    {
+        std::array<char, 256> buffer {};
+        _IDEC_flags flags = 0;
+        bid64_to_string(buffer.data(), d.value(), &flags);
+        return std::formatter<std::string_view>::format(buffer.data(), ctx);
+    }
+};
+
+template <>
+struct std::formatter<std::decimal::decimal128> : std::formatter<std::string_view>
+{
+    auto format(std::decimal::decimal128 d, std::format_context& ctx) const
+    {
+        std::array<char, 256> buffer {};
+        _IDEC_flags flags = 0;
+        bid128_to_string(buffer.data(), d.value(), &flags);
+        return std::formatter<std::string_view>::format(buffer.data(), ctx);
+    }
+};
+
+namespace std::decimal
+{
+
 template <class charT, class traits>
-std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal32 d) 
-{ 
-    // TODO
-    std::array<char, 256> buffer {};
-    _IDEC_flags flags = 0;
-    bid32_to_string(buffer.data(), d.value(), &flags);
-    os << buffer.data();
-    return os; 
+std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits>& os, decimal32 d)
+{
+    os << std::format("{}", d);
+    return os;
 }
 
 template <class charT, class traits>
-std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal64 d) 
-{ 
-    // TODO
-    std::array<char, 256> buffer {};
-    _IDEC_flags flags = 0;
-    bid64_to_string(buffer.data(), d.value(), &flags);
-    os << buffer.data();
-    return os; 
-};
+std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits>& os, decimal64 d)
+{
+    os << std::format("{}", d);
+    return os;
+}
 
 template <class charT, class traits>
-std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits> & os, decimal128 d) 
-{ 
-    // TODO
-    std::array<char, 256> buffer {};
-    _IDEC_flags flags = 0;
-    bid128_to_string(buffer.data(), d.value(), &flags);
-    os << buffer.data();
-    return os; 
+std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits>& os, decimal128 d)
+{
+    os << std::format("{}", d);
+    return os;
 }
 
 } // namespace std::decimal

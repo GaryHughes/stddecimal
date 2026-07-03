@@ -1,6 +1,7 @@
 #include <catch2/catch_all.hpp>
 #include <libdecimal/decimal.hpp>
 #include <thread>
+#include <sstream>
 
 using namespace std::decimal;
 
@@ -1219,4 +1220,23 @@ TEST_CASE_METHOD(decimal_Fixture, "increment and decrement operators")
     b128 = a128--;
     REQUIRE(a128 == decimal128(1));
     REQUIRE(b128 == decimal128(2));
+}
+
+TEST_CASE_METHOD(decimal_Fixture, "formatted output")
+{
+    REQUIRE(std::format("{}", decimal32(5)) == "+5E+0");
+    REQUIRE(std::format("{}", decimal64(5)) == "+5E+0");
+    REQUIRE(std::format("{}", decimal128(5)) == "+5E+0");
+
+    std::ostringstream os32;
+    os32 << decimal32(5);
+    REQUIRE(os32.str() == "+5E+0");
+
+    std::ostringstream os64;
+    os64 << decimal64(5);
+    REQUIRE(os64.str() == "+5E+0");
+
+    std::ostringstream os128;
+    os128 << decimal128(5);
+    REQUIRE(os128.str() == "+5E+0");
 }
