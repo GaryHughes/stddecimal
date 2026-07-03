@@ -132,8 +132,20 @@ public:
         test.validate_operands(2);
         auto lhs = boost::lexical_cast<DecimalType>(test.operands[0]);
         auto rhs = boost::lexical_cast<DecimalType>(test.operands[1]);
-        auto expected = boost::lexical_cast<int>(test.expected_result);
-        auto actual = lhs < rhs ? -1 : (lhs > rhs ? 1 : 0);
+        // "compare" returns a decimal value (-1/0/1), not a native int, and propagates NaN (per
+        // IEEE-754 compare-and-signal semantics) rather than ordering it - lhs/rhs's own
+        // relational operators are unordered for NaN, so that case needs handling separately.
+        auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
+        DecimalType actual;
+        if (std::isnan(lhs)) {
+            actual = lhs;
+        }
+        else if (std::isnan(rhs)) {
+            actual = rhs;
+        }
+        else {
+            actual = lhs < rhs ? DecimalType(-1) : (lhs > rhs ? DecimalType(1) : DecimalType(0));
+        }
         return evaluate_result(test, expected, actual);
     }
 

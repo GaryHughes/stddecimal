@@ -1,5 +1,6 @@
 #include <catch2/catch_all.hpp>
 #include <libdecimal/decimal.hpp>
+#include <libdecimal/decimal_cmath.hpp>
 #include <thread>
 #include <sstream>
 
@@ -1239,4 +1240,31 @@ TEST_CASE_METHOD(decimal_Fixture, "formatted output")
     std::ostringstream os128;
     os128 << decimal128(5);
     REQUIRE(os128.str() == "+5E+0");
+}
+
+TEST_CASE_METHOD(decimal_Fixture, "formatted input")
+{
+    // Parsing a value that needs rounding to fit decimal32's 7 significant digits must succeed -
+    // Inexact is a normal outcome of narrowing conversion, not a parse failure - even with every
+    // exception configured to throw (decimal_Fixture already does this).
+    std::istringstream is32("12345678000");
+    decimal32 d32;
+    REQUIRE(static_cast<bool>(is32 >> d32));
+    REQUIRE(d32 == make_decimal32(1234568LL, 4));
+
+    // Parsing must not leave stale exception flags that make an unrelated, exact operation
+    // spuriously throw afterwards.
+    REQUIRE_NOTHROW(decimal32(1) + decimal32(1));
+
+    // An out-of-range value must parse to Infinity rather than failing.
+    std::istringstream is_huge("9.999E+999999999");
+    decimal32 d_huge;
+    REQUIRE(static_cast<bool>(is_huge >> d_huge));
+    REQUIRE(std::isinf(d_huge));
+
+    // Genuinely unparseable input produces a well-defined NaN rather than throwing.
+    std::istringstream is_garbage("hello");
+    decimal32 d_garbage;
+    REQUIRE(static_cast<bool>(is_garbage >> d_garbage));
+    REQUIRE(std::isnan(d_garbage));
 }

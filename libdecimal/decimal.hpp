@@ -743,14 +743,16 @@ std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> 
         return is;
     }
 
+    // Parsing a value that needs rounding (Inexact) or is out of range (Overflow/Underflow) is a
+    // normal, successful outcome, not a parse failure - the same way parsing "0.1" into a float
+    // doesn't fail just because it isn't exactly representable. Restore the pre-parse flags before
+    // writing the environment back so parsing doesn't leave exception-flag side effects for
+    // whatever real operation the caller performs next.
+    auto flags_before_parse = fpenv.flags;
     auto value = bid32_from_string(buffer.data(), fe_dec_getround(), &fpenv.flags);
+    fpenv.flags = flags_before_parse;
 
     if (fe_dec_setenv(&fpenv)) {
-        is.setstate(std::ios::failbit);
-        return is;
-    }
-
-    if (fpenv.flags & get_exceptions()) {
         is.setstate(std::ios::failbit);
         return is;
     }
@@ -773,15 +775,12 @@ std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> 
         is.setstate(std::ios::failbit);
         return is;
     }
-  
-    auto value = bid64_from_string(buffer.data(), fe_dec_getround(), &fpenv.flags);
-  
-    if (fe_dec_setenv(&fpenv)) {
-        is.setstate(std::ios::failbit);
-        return is;
-    }
 
-    if (fpenv.flags & fpenv.exceptions) {
+    auto flags_before_parse = fpenv.flags;
+    auto value = bid64_from_string(buffer.data(), fe_dec_getround(), &fpenv.flags);
+    fpenv.flags = flags_before_parse;
+
+    if (fe_dec_setenv(&fpenv)) {
         is.setstate(std::ios::failbit);
         return is;
     }
@@ -804,15 +803,12 @@ std::basic_istream<charT, traits>& operator>>(std::basic_istream<charT, traits> 
         is.setstate(std::ios::failbit);
         return is;
     }
-  
-    auto value = bid128_from_string(buffer.data(), fe_dec_getround(), &fpenv.flags);
-  
-    if (fe_dec_setenv(&fpenv)) {
-        is.setstate(std::ios::failbit);
-        return is;
-    }
 
-    if (fpenv.flags & fpenv.exceptions) {
+    auto flags_before_parse = fpenv.flags;
+    auto value = bid128_from_string(buffer.data(), fe_dec_getround(), &fpenv.flags);
+    fpenv.flags = flags_before_parse;
+
+    if (fe_dec_setenv(&fpenv)) {
         is.setstate(std::ios::failbit);
         return is;
     }
