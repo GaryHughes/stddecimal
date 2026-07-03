@@ -11,24 +11,18 @@ cmake --preset ${build_type}
 
 pushd ${build_dir}
 
-build_targets=()
-run_tests=0
-
+# "check" is a real target with dependencies on the test binaries (see CMakeLists.txt), so
+# ninja builds them before running ctest regardless of scheduling order - "test" here maps to
+# that target rather than CMake's own dependency-free "test" target.
+targets=()
 for arg in "$@"; do
 	if [ "$arg" = "test" ]; then
-		run_tests=1
+		targets+=("check")
 	else
-		build_targets+=("$arg")
+		targets+=("$arg")
 	fi
 done
 
-# ninja doesn't guarantee command-line targets run in order, and CMake's "test" target has no
-# dependency on the actual build outputs, so it must be run as its own invocation after the rest
-# of the build has finished rather than alongside it.
-ninja -j8 "${build_targets[@]}"
-
-if [ "$run_tests" -eq 1 ]; then
-	ninja -j8 test
-fi
+ninja -j8 "${targets[@]}"
 
 popd

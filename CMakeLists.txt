@@ -21,3 +21,11 @@ include(Catch)
 add_subdirectory(libdecimal)
 add_subdirectory(libdecimal_tests)
 add_subdirectory(general_decimal_arithmetic)
+
+# CTest's own "test" target intentionally has no dependency on the test binaries - build and
+# test are deliberately decoupled in CMake. "check" is a convenience target that builds what
+# ctest needs first, so a single build system invocation reliably builds then tests in order.
+add_custom_target(check
+    COMMAND ${CMAKE_CTEST_COMMAND} --force-new-ctest-process
+    DEPENDS test_runner libdecimal_tests libgdatest_tests
+)
