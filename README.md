@@ -115,7 +115,7 @@ The library is validated using the [General Decimal Arithmetic Test Cases](http:
 |:---|:--------|:----:|:----:|:-----:|
 decimal32|abs|58|1|0|
 decimal32|add|338|54|0|
-decimal32|base|0|0|772|
+decimal32|base|481|286|5|
 decimal32|compare|413|0|0|
 decimal32|comparetotal|426|27|2|
 decimal32|divide|150|40|0|
@@ -145,7 +145,7 @@ decimal32|subtract|422|97|0|
 decimal32|testall|0|0|0|
 decimal32|tointegral|70|0|0|
 decimal32|trim|0|0|93|
-decimal32| |12511|1698|1953|
+decimal32| |12992|1984|1186|
 
 </details>
 <details>
@@ -155,7 +155,7 @@ decimal32| |12511|1698|1953|
 |:---|:--------|:----:|:----:|:-----:|
 decimal64|abs|55|4|0|
 decimal64|add|243|149|0|
-decimal64|base|0|0|772|
+decimal64|base|507|260|5|
 decimal64|compare|413|0|0|
 decimal64|comparetotal|424|29|2|
 decimal64|divide|142|48|0|
@@ -185,7 +185,7 @@ decimal64|subtract|295|224|0|
 decimal64|testall|0|0|0|
 decimal64|tointegral|70|0|0|
 decimal64|trim|0|0|93|
-decimal64| |11704|2505|1953|
+decimal64| |12211|2765|1186|
 
 </details>
 <details>
@@ -195,7 +195,7 @@ decimal64| |11704|2505|1953|
 |:---|:--------|:----:|:----:|:-----:|
 decimal128|abs|55|4|0|
 decimal128|add|226|166|0|
-decimal128|base|0|0|772|
+decimal128|base|529|238|5|
 decimal128|compare|413|0|0|
 decimal128|comparetotal|437|16|2|
 decimal128|divide|143|47|0|
@@ -225,7 +225,7 @@ decimal128|subtract|261|258|0|
 decimal128|testall|0|0|0|
 decimal128|tointegral|70|0|0|
 decimal128|trim|0|0|93|
-decimal128| |11500|2709|1953|
+decimal128| |12029|2947|1186|
 
 </details>
 
@@ -239,7 +239,7 @@ decimal128| |11500|2709|1953|
 decimal32|abs|89|0|0|
 decimal32|add|1862|234|4|
 decimal32|and|0|0|279|
-decimal32|base|0|0|1168|
+decimal32|base|541|594|33|
 decimal32|clamp|0|0|132|
 decimal32|class|0|0|84|
 decimal32|compare|612|27|0|
@@ -380,7 +380,7 @@ decimal32|tointegral|153|15|0|
 decimal32|tointegralx|0|0|180|
 decimal32|trim|0|0|110|
 decimal32|xor|0|0|277|
-decimal32| |25237|2636|37240|
+decimal32| |25778|3230|36105|
 
 </details>
 <details>
@@ -391,7 +391,7 @@ decimal32| |25237|2636|37240|
 decimal64|abs|86|3|0|
 decimal64|add|1795|301|4|
 decimal64|and|0|0|279|
-decimal64|base|0|0|1168|
+decimal64|base|587|548|33|
 decimal64|clamp|0|0|132|
 decimal64|class|0|0|84|
 decimal64|compare|627|12|0|
@@ -532,7 +532,7 @@ decimal64|tointegral|153|15|0|
 decimal64|tointegralx|0|0|180|
 decimal64|trim|0|0|110|
 decimal64|xor|0|0|277|
-decimal64| |24615|3258|37240|
+decimal64| |25202|3806|36105|
 
 </details>
 <details>
@@ -541,9 +541,9 @@ decimal64| |24615|3258|37240|
 |Type|Operation|Passed|Failed|Skipped|
 |:---|:--------|:----:|:----:|:-----:|
 decimal128|abs|74|15|0|
-decimal128|add|1295|801|4|
+decimal128|add|1296|800|4|
 decimal128|and|0|0|279|
-decimal128|base|0|0|1168|
+decimal128|base|595|540|33|
 decimal128|clamp|0|0|132|
 decimal128|class|0|0|84|
 decimal128|compare|627|12|0|
@@ -684,6 +684,6 @@ decimal128|tointegral|153|15|0|
 decimal128|tointegralx|0|0|180|
 decimal128|trim|0|0|110|
 decimal128|xor|0|0|277|
-decimal128| |23210|4663|37240|
+decimal128| |23806|5202|36105|
 
 </details>
