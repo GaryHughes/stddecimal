@@ -224,11 +224,18 @@ private:
             return tointegral_test<typename traits::decimal_type>::run(test);
         }
 
+        if (test.operation == "toSci") {
+            return to_sci_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "toEng") {
+            return to_eng_test<typename traits::decimal_type>::run(test);
+        }
+
         // randoms0.decTest
         // inexact0.decTest
         // reduce0.decTest
         // testall0.decTest
-        // base0.decTest
         // divideint0.decTest
         // trim0.decTest
 

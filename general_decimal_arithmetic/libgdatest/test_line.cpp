@@ -86,9 +86,13 @@ void test_line::tokenise(const std::string text, std::vector<std::string>& token
     char previous = not_space;
     bool quoted_token = false;
 
+    // base0.decTest quotes some operands with '"' rather than '\'' - both are treated as
+    // equivalent quoting delimiters here.
+    auto is_quote = [](char c) { return c == '\'' || c == '"'; };
+
     for (char c : text) {
-        
-        if ((std::isspace(c) && !std::isspace(previous)) || (c == '\'' && previous != '\'')) {
+
+        if ((std::isspace(c) && !std::isspace(previous)) || (is_quote(c) && !is_quote(previous))) {
             if (!token.empty()) {
                 tokens.push_back(token);
                 token = "";
@@ -98,12 +102,12 @@ void test_line::tokenise(const std::string text, std::vector<std::string>& token
         }
 
         if (!std::isspace(c)) {
-            if (token.empty() && c == '\'') {
+            if (token.empty() && is_quote(c)) {
                 quoted_token = true;
             }
             else {
                 token += c;
-            }        
+            }
         }
 
         previous = c;

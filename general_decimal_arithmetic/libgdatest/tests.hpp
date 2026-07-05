@@ -116,11 +116,204 @@ result evaluate_result(const test& test, int expected, int actual)
 {
     if (expected != actual) {
         report_failure(test, expected, actual);
-        return result::fail;        
+        return result::fail;
     }
 
     return result::pass;
 }
+
+result evaluate_result(const test& test, const std::string& expected, const std::string& actual)
+{
+    if (expected != actual) {
+        std::cerr << "RESULT FAILURE " << test.id << " " << test.operation << " ";
+        for (const auto& operand : test.operands) {
+            std::cerr << operand << " ";
+        }
+        std::cerr << "-> " << expected << " (actual " << actual << ")\n";
+        return result::fail;
+    }
+
+    return result::pass;
+}
+
+// Decomposed view of a decimal value's sign/coefficient-digits/exponent (or NaN/Infinity), used by
+// toSci/toEng string formatting. std::format (backed by bidNN_to_string) reliably preserves the
+// exact coefficient and exponent as parsed, so this parses that output rather than needing a new
+// decompose primitive from the Intel library.
+struct decimal_string_parts
+{
+    bool negative = false;
+    bool is_zero = false;
+    bool is_nan = false;
+    bool is_signaling = false;
+    bool is_infinity = false;
+    std::string digits;
+    int exponent = 0;
+};
+
+template<typename DecimalType>
+decimal_string_parts decompose(DecimalType x)
+{
+    std::string s = std::format("{}", x);
+    decimal_string_parts parts;
+    parts.negative = (s[0] == '-');
+    size_t i = 1;
+    if (s.compare(i, 4, "SNaN") == 0) {
+        parts.is_nan = true;
+        parts.is_signaling = true;
+        return parts;
+    }
+    if (s.compare(i, 3, "NaN") == 0) {
+        parts.is_nan = true;
+        return parts;
+    }
+    if (s.compare(i, 3, "Inf") == 0) {
+        parts.is_infinity = true;
+        return parts;
+    }
+    auto epos = s.find('E', i);
+    parts.digits = s.substr(i, epos - i);
+    parts.exponent = std::stoi(s.substr(epos + 1));
+    parts.is_zero = (parts.digits.find_first_not_of('0') == std::string::npos);
+    return parts;
+}
+
+// Plain (non-exponential) notation: place the decimal point per "digits * 10^exponent", padding
+// with zeros either after the digits (exponent >= 0) or before/within them (exponent < 0).
+std::string format_plain(bool negative, const std::string& digits, int exponent)
+{
+    std::string result = negative ? "-" : "";
+    if (exponent >= 0) {
+        result += digits;
+        result += std::string(static_cast<size_t>(exponent), '0');
+        return result;
+    }
+    int point_pos = static_cast<int>(digits.size()) + exponent;
+    if (point_pos <= 0) {
+        result += "0.";
+        result += std::string(static_cast<size_t>(-point_pos), '0');
+        result += digits;
+    }
+    else {
+        result += digits.substr(0, static_cast<size_t>(point_pos));
+        result += ".";
+        result += digits.substr(static_cast<size_t>(point_pos));
+    }
+    return result;
+}
+
+// toSci's scientific notation: a single digit before the point, per GDA's toSci spec.
+std::string format_scientific(bool negative, const std::string& digits, int adjusted_exponent)
+{
+    std::string result = negative ? "-" : "";
+    result += digits.substr(0, 1);
+    if (digits.size() > 1) {
+        result += ".";
+        result += digits.substr(1);
+    }
+    result += "E";
+    result += (adjusted_exponent >= 0 ? "+" : "");
+    result += std::to_string(adjusted_exponent);
+    return result;
+}
+
+// toEng's engineering notation: 1-3 digits before the point, chosen so the shown exponent is
+// always a multiple of 3.
+std::string format_eng(bool negative, const std::string& digits, int adjusted_exponent, int eng_exponent)
+{
+    int digits_before_point = adjusted_exponent - eng_exponent + 1;
+    std::string mantissa_digits = digits;
+    if (static_cast<int>(mantissa_digits.size()) < digits_before_point) {
+        mantissa_digits += std::string(static_cast<size_t>(digits_before_point) - mantissa_digits.size(), '0');
+    }
+    std::string result = negative ? "-" : "";
+    result += mantissa_digits.substr(0, static_cast<size_t>(digits_before_point));
+    if (static_cast<int>(mantissa_digits.size()) > digits_before_point) {
+        result += ".";
+        result += mantissa_digits.substr(static_cast<size_t>(digits_before_point));
+    }
+    result += "E";
+    result += (eng_exponent >= 0 ? "+" : "");
+    result += std::to_string(eng_exponent);
+    return result;
+}
+
+template<typename DecimalType>
+std::string to_sci_string(DecimalType x)
+{
+    auto parts = decompose(x);
+    if (parts.is_nan) {
+        return (parts.negative ? "-" : "") + std::string(parts.is_signaling ? "sNaN" : "NaN");
+    }
+    if (parts.is_infinity) {
+        return (parts.negative ? "-" : "") + std::string("Infinity");
+    }
+    if (parts.is_zero) {
+        return "0";
+    }
+    int num_digits = static_cast<int>(parts.digits.size());
+    int adjusted_exponent = parts.exponent + num_digits - 1;
+    if (parts.exponent <= 0 && adjusted_exponent >= -6) {
+        return format_plain(parts.negative, parts.digits, parts.exponent);
+    }
+    return format_scientific(parts.negative, parts.digits, adjusted_exponent);
+}
+
+template<typename DecimalType>
+std::string to_eng_string(DecimalType x)
+{
+    auto parts = decompose(x);
+    if (parts.is_nan) {
+        return (parts.negative ? "-" : "") + std::string(parts.is_signaling ? "sNaN" : "NaN");
+    }
+    if (parts.is_infinity) {
+        return (parts.negative ? "-" : "") + std::string("Infinity");
+    }
+    if (parts.is_zero) {
+        return "0";
+    }
+    int num_digits = static_cast<int>(parts.digits.size());
+    int adjusted_exponent = parts.exponent + num_digits - 1;
+    int eng_exponent = adjusted_exponent - (((adjusted_exponent % 3) + 3) % 3);
+    // Plain notation applies if either the original exponent already puts the point within (or
+    // after) the digits (as for toSci), or regrouping to the nearest eng exponent would - e.g.
+    // "10E+1" (adjusted_exponent=2) groups to eng_exponent 0, so it's shown plain ("100") even
+    // though its own exponent is positive.
+    if ((parts.exponent <= 0 || eng_exponent <= 0) && adjusted_exponent >= -6) {
+        return format_plain(parts.negative, parts.digits, parts.exponent);
+    }
+    return format_eng(parts.negative, parts.digits, adjusted_exponent, eng_exponent);
+}
+
+template<typename DecimalType>
+class to_sci_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto actual = to_sci_string(x);
+        return evaluate_result(test, test.expected_result, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class to_eng_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto actual = to_eng_string(x);
+        return evaluate_result(test, test.expected_result, actual);
+    }
+
+};
 
 template<typename DecimalType>
 class compare_test
