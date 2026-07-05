@@ -141,6 +141,16 @@ T pow_impl(T x, T y)
     fe_dec_getenv(&env);
     T result;
     result.value(cmath_traits<T>::pow(x.value(), y.value(), env.round, env.flags));
+    // The vendored Intel library's pow can spuriously raise Overflow for a result that actually
+    // underflows toward zero - e.g. pow(10, -333333333) returns +0E-101 (correctly recognising
+    // the true result is far too small to represent) but still sets Overflow rather than
+    // Underflow, seemingly because the internal x^|y| sub-computation for the reciprocal
+    // genuinely overflows and that flag leaks through unconverted. A real overflow always
+    // produces +/-Infinity, so Overflow alongside a finite result is never legitimate here.
+    if ((env.flags & FE_DEC_OVERFLOW) && !isinf(result)) {
+        env.flags &= ~static_cast<unsigned int>(FE_DEC_OVERFLOW);
+        env.flags |= FE_DEC_UNDERFLOW;
+    }
     fe_dec_setenv(&env);
     return result;
 }

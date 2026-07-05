@@ -81,6 +81,15 @@ void report_failure(const test& test, std::decimal::fexcept_t actual)
 template<typename DecimalType>
 result evaluate_result(const test& test, DecimalType expected, DecimalType actual)
 {
+    // "?" is the .decTest convention for "only check the exceptions raised, the value doesn't
+    // matter" - typically paired with an error condition. Our lenient parser has no way to
+    // represent "don't care", so it silently turns "?" into NaN when parsed as DecimalType,
+    // which would otherwise force every "?"-expected test whose actual result isn't NaN
+    // (Infinity, 0, a normal number - all common on overflow/underflow paths) to spuriously fail.
+    if (test.expected_result == "?") {
+        return result::pass;
+    }
+
     if (std::isnan(expected)) {
         if (!std::isnan(actual)) {
             report_failure(test, expected, actual);
