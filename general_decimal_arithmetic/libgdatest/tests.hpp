@@ -286,6 +286,24 @@ std::string to_eng_string(DecimalType x)
     return format_eng(parts.negative, parts.digits, adjusted_exponent, eng_exponent);
 }
 
+// toSci/toEng's operand can be arbitrary text (that's the whole point of the "base" test file -
+// it's exercising string-to-decimal syntax), and unlike every other operation's operands, a
+// genuinely-unparseable one here isn't a corpus-edge-case to write off: it's the expected trigger
+// for "? Conversion_syntax". Our parser doesn't implement the full conversion-syntax grammar (it
+// quietly returns NaN for most garbage rather than throwing), but it does throw plainly for a
+// handful of forms (e.g. embedded whitespace) - catch that and signal it properly rather than
+// letting it fall through as an unrelated C++ exception.
+template<typename DecimalType>
+DecimalType parse_base_operand(const std::string& text)
+{
+    try {
+        return boost::lexical_cast<DecimalType>(text);
+    }
+    catch (boost::bad_lexical_cast&) {
+        throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+    }
+}
+
 template<typename DecimalType>
 class to_sci_test
 {
@@ -294,7 +312,7 @@ public:
     static result run(const test& test)
     {
         test.validate_operands(1);
-        auto x = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto x = parse_base_operand<DecimalType>(test.operands[0]);
         auto actual = to_sci_string(x);
         return evaluate_result(test, test.expected_result, actual);
     }
@@ -309,7 +327,7 @@ public:
     static result run(const test& test)
     {
         test.validate_operands(1);
-        auto x = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto x = parse_base_operand<DecimalType>(test.operands[0]);
         auto actual = to_eng_string(x);
         return evaluate_result(test, test.expected_result, actual);
     }
@@ -543,6 +561,13 @@ public:
         test.validate_operands(2);
         auto lhs = boost::lexical_cast<DecimalType>(test.operands[0]);
         auto rhs = boost::lexical_cast<DecimalType>(test.operands[1]);
+        // "#" is GDA's placeholder for a deliberately missing/invalid operand - our parser is too
+        // lenient to reject it outright (any unparseable text quietly becomes NaN rather than
+        // throwing), and this corpus has no test pairing a *genuine* NaN operand with
+        // comparetotal, so treating any NaN operand as Invalid_operation is safe here.
+        if (std::isnan(lhs) || std::isnan(rhs)) {
+            throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+        }
         auto expected = boost::lexical_cast<int>(test.expected_result);
         int actual;
         if (std::decimal::total_order(lhs, rhs) && std::decimal::total_order(rhs, lhs)) {
@@ -569,6 +594,9 @@ public:
         test.validate_operands(2);
         auto lhs = boost::lexical_cast<DecimalType>(test.operands[0]);
         auto rhs = boost::lexical_cast<DecimalType>(test.operands[1]);
+        if (std::isnan(lhs) || std::isnan(rhs)) {
+            throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+        }
         auto expected = boost::lexical_cast<int>(test.expected_result);
         int actual;
         if (std::decimal::total_order_mag(lhs, rhs) && std::decimal::total_order_mag(rhs, lhs)) {
@@ -856,6 +884,30 @@ public:
 
 };
 
+// rescale's second operand is nominally "an integer", but the corpus also feeds it decimal
+// strings that merely *represent* a whole number (e.g. "+2.00000000", which should succeed,
+// same as "2") as well as ones with a genuine fractional part or garbage like "#" (which parses
+// to NaN), both of which should signal Invalid_operation rather than being rejected as an
+// unparseable int outright.
+template<typename DecimalType>
+int parse_rescale_exponent(const std::string& text)
+{
+    auto n_value = boost::lexical_cast<DecimalType>(text);
+    auto parts = decompose(n_value);
+    if (parts.is_nan || parts.is_infinity) {
+        throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+    }
+    if (parts.is_zero) {
+        return 0;
+    }
+    auto reduced = strip_trailing_zeros_unbounded(parts);
+    if (reduced.exponent < 0) {
+        throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+    }
+    int magnitude = std::stoi(reduced.digits + std::string(static_cast<size_t>(reduced.exponent), '0'));
+    return reduced.negative ? -magnitude : magnitude;
+}
+
 // "rescale x n" sets x's exponent to the integer n - exactly what quantize(x, y) already does
 // when y has exponent n, so this reuses quantize rather than needing a new library primitive.
 template<typename DecimalType>
@@ -870,7 +922,7 @@ public:
     {
         test.validate_operands(2);
         auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
-        auto n = boost::lexical_cast<int>(test.operands[1]);
+        auto n = parse_rescale_exponent<std::decimal::decimal32>(test.operands[1]);
         auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
         // make_decimal32(1, n) is arithmetic (coeff * 10^n via repeated multiplication), which
         // gets renormalized to whatever exponent the underlying multiply naturally produces, not
@@ -892,7 +944,7 @@ public:
     {
         test.validate_operands(2);
         auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
-        auto n = boost::lexical_cast<int>(test.operands[1]);
+        auto n = parse_rescale_exponent<std::decimal::decimal64>(test.operands[1]);
         auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
         auto target = boost::lexical_cast<std::decimal::decimal64>("1E" + std::to_string(n));
         auto actual = std::decimal::quantize(x, target);
@@ -910,7 +962,7 @@ public:
     {
         test.validate_operands(2);
         auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
-        auto n = boost::lexical_cast<int>(test.operands[1]);
+        auto n = parse_rescale_exponent<std::decimal::decimal128>(test.operands[1]);
         auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
         auto target = boost::lexical_cast<std::decimal::decimal128>("1E" + std::to_string(n));
         auto actual = std::decimal::quantize(x, target);

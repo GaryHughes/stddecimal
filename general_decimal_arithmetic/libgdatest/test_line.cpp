@@ -79,41 +79,54 @@ test_line::test_line(std::string line)
     m_type = line_type::test;
 }
 
+// base0.decTest quotes some operands with '"' rather than '\'' - both are treated as equivalent
+// quoting delimiters here. Whitespace and a doubled quote character are only token delimiters
+// outside of a quoted span - inside one, whitespace is literal (e.g. `'+ 1'` is a single operand
+// "+ 1") and a doubled quote is an escaped literal quote character (e.g. `'1E''1'` is the single
+// operand "1E'1").
 void test_line::tokenise(const std::string text, std::vector<std::string>& tokens)
 {
     std::string token;
-    const char not_space = 'a';
-    char previous = not_space;
-    bool quoted_token = false;
+    bool in_token = false;
+    char quote_char = '\0';
 
-    // base0.decTest quotes some operands with '"' rather than '\'' - both are treated as
-    // equivalent quoting delimiters here.
-    auto is_quote = [](char c) { return c == '\'' || c == '"'; };
+    for (size_t i = 0; i < text.size(); ++i) {
+        char c = text[i];
 
-    for (char c : text) {
+        if (quote_char != '\0') {
+            if (c == quote_char) {
+                if (i + 1 < text.size() && text[i + 1] == quote_char) {
+                    token += quote_char;
+                    ++i;
+                    continue;
+                }
+                quote_char = '\0';
+                continue;
+            }
+            token += c;
+            continue;
+        }
 
-        if ((std::isspace(c) && !std::isspace(previous)) || (is_quote(c) && !is_quote(previous))) {
-            if (!token.empty()) {
+        if (std::isspace(c)) {
+            if (in_token) {
                 tokens.push_back(token);
-                token = "";
-                previous = not_space;
+                token.clear();
+                in_token = false;
             }
             continue;
         }
 
-        if (!std::isspace(c)) {
-            if (token.empty() && is_quote(c)) {
-                quoted_token = true;
-            }
-            else {
-                token += c;
-            }
+        if (c == '\'' || c == '"') {
+            quote_char = c;
+            in_token = true;
+            continue;
         }
 
-        previous = c;
+        token += c;
+        in_token = true;
     }
 
-    if (!token.empty()) {
+    if (in_token) {
         tokens.push_back(token);
     }
 }
