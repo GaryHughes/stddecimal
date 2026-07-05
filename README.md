@@ -134,7 +134,7 @@ decimal32|power|187|72|0|
 decimal32|quantize|383|45|0|
 decimal32|randombound32|1810|290|300|
 decimal32|randoms|2886|614|500|
-decimal32|reduce|0|0|106|
+decimal32|reduce|106|0|0|
 decimal32|remainder|234|15|0|
 decimal32|remaindernear|248|15|0|
 decimal32|rescale|175|21|7|
@@ -144,8 +144,8 @@ decimal32|squareroot|2796|21|0|
 decimal32|subtract|422|97|0|
 decimal32|testall|0|0|0|
 decimal32|tointegral|70|0|0|
-decimal32|trim|0|0|93|
-decimal32| |12992|1984|1186|
+decimal32|trim|93|0|0|
+decimal32| |13191|1984|987|
 
 </details>
 <details>
@@ -174,7 +174,7 @@ decimal64|power|181|78|0|
 decimal64|quantize|396|32|0|
 decimal64|randombound32|1812|288|300|
 decimal64|randoms|2614|886|500|
-decimal64|reduce|0|0|106|
+decimal64|reduce|106|0|0|
 decimal64|remainder|232|17|0|
 decimal64|remaindernear|246|17|0|
 decimal64|rescale|190|6|7|
@@ -184,8 +184,8 @@ decimal64|squareroot|2815|2|0|
 decimal64|subtract|295|224|0|
 decimal64|testall|0|0|0|
 decimal64|tointegral|70|0|0|
-decimal64|trim|0|0|93|
-decimal64| |12211|2765|1186|
+decimal64|trim|93|0|0|
+decimal64| |12410|2765|987|
 
 </details>
 <details>
@@ -214,7 +214,7 @@ decimal128|power|181|78|0|
 decimal128|quantize|396|32|0|
 decimal128|randombound32|1861|239|300|
 decimal128|randoms|2421|1079|500|
-decimal128|reduce|0|0|106|
+decimal128|reduce|106|0|0|
 decimal128|remainder|232|17|0|
 decimal128|remaindernear|246|17|0|
 decimal128|rescale|190|6|7|
@@ -224,8 +224,8 @@ decimal128|squareroot|2815|2|0|
 decimal128|subtract|261|258|0|
 decimal128|testall|0|0|0|
 decimal128|tointegral|70|0|0|
-decimal128|trim|0|0|93|
-decimal128| |12029|2947|1186|
+decimal128|trim|93|0|0|
+decimal128| |12228|2947|987|
 
 </details>
 
@@ -364,7 +364,7 @@ decimal32|powersqrt|2826|30|0|
 decimal32|quantize|672|103|0|
 decimal32|randombound32|1862|238|300|
 decimal32|randoms|3075|425|500|
-decimal32|reduce|0|0|168|
+decimal32|reduce|163|5|0|
 decimal32|remainder|486|31|0|
 decimal32|remaindernear|406|40|0|
 decimal32|rescale|456|51|110|
@@ -378,9 +378,9 @@ decimal32|subtract|559|122|0|
 decimal32|testall|0|0|0|
 decimal32|tointegral|153|15|0|
 decimal32|tointegralx|0|0|180|
-decimal32|trim|0|0|110|
+decimal32|trim|110|0|0|
 decimal32|xor|0|0|277|
-decimal32| |25778|3230|36105|
+decimal32| |26051|3235|35827|
 
 </details>
 <details>
@@ -516,7 +516,7 @@ decimal64|powersqrt|2847|9|0|
 decimal64|quantize|706|69|0|
 decimal64|randombound32|1863|237|300|
 decimal64|randoms|2805|695|500|
-decimal64|reduce|0|0|168|
+decimal64|reduce|163|5|0|
 decimal64|remainder|504|13|0|
 decimal64|remaindernear|427|19|0|
 decimal64|rescale|469|38|110|
@@ -530,9 +530,9 @@ decimal64|subtract|525|156|0|
 decimal64|testall|0|0|0|
 decimal64|tointegral|153|15|0|
 decimal64|tointegralx|0|0|180|
-decimal64|trim|0|0|110|
+decimal64|trim|110|0|0|
 decimal64|xor|0|0|277|
-decimal64| |25202|3806|36105|
+decimal64| |25475|3811|35827|
 
 </details>
 <details>
@@ -668,7 +668,7 @@ decimal128|powersqrt|2847|9|0|
 decimal128|quantize|708|67|0|
 decimal128|randombound32|1908|192|300|
 decimal128|randoms|2612|888|500|
-decimal128|reduce|0|0|168|
+decimal128|reduce|151|17|0|
 decimal128|remainder|504|13|0|
 decimal128|remaindernear|429|17|0|
 decimal128|rescale|471|36|110|
@@ -682,8 +682,8 @@ decimal128|subtract|473|208|0|
 decimal128|testall|0|0|0|
 decimal128|tointegral|153|15|0|
 decimal128|tointegralx|0|0|180|
-decimal128|trim|0|0|110|
+decimal128|trim|110|0|0|
 decimal128|xor|0|0|277|
-decimal128| |23806|5202|36105|
+decimal128| |24067|5219|35827|
 
 </details>
