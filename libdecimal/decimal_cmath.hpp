@@ -35,6 +35,12 @@ bool samequantumd32 (decimal32 x, decimal32 y);
 bool samequantumd64 (decimal64 x, decimal64 y);
 bool samequantumd128 (decimal128 x, decimal128 y);
 
+// total ordering (IEEE-754-2008 totalOrder/totalOrderMag): unlike the comparison operators,
+// these define an order over every representable value, including NaNs, so there's no
+// "unordered" case.
+template<decimal_value_type T> bool total_order(T x, T y);
+template<decimal_value_type T> bool total_order_mag(T x, T y);
+
 // // 3.6.5 quantize functions:
 template<decimal_value_type T> T quantize(T x, T y);
 decimal32 quantized32 (decimal32 x, decimal32 y);
@@ -172,6 +178,9 @@ decimal128 sqrtd128(decimal128 x);
 // decimal128 tgammad128 (decimal128 x);
 
 // // nearest integer functions:
+// GDA's quiet "tointegral" operation: rounds to the nearest integral value using the context's
+// current rounding mode, without signalling Inexact even when rounding actually occurs.
+template<decimal_value_type T> T to_integral(T x);
 // decimal32 ceild32 (decimal32 x);
 // decimal64 ceild64 (decimal64 x);
 // decimal128 ceild128 (decimal128 x);

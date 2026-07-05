@@ -151,6 +151,77 @@ public:
 
 };
 
+// Unlike "compare", totalOrder is defined for every representable value including NaN, so there's
+// no unordered case to special-case - but it's a boolean predicate ("is x <= y in total order"),
+// not a three-way comparator, so the -1/0/1 result still needs composing from two calls.
+template<typename DecimalType>
+class comparetotal_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto lhs = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto rhs = boost::lexical_cast<DecimalType>(test.operands[1]);
+        auto expected = boost::lexical_cast<int>(test.expected_result);
+        int actual;
+        if (std::decimal::total_order(lhs, rhs) && std::decimal::total_order(rhs, lhs)) {
+            actual = 0;
+        }
+        else if (std::decimal::total_order(lhs, rhs)) {
+            actual = -1;
+        }
+        else {
+            actual = 1;
+        }
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class comparetotmag_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto lhs = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto rhs = boost::lexical_cast<DecimalType>(test.operands[1]);
+        auto expected = boost::lexical_cast<int>(test.expected_result);
+        int actual;
+        if (std::decimal::total_order_mag(lhs, rhs) && std::decimal::total_order_mag(rhs, lhs)) {
+            actual = 0;
+        }
+        else if (std::decimal::total_order_mag(lhs, rhs)) {
+            actual = -1;
+        }
+        else {
+            actual = 1;
+        }
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class tointegral_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
+        auto actual = std::decimal::to_integral(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
 template<typename DecimalType>
 class add_test
 {
@@ -401,6 +472,69 @@ public:
         auto y = boost::lexical_cast<DecimalType>(test.operands[1]);
         auto expected = boost::lexical_cast<bool>(test.expected_result);
         auto actual = std::decimal::samequantum(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+// "rescale x n" sets x's exponent to the integer n - exactly what quantize(x, y) already does
+// when y has exponent n, so this reuses quantize rather than needing a new library primitive.
+template<typename DecimalType>
+class rescale_test;
+
+template<>
+class rescale_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto n = boost::lexical_cast<int>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        // make_decimal32(1, n) is arithmetic (coeff * 10^n via repeated multiplication), which
+        // gets renormalized to whatever exponent the underlying multiply naturally produces, not
+        // necessarily n itself. Parsing "1En" from a string preserves the exact requested
+        // exponent, which quantize needs to target.
+        auto target = boost::lexical_cast<std::decimal::decimal32>("1E" + std::to_string(n));
+        auto actual = std::decimal::quantize(x, target);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class rescale_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto n = boost::lexical_cast<int>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto target = boost::lexical_cast<std::decimal::decimal64>("1E" + std::to_string(n));
+        auto actual = std::decimal::quantize(x, target);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class rescale_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto n = boost::lexical_cast<int>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto target = boost::lexical_cast<std::decimal::decimal128>("1E" + std::to_string(n));
+        auto actual = std::decimal::quantize(x, target);
         return evaluate_result(test, expected, actual);
     }
 

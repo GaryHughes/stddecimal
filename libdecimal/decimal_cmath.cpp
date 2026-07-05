@@ -13,6 +13,8 @@ template<> struct cmath_traits<decimal32>
     static bool is_inf(BID_UINT32 x) { return bid32_isInf(x); }
     static bool is_nan(BID_UINT32 x) { return bid32_isNaN(x); }
     static bool same_quantum(BID_UINT32 x, BID_UINT32 y) { return bid32_sameQuantum(x, y); }
+    static bool total_order(BID_UINT32 x, BID_UINT32 y) { return bid32_totalOrder(x, y); }
+    static bool total_order_mag(BID_UINT32 x, BID_UINT32 y) { return bid32_totalOrderMag(x, y); }
     static BID_UINT32 quantize(BID_UINT32 x, BID_UINT32 y, int round, unsigned int& flags) { return bid32_quantize(x, y, round, &flags); }
     static BID_UINT32 exp(BID_UINT32 x, int round, unsigned int& flags) { return bid32_exp(x, round, &flags); }
     static BID_UINT32 log(BID_UINT32 x, int round, unsigned int& flags) { return bid32_log(x, round, &flags); }
@@ -25,6 +27,16 @@ template<> struct cmath_traits<decimal32>
     static BID_UINT32 minnum(BID_UINT32 x, BID_UINT32 y, unsigned int& flags) { return bid32_minnum(x, y, &flags); }
     static BID_UINT32 fma(BID_UINT32 x, BID_UINT32 y, BID_UINT32 z, int round, unsigned int& flags) { return bid32_fma(x, y, z, round, &flags); }
     static BID_UINT32 abs(BID_UINT32 x) { return bid32_abs(x); }
+    static BID_UINT32 to_integral(BID_UINT32 x, int round, unsigned int& flags)
+    {
+        switch (round) {
+            case FE_DEC_DOWNWARD: return bid32_round_integral_negative(x, &flags);
+            case FE_DEC_UPWARD: return bid32_round_integral_positive(x, &flags);
+            case FE_DEC_TOWARD_ZERO: return bid32_round_integral_zero(x, &flags);
+            case FE_DEC_TONEARESTFROMZERO: return bid32_round_integral_nearest_away(x, &flags);
+            default: return bid32_round_integral_nearest_even(x, &flags);
+        }
+    }
 };
 
 template<> struct cmath_traits<decimal64>
@@ -32,6 +44,8 @@ template<> struct cmath_traits<decimal64>
     static bool is_inf(BID_UINT64 x) { return bid64_isInf(x); }
     static bool is_nan(BID_UINT64 x) { return bid64_isNaN(x); }
     static bool same_quantum(BID_UINT64 x, BID_UINT64 y) { return bid64_sameQuantum(x, y); }
+    static bool total_order(BID_UINT64 x, BID_UINT64 y) { return bid64_totalOrder(x, y); }
+    static bool total_order_mag(BID_UINT64 x, BID_UINT64 y) { return bid64_totalOrderMag(x, y); }
     static BID_UINT64 quantize(BID_UINT64 x, BID_UINT64 y, int round, unsigned int& flags) { return bid64_quantize(x, y, round, &flags); }
     static BID_UINT64 exp(BID_UINT64 x, int round, unsigned int& flags) { return bid64_exp(x, round, &flags); }
     static BID_UINT64 log(BID_UINT64 x, int round, unsigned int& flags) { return bid64_log(x, round, &flags); }
@@ -44,6 +58,16 @@ template<> struct cmath_traits<decimal64>
     static BID_UINT64 minnum(BID_UINT64 x, BID_UINT64 y, unsigned int& flags) { return bid64_minnum(x, y, &flags); }
     static BID_UINT64 fma(BID_UINT64 x, BID_UINT64 y, BID_UINT64 z, int round, unsigned int& flags) { return bid64_fma(x, y, z, round, &flags); }
     static BID_UINT64 abs(BID_UINT64 x) { return bid64_abs(x); }
+    static BID_UINT64 to_integral(BID_UINT64 x, int round, unsigned int& flags)
+    {
+        switch (round) {
+            case FE_DEC_DOWNWARD: return bid64_round_integral_negative(x, &flags);
+            case FE_DEC_UPWARD: return bid64_round_integral_positive(x, &flags);
+            case FE_DEC_TOWARD_ZERO: return bid64_round_integral_zero(x, &flags);
+            case FE_DEC_TONEARESTFROMZERO: return bid64_round_integral_nearest_away(x, &flags);
+            default: return bid64_round_integral_nearest_even(x, &flags);
+        }
+    }
 };
 
 template<> struct cmath_traits<decimal128>
@@ -51,6 +75,8 @@ template<> struct cmath_traits<decimal128>
     static bool is_inf(BID_UINT128 x) { return bid128_isInf(x); }
     static bool is_nan(BID_UINT128 x) { return bid128_isNaN(x); }
     static bool same_quantum(BID_UINT128 x, BID_UINT128 y) { return bid128_sameQuantum(x, y); }
+    static bool total_order(BID_UINT128 x, BID_UINT128 y) { return bid128_totalOrder(x, y); }
+    static bool total_order_mag(BID_UINT128 x, BID_UINT128 y) { return bid128_totalOrderMag(x, y); }
     static BID_UINT128 quantize(BID_UINT128 x, BID_UINT128 y, int round, unsigned int& flags) { return bid128_quantize(x, y, round, &flags); }
     static BID_UINT128 exp(BID_UINT128 x, int round, unsigned int& flags) { return bid128_exp(x, round, &flags); }
     static BID_UINT128 log(BID_UINT128 x, int round, unsigned int& flags) { return bid128_log(x, round, &flags); }
@@ -63,6 +89,16 @@ template<> struct cmath_traits<decimal128>
     static BID_UINT128 minnum(BID_UINT128 x, BID_UINT128 y, unsigned int& flags) { return bid128_minnum(x, y, &flags); }
     static BID_UINT128 fma(BID_UINT128 x, BID_UINT128 y, BID_UINT128 z, int round, unsigned int& flags) { return bid128_fma(x, y, z, round, &flags); }
     static BID_UINT128 abs(BID_UINT128 x) { return bid128_abs(x); }
+    static BID_UINT128 to_integral(BID_UINT128 x, int round, unsigned int& flags)
+    {
+        switch (round) {
+            case FE_DEC_DOWNWARD: return bid128_round_integral_negative(x, &flags);
+            case FE_DEC_UPWARD: return bid128_round_integral_positive(x, &flags);
+            case FE_DEC_TOWARD_ZERO: return bid128_round_integral_zero(x, &flags);
+            case FE_DEC_TONEARESTFROMZERO: return bid128_round_integral_nearest_away(x, &flags);
+            default: return bid128_round_integral_nearest_even(x, &flags);
+        }
+    }
 };
 
 template<decimal_value_type T>
@@ -216,6 +252,18 @@ bool samequantumd64(decimal64 x, decimal64 y) { return samequantum(x, y); }
 bool samequantumd128(decimal128 x, decimal128 y) { return samequantum(x, y); }
 
 template<decimal_value_type T>
+bool total_order(T x, T y)
+{
+    return cmath_traits<T>::total_order(x.value(), y.value());
+}
+
+template<decimal_value_type T>
+bool total_order_mag(T x, T y)
+{
+    return cmath_traits<T>::total_order_mag(x.value(), y.value());
+}
+
+template<decimal_value_type T>
 T quantize(T x, T y)
 {
     fenv_t env {};
@@ -278,9 +326,28 @@ T abs(T d)
     return result;
 }
 
+template<decimal_value_type T>
+T to_integral(T x)
+{
+    fenv_t env {};
+    fe_dec_getenv(&env);
+    T result;
+    result.value(cmath_traits<T>::to_integral(x.value(), env.round, env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
 template bool samequantum<decimal32>(decimal32, decimal32);
 template bool samequantum<decimal64>(decimal64, decimal64);
 template bool samequantum<decimal128>(decimal128, decimal128);
+
+template bool total_order<decimal32>(decimal32, decimal32);
+template bool total_order<decimal64>(decimal64, decimal64);
+template bool total_order<decimal128>(decimal128, decimal128);
+
+template bool total_order_mag<decimal32>(decimal32, decimal32);
+template bool total_order_mag<decimal64>(decimal64, decimal64);
+template bool total_order_mag<decimal128>(decimal128, decimal128);
 
 template decimal32 quantize<decimal32>(decimal32, decimal32);
 template decimal64 quantize<decimal64>(decimal64, decimal64);
@@ -289,6 +356,10 @@ template decimal128 quantize<decimal128>(decimal128, decimal128);
 template decimal32 abs<decimal32>(decimal32);
 template decimal64 abs<decimal64>(decimal64);
 template decimal128 abs<decimal128>(decimal128);
+
+template decimal32 to_integral<decimal32>(decimal32);
+template decimal64 to_integral<decimal64>(decimal64);
+template decimal128 to_integral<decimal128>(decimal128);
 
 } // namespace decimal
 

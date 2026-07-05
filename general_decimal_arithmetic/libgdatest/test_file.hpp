@@ -208,15 +208,28 @@ private:
             return compare_test<typename traits::decimal_type>::run(test);
         }
 
-        // comparetotal0.decTest	
-        // randoms0.decTest	
-        // rescale0.decTest	
-        // inexact0.decTest	
-        // reduce0.decTest		
+        if (test.operation == "comparetotal") {
+            return comparetotal_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "comparetotmag") {
+            return comparetotmag_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "rescale") {
+            return rescale_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "tointegral") {
+            return tointegral_test<typename traits::decimal_type>::run(test);
+        }
+
+        // randoms0.decTest
+        // inexact0.decTest
+        // reduce0.decTest
         // testall0.decTest
-        // base0.decTest		
+        // base0.decTest
         // divideint0.decTest
-        // tointegral0.decTest
         // trim0.decTest
 
         std::cerr << "skipping: " << test.id << '\n';
