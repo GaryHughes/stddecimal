@@ -103,9 +103,9 @@ private:
 
 The library is validated using the [General Decimal Arithmetic Test Cases](http://speleotrove.com/decimal/dectest.html).
 
-* I'm currently in the process of building the test harness and implementing what is needed to run as many tests as possible so there are a lot of failures.
-* Failing tests are currently more likely to be problems mapping exceptions between the specification and the Intel library than real problems with the calculations.
-* Test cases that are not applicable or not yet supported will be explicitly skipped so this column will likely never get to zero.
+* The large majority of failures are not calculation bugs - they're a consequence of how the test harness runs the cases, not the underlying arithmetic. Each `.decTest` file declares a `precision:` and an exponent range (`maxExponent:`/`minexponent:`) that its expected results assume, but the harness doesn't apply these - every test just runs at the native precision and exponent range of whichever type (`decimal32`/`64`/`128`) is under test. Where a file's declared context is narrower or wider than the type's real limits, results legitimately diverge from what the file expects even though the type itself is behaving correctly for its own precision (e.g. a file assuming 9 significant digits will expect rounding that a native 7-digit `decimal32` needs to apply sooner, or won't expect the overflow/underflow that a `decimal32`'s much smaller exponent range hits on values the file treats as perfectly ordinary). Enforcing each file's declared context is a much larger undertaking than a bug fix, and hasn't been done.
+* A smaller share of failures come from exceptions genuinely being raised, just not carrying every condition flag the test expects alongside the primary one (most often a missing companion `Inexact`), or from the underlying [Intel library](https://software.intel.com/content/www/us/en/develop/articles/pre-release-license-agreement-for-intel-decimal-floating-point-math-library.html) occasionally mislabelling which flag it raises (e.g. signalling `Overflow` on a `power` result that's actually underflowing to zero).
+* Test cases exercising operations or special values that aren't applicable in a given file's mode (e.g. the subset arithmetic tests don't support `NaN`/`Infinity` as operands) or that aren't implemented yet are explicitly skipped, so this column won't necessarily reach zero for every file - though as of writing it's at zero across the entire subset arithmetic suite.
 
 ## Subset Arithmetic
 <details>
