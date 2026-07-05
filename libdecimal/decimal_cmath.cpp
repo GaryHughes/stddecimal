@@ -37,6 +37,18 @@ template<> struct cmath_traits<decimal32>
             default: return bid32_round_integral_nearest_even(x, &flags);
         }
     }
+    static BID_UINT32 to_integral_exact(BID_UINT32 x, int round, unsigned int& flags) { return bid32_round_integral_exact(x, round, &flags); }
+    static BID_UINT32 copy(BID_UINT32 x) { return bid32_copy(x); }
+    static BID_UINT32 negate(BID_UINT32 x) { return bid32_negate(x); }
+    static BID_UINT32 copy_sign(BID_UINT32 x, BID_UINT32 y) { return bid32_copySign(x, y); }
+    static int class_of(BID_UINT32 x) { return bid32_class(x); }
+    static BID_UINT32 maxnum_mag(BID_UINT32 x, BID_UINT32 y, unsigned int& flags) { return bid32_maxnum_mag(x, y, &flags); }
+    static BID_UINT32 minnum_mag(BID_UINT32 x, BID_UINT32 y, unsigned int& flags) { return bid32_minnum_mag(x, y, &flags); }
+    static BID_UINT32 nextup(BID_UINT32 x, unsigned int& flags) { return bid32_nextup(x, &flags); }
+    static BID_UINT32 nextdown(BID_UINT32 x, unsigned int& flags) { return bid32_nextdown(x, &flags); }
+    static BID_UINT32 nextafter(BID_UINT32 x, BID_UINT32 y, unsigned int& flags) { return bid32_nextafter(x, y, &flags); }
+    static BID_UINT32 logb(BID_UINT32 x, unsigned int& flags) { return bid32_logb(x, &flags); }
+    static BID_UINT32 scalbln(BID_UINT32 x, long int n, int round, unsigned int& flags) { return bid32_scalbln(x, n, round, &flags); }
 };
 
 template<> struct cmath_traits<decimal64>
@@ -68,6 +80,18 @@ template<> struct cmath_traits<decimal64>
             default: return bid64_round_integral_nearest_even(x, &flags);
         }
     }
+    static BID_UINT64 to_integral_exact(BID_UINT64 x, int round, unsigned int& flags) { return bid64_round_integral_exact(x, round, &flags); }
+    static BID_UINT64 copy(BID_UINT64 x) { return bid64_copy(x); }
+    static BID_UINT64 negate(BID_UINT64 x) { return bid64_negate(x); }
+    static BID_UINT64 copy_sign(BID_UINT64 x, BID_UINT64 y) { return bid64_copySign(x, y); }
+    static int class_of(BID_UINT64 x) { return bid64_class(x); }
+    static BID_UINT64 maxnum_mag(BID_UINT64 x, BID_UINT64 y, unsigned int& flags) { return bid64_maxnum_mag(x, y, &flags); }
+    static BID_UINT64 minnum_mag(BID_UINT64 x, BID_UINT64 y, unsigned int& flags) { return bid64_minnum_mag(x, y, &flags); }
+    static BID_UINT64 nextup(BID_UINT64 x, unsigned int& flags) { return bid64_nextup(x, &flags); }
+    static BID_UINT64 nextdown(BID_UINT64 x, unsigned int& flags) { return bid64_nextdown(x, &flags); }
+    static BID_UINT64 nextafter(BID_UINT64 x, BID_UINT64 y, unsigned int& flags) { return bid64_nextafter(x, y, &flags); }
+    static BID_UINT64 logb(BID_UINT64 x, unsigned int& flags) { return bid64_logb(x, &flags); }
+    static BID_UINT64 scalbln(BID_UINT64 x, long int n, int round, unsigned int& flags) { return bid64_scalbln(x, n, round, &flags); }
 };
 
 template<> struct cmath_traits<decimal128>
@@ -99,6 +123,18 @@ template<> struct cmath_traits<decimal128>
             default: return bid128_round_integral_nearest_even(x, &flags);
         }
     }
+    static BID_UINT128 to_integral_exact(BID_UINT128 x, int round, unsigned int& flags) { return bid128_round_integral_exact(x, round, &flags); }
+    static BID_UINT128 copy(BID_UINT128 x) { return bid128_copy(x); }
+    static BID_UINT128 negate(BID_UINT128 x) { return bid128_negate(x); }
+    static BID_UINT128 copy_sign(BID_UINT128 x, BID_UINT128 y) { return bid128_copySign(x, y); }
+    static int class_of(BID_UINT128 x) { return bid128_class(x); }
+    static BID_UINT128 maxnum_mag(BID_UINT128 x, BID_UINT128 y, unsigned int& flags) { return bid128_maxnum_mag(x, y, &flags); }
+    static BID_UINT128 minnum_mag(BID_UINT128 x, BID_UINT128 y, unsigned int& flags) { return bid128_minnum_mag(x, y, &flags); }
+    static BID_UINT128 nextup(BID_UINT128 x, unsigned int& flags) { return bid128_nextup(x, &flags); }
+    static BID_UINT128 nextdown(BID_UINT128 x, unsigned int& flags) { return bid128_nextdown(x, &flags); }
+    static BID_UINT128 nextafter(BID_UINT128 x, BID_UINT128 y, unsigned int& flags) { return bid128_nextafter(x, y, &flags); }
+    static BID_UINT128 logb(BID_UINT128 x, unsigned int& flags) { return bid128_logb(x, &flags); }
+    static BID_UINT128 scalbln(BID_UINT128 x, long int n, int round, unsigned int& flags) { return bid128_scalbln(x, n, round, &flags); }
 };
 
 template<decimal_value_type T>
@@ -221,6 +257,102 @@ T fma_impl(T x, T y, T z)
     return result;
 }
 
+template<decimal_value_type T>
+T fmaxmag_impl(T x, T y)
+{
+    fenv_t env {};
+    fe_dec_getenv(&env);
+    T result;
+    result.value(cmath_traits<T>::maxnum_mag(x.value(), y.value(), env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
+template<decimal_value_type T>
+T fminmag_impl(T x, T y)
+{
+    fenv_t env {};
+    fe_dec_getenv(&env);
+    T result;
+    result.value(cmath_traits<T>::minnum_mag(x.value(), y.value(), env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
+template<decimal_value_type T>
+T nextup_impl(T x)
+{
+    fenv_t env {};
+    fe_dec_getenv(&env);
+    T result;
+    result.value(cmath_traits<T>::nextup(x.value(), env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
+template<decimal_value_type T>
+T nextdown_impl(T x)
+{
+    fenv_t env {};
+    fe_dec_getenv(&env);
+    T result;
+    result.value(cmath_traits<T>::nextdown(x.value(), env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
+template<decimal_value_type T>
+T nextafter_impl(T x, T y)
+{
+    fenv_t env {};
+    fe_dec_getenv(&env);
+    T result;
+    result.value(cmath_traits<T>::nextafter(x.value(), y.value(), env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
+template<decimal_value_type T>
+T logb_impl(T x)
+{
+    fenv_t env {};
+    fe_dec_getenv(&env);
+    T result;
+    result.value(cmath_traits<T>::logb(x.value(), env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
+template<decimal_value_type T>
+T scalbln_impl(T x, long int n)
+{
+    fenv_t env {};
+    fe_dec_getenv(&env);
+    T result;
+    result.value(cmath_traits<T>::scalbln(x.value(), n, env.round, env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
+template<decimal_value_type T>
+T to_integral_exact_impl(T x)
+{
+    fenv_t env {};
+    fe_dec_getenv(&env);
+    T result;
+    result.value(cmath_traits<T>::to_integral_exact(x.value(), env.round, env.flags));
+    fe_dec_setenv(&env);
+    return result;
+}
+
+const char* class_name(int class_index)
+{
+    static constexpr const char* names[] = {
+        "sNaN", "NaN", "-Infinity", "-Normal", "-Subnormal", "-Zero", "+Zero", "+Subnormal", "+Normal", "+Infinity"
+    };
+    return names[class_index];
+}
+
 } // anonymous namespace
 
 } // namespace std::decimal
@@ -328,6 +460,50 @@ decimal32 fmad32(decimal32 x, decimal32 y, decimal32 z) { return fma_impl(x, y, 
 decimal64 fmad64(decimal64 x, decimal64 y, decimal64 z) { return fma_impl(x, y, z); }
 decimal128 fmad128(decimal128 x, decimal128 y, decimal128 z) { return fma_impl(x, y, z); }
 
+decimal32 fmaxmagd32(decimal32 x, decimal32 y) { return fmaxmag_impl(x, y); }
+decimal64 fmaxmagd64(decimal64 x, decimal64 y) { return fmaxmag_impl(x, y); }
+decimal128 fmaxmagd128(decimal128 x, decimal128 y) { return fmaxmag_impl(x, y); }
+
+decimal32 fminmagd32(decimal32 x, decimal32 y) { return fminmag_impl(x, y); }
+decimal64 fminmagd64(decimal64 x, decimal64 y) { return fminmag_impl(x, y); }
+decimal128 fminmagd128(decimal128 x, decimal128 y) { return fminmag_impl(x, y); }
+
+decimal32 nextupd32(decimal32 x) { return nextup_impl(x); }
+decimal64 nextupd64(decimal64 x) { return nextup_impl(x); }
+decimal128 nextupd128(decimal128 x) { return nextup_impl(x); }
+
+decimal32 nextdownd32(decimal32 x) { return nextdown_impl(x); }
+decimal64 nextdownd64(decimal64 x) { return nextdown_impl(x); }
+decimal128 nextdownd128(decimal128 x) { return nextdown_impl(x); }
+
+decimal32 nextafterd32(decimal32 x, decimal32 y) { return nextafter_impl(x, y); }
+decimal64 nextafterd64(decimal64 x, decimal64 y) { return nextafter_impl(x, y); }
+decimal128 nextafterd128(decimal128 x, decimal128 y) { return nextafter_impl(x, y); }
+
+decimal32 logbd32(decimal32 x) { return logb_impl(x); }
+decimal64 logbd64(decimal64 x) { return logb_impl(x); }
+decimal128 logbd128(decimal128 x) { return logb_impl(x); }
+
+decimal32 scalblnd32(decimal32 x, long int n) { return scalbln_impl(x, n); }
+decimal64 scalblnd64(decimal64 x, long int n) { return scalbln_impl(x, n); }
+decimal128 scalblnd128(decimal128 x, long int n) { return scalbln_impl(x, n); }
+
+decimal32 copyd32(decimal32 x) { decimal32 result; result.value(cmath_traits<decimal32>::copy(x.value())); return result; }
+decimal64 copyd64(decimal64 x) { decimal64 result; result.value(cmath_traits<decimal64>::copy(x.value())); return result; }
+decimal128 copyd128(decimal128 x) { decimal128 result; result.value(cmath_traits<decimal128>::copy(x.value())); return result; }
+
+decimal32 negated32(decimal32 x) { decimal32 result; result.value(cmath_traits<decimal32>::negate(x.value())); return result; }
+decimal64 negated64(decimal64 x) { decimal64 result; result.value(cmath_traits<decimal64>::negate(x.value())); return result; }
+decimal128 negated128(decimal128 x) { decimal128 result; result.value(cmath_traits<decimal128>::negate(x.value())); return result; }
+
+decimal32 copysignd32(decimal32 x, decimal32 y) { decimal32 result; result.value(cmath_traits<decimal32>::copy_sign(x.value(), y.value())); return result; }
+decimal64 copysignd64(decimal64 x, decimal64 y) { decimal64 result; result.value(cmath_traits<decimal64>::copy_sign(x.value(), y.value())); return result; }
+decimal128 copysignd128(decimal128 x, decimal128 y) { decimal128 result; result.value(cmath_traits<decimal128>::copy_sign(x.value(), y.value())); return result; }
+
+std::string classd32(decimal32 x) { return class_name(cmath_traits<decimal32>::class_of(x.value())); }
+std::string classd64(decimal64 x) { return class_name(cmath_traits<decimal64>::class_of(x.value())); }
+std::string classd128(decimal128 x) { return class_name(cmath_traits<decimal128>::class_of(x.value())); }
+
 template<decimal_value_type T>
 T abs(T d)
 {
@@ -345,6 +521,12 @@ T to_integral(T x)
     result.value(cmath_traits<T>::to_integral(x.value(), env.round, env.flags));
     fe_dec_setenv(&env);
     return result;
+}
+
+template<decimal_value_type T>
+T to_integral_exact(T x)
+{
+    return to_integral_exact_impl(x);
 }
 
 template bool samequantum<decimal32>(decimal32, decimal32);
@@ -370,6 +552,10 @@ template decimal128 abs<decimal128>(decimal128);
 template decimal32 to_integral<decimal32>(decimal32);
 template decimal64 to_integral<decimal64>(decimal64);
 template decimal128 to_integral<decimal128>(decimal128);
+
+template decimal32 to_integral_exact<decimal32>(decimal32);
+template decimal64 to_integral_exact<decimal64>(decimal64);
+template decimal128 to_integral_exact<decimal128>(decimal128);
 
 } // namespace decimal
 

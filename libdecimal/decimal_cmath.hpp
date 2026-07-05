@@ -131,18 +131,18 @@ decimal128 log10d128(decimal128 x);
 
 // decimal64 log2d64 (decimal64 x);
 // decimal128 log2d128 (decimal128 x);
-// decimal32 logbd32 (decimal32 x);
-// decimal64 logbd64 (decimal64 x);
-// decimal128 logbd128 (decimal128 x);
+decimal32 logbd32 (decimal32 x);
+decimal64 logbd64 (decimal64 x);
+decimal128 logbd128 (decimal128 x);
 // decimal32 modfd32 (decimal32 value, decimal32 * iptr);
 // decimal64 modfd64 (decimal64 value, decimal64 * iptr);
 // decimal32 modfd128 (decimal128 value, decimal128 * iptr);
 // decimal32 scalbnd32 (decimal32 x, int n);
 // decimal64 scalbnd64 (decimal64 x, int n);
 // decimal128 scalbnd128 (decimal128 x, int n);
-// decimal32 scalblnd32 (decimal32 x, long int n);
-// decimal64 scalblnd64 (decimal64 x, long int n);
-// decimal128 scalblnd128 (decimal128 x, long int n);
+decimal32 scalblnd32 (decimal32 x, long int n);
+decimal64 scalblnd64 (decimal64 x, long int n);
+decimal128 scalblnd128 (decimal128 x, long int n);
 
 // power and absolute-value functions:
 // decimal32 cbrtd32 (decimal32 x);
@@ -181,6 +181,9 @@ decimal128 sqrtd128(decimal128 x);
 // GDA's quiet "tointegral" operation: rounds to the nearest integral value using the context's
 // current rounding mode, without signalling Inexact even when rounding actually occurs.
 template<decimal_value_type T> T to_integral(T x);
+// GDA's "tointegralx" - the signalling/exact sibling of tointegral: same rounding-mode dispatch,
+// but does signal Inexact/Rounded when the value actually needed rounding.
+template<decimal_value_type T> T to_integral_exact(T x);
 // decimal32 ceild32 (decimal32 x);
 // decimal64 ceild64 (decimal64 x);
 // decimal128 ceild128 (decimal128 x);
@@ -232,9 +235,24 @@ decimal128 remainderd128 (decimal128 x, decimal128 y);
 // decimal64 nand64 (const char * tagp);
 // decimal128 nand128 (const char * tagp);
 
-// decimal32 nextafterd32 (decimal32 x, decimal32 y);
-// decimal64 nextafterd64 (decimal64 x, decimal64 y);
-// decimal128 nextafterd128 (decimal128 x, decimal128 y);
+decimal32 copysignd32 (decimal32 x, decimal32 y);
+decimal64 copysignd64 (decimal64 x, decimal64 y);
+decimal128 copysignd128 (decimal128 x, decimal128 y);
+
+// decimal32 nand32 (const char * tagp);
+// decimal64 nand64 (const char * tagp);
+// decimal128 nand128 (const char * tagp);
+
+decimal32 nextafterd32 (decimal32 x, decimal32 y);
+decimal64 nextafterd64 (decimal64 x, decimal64 y);
+decimal128 nextafterd128 (decimal128 x, decimal128 y);
+// GDA's "nextminus"/"nextplus" are IEEE-754 nextDown/nextUp (single operand).
+decimal32 nextdownd32 (decimal32 x);
+decimal64 nextdownd64 (decimal64 x);
+decimal128 nextdownd128 (decimal128 x);
+decimal32 nextupd32 (decimal32 x);
+decimal64 nextupd64 (decimal64 x);
+decimal128 nextupd128 (decimal128 x);
 
 // decimal32 nexttowardd32 (decimal32 x, decimal32 y);
 // decimal64 nexttowardd64 (decimal64 x, decimal64 y);
@@ -250,6 +268,13 @@ decimal128 fmaxd128 (decimal128 x, decimal128 y);
 decimal32 fmind32 (decimal32 x, decimal32 y);
 decimal64 fmind64 (decimal64 x, decimal64 y);
 decimal128 fmind128 (decimal128 x, decimal128 y);
+// GDA's "maxmag"/"minmag" - max/min selected by magnitude rather than value.
+decimal32 fmaxmagd32 (decimal32 x, decimal32 y);
+decimal64 fmaxmagd64 (decimal64 x, decimal64 y);
+decimal128 fmaxmagd128 (decimal128 x, decimal128 y);
+decimal32 fminmagd32 (decimal32 x, decimal32 y);
+decimal64 fminmagd64 (decimal64 x, decimal64 y);
+decimal128 fminmagd128 (decimal128 x, decimal128 y);
 
 // floating multiply-add:
 decimal32 fmad32(decimal32 x, decimal32 y, decimal32 z);
@@ -258,6 +283,20 @@ decimal128 fmad128(decimal128 x, decimal128 y, decimal128 z);
 
 // 3.6.6.1 abs function overloads
 template<decimal_value_type T> T abs(T d);
+
+// IEEE-754 non-computational copy operations: pure bit manipulation, never raise exceptions and
+// never alter a NaN's payload. "copyabs" is already covered by the existing abs() above.
+decimal32 copyd32 (decimal32 x);
+decimal64 copyd64 (decimal64 x);
+decimal128 copyd128 (decimal128 x);
+decimal32 negated32 (decimal32 x);
+decimal64 negated64 (decimal64 x);
+decimal128 negated128 (decimal128 x);
+
+// GDA's "class" - returns a string classification of the operand (e.g. "+Normal", "-Subnormal").
+std::string classd32 (decimal32 x);
+std::string classd64 (decimal64 x);
+std::string classd128 (decimal128 x);
 
 }
 

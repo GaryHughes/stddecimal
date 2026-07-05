@@ -893,6 +893,831 @@ public:
 
 };
 
+// IEEE-754 non-computational copy operations (copy/copyabs/copynegate/copysign): pure bit
+// manipulation, never raise exceptions, and specifically preserve/manipulate the sign of NaN
+// operands too (e.g. copynegate NaN -> -NaN) - the generic evaluate_result<DecimalType> doesn't
+// check sign for NaN (isnan(expected) && isnan(actual) is treated as a match regardless of sign),
+// so these use the quantum-sensitive comparison built for reduce/trim instead.
+template<typename DecimalType>
+class copy_test;
+
+template<>
+class copy_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = std::decimal::copyd32(x);
+        return evaluate_quantum_result(test, decompose(expected), decompose(actual));
+    }
+
+};
+
+template<>
+class copy_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = std::decimal::copyd64(x);
+        return evaluate_quantum_result(test, decompose(expected), decompose(actual));
+    }
+
+};
+
+template<>
+class copy_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = std::decimal::copyd128(x);
+        return evaluate_quantum_result(test, decompose(expected), decompose(actual));
+    }
+
+};
+
+template<typename DecimalType>
+class copyabs_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
+        auto actual = std::decimal::abs(x);
+        return evaluate_quantum_result(test, decompose(expected), decompose(actual));
+    }
+
+};
+
+template<typename DecimalType>
+class copynegate_test;
+
+template<>
+class copynegate_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = std::decimal::negated32(x);
+        return evaluate_quantum_result(test, decompose(expected), decompose(actual));
+    }
+
+};
+
+template<>
+class copynegate_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = std::decimal::negated64(x);
+        return evaluate_quantum_result(test, decompose(expected), decompose(actual));
+    }
+
+};
+
+template<>
+class copynegate_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = std::decimal::negated128(x);
+        return evaluate_quantum_result(test, decompose(expected), decompose(actual));
+    }
+
+};
+
+template<typename DecimalType>
+class copysign_test;
+
+template<>
+class copysign_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal32>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = std::decimal::copysignd32(x, y);
+        return evaluate_quantum_result(test, decompose(expected), decompose(actual));
+    }
+
+};
+
+template<>
+class copysign_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal64>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = std::decimal::copysignd64(x, y);
+        return evaluate_quantum_result(test, decompose(expected), decompose(actual));
+    }
+
+};
+
+template<>
+class copysign_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal128>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = std::decimal::copysignd128(x, y);
+        return evaluate_quantum_result(test, decompose(expected), decompose(actual));
+    }
+
+};
+
+// GDA's "class" - returns a string classification of the operand.
+template<typename DecimalType>
+class class_test;
+
+template<>
+class class_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto actual = std::decimal::classd32(x);
+        return evaluate_result(test, test.expected_result, actual);
+    }
+
+};
+
+template<>
+class class_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto actual = std::decimal::classd64(x);
+        return evaluate_result(test, test.expected_result, actual);
+    }
+
+};
+
+template<>
+class class_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto actual = std::decimal::classd128(x);
+        return evaluate_result(test, test.expected_result, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class maxmag_test;
+
+template<>
+class maxmag_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal32>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = std::decimal::fmaxmagd32(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class maxmag_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal64>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = std::decimal::fmaxmagd64(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class maxmag_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal128>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = std::decimal::fmaxmagd128(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class minmag_test;
+
+template<>
+class minmag_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal32>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = std::decimal::fminmagd32(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class minmag_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal64>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = std::decimal::fminmagd64(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class minmag_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal128>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = std::decimal::fminmagd128(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class nextplus_test;
+
+template<>
+class nextplus_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = std::decimal::nextupd32(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class nextplus_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = std::decimal::nextupd64(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class nextplus_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = std::decimal::nextupd128(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class nextminus_test;
+
+template<>
+class nextminus_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = std::decimal::nextdownd32(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class nextminus_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = std::decimal::nextdownd64(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class nextminus_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = std::decimal::nextdownd128(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class nexttoward_test;
+
+template<>
+class nexttoward_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal32>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = std::decimal::nextafterd32(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class nexttoward_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal64>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = std::decimal::nextafterd64(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class nexttoward_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto y = boost::lexical_cast<std::decimal::decimal128>(test.operands[1]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = std::decimal::nextafterd128(x, y);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class logb_test;
+
+template<>
+class logb_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        auto actual = std::decimal::logbd32(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class logb_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        auto actual = std::decimal::logbd64(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<>
+class logb_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        auto actual = std::decimal::logbd128(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class tointegralx_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
+        auto actual = std::decimal::to_integral_exact(x);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+// "comparesig" is like "compare" but signals Invalid_operation for *any* NaN operand (quiet or
+// signaling), whereas the existing compare_test (via operator</> -> bid32_quiet_less/greater)
+// only signals for sNaN.
+template<typename DecimalType>
+class comparesig_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto lhs = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto rhs = boost::lexical_cast<DecimalType>(test.operands[1]);
+        if (std::isnan(lhs) || std::isnan(rhs)) {
+            throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+        }
+        auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
+        auto actual = lhs < rhs ? DecimalType(-1) : (lhs > rhs ? DecimalType(1) : DecimalType(0));
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+// scaleb (and, later, rotate/shift's count operand) require a *plain* integer syntactically -
+// exponent exactly 0 - not merely a value that reduces to a whole number: e.g. "1.00" (exponent
+// -2) is rejected as Invalid_operation even though it numerically equals 1 (confirmed via
+// scaleb.decTest's scbx031 "scaleb 1.23 1.00 -> NaN Invalid_operation", contrasted with scbx030's
+// "scaleb 1.23 1 -> 12.3" succeeding for the bare integer). This is stricter than rescale's target
+// exponent, which does accept "+2.00000000" as equivalent to "2".
+template<typename DecimalType>
+long parse_plain_integer_operand(const std::string& text)
+{
+    auto value = boost::lexical_cast<DecimalType>(text);
+    auto parts = decompose(value);
+    if (parts.is_nan || parts.is_infinity) {
+        throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+    }
+    if (parts.exponent != 0) {
+        throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+    }
+    if (parts.is_zero) {
+        return 0;
+    }
+    long magnitude = std::stol(parts.digits);
+    return parts.negative ? -magnitude : magnitude;
+}
+
+// GDA "logical operand" convention (and/or/xor/invert/rotate/shift): a decimal value whose
+// coefficient digits are literally 0s and 1s (a bit-string encoded as decimal digits), with
+// exponent required to be exactly 0. Sign must be non-negative, except -0 (confirmed accepted via
+// rotate.decTest's rotx201 "rotate -0 0 -> -0") which is bitwise identical to +0. Confirmed via
+// and.decTest's andx361 "and 1.0 1 -> Invalid_operation" that even a numerically-whole value with
+// a nonzero exponent is rejected - same strict rule as parse_plain_integer_operand.
+template<typename DecimalType>
+std::string parse_logical_operand(const std::string& text)
+{
+    auto value = boost::lexical_cast<DecimalType>(text);
+    auto parts = decompose(value);
+    if (parts.is_nan || parts.is_infinity) {
+        throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+    }
+    if (parts.exponent != 0) {
+        throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+    }
+    if (parts.negative && !parts.is_zero) {
+        throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+    }
+    for (char c : parts.digits) {
+        if (c != '0' && c != '1') {
+            throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+        }
+    }
+    return parts.digits;
+}
+
+// and/or/xor align by the least-significant digit (like ordinary place value), padding only the
+// shorter operand with leading zeros to match the longer one - confirmed via andx023's
+// "and 111111111111 11111111 -> 11111111" (a 12-digit operand combined with an 8-digit one
+// produces an 8-digit-valued result, not padded/truncated to any fixed type precision).
+inline void align_logical_operands(std::string& x, std::string& y)
+{
+    size_t width = std::max(x.size(), y.size());
+    x.insert(0, width - x.size(), '0');
+    y.insert(0, width - y.size(), '0');
+}
+
+template<typename DecimalType>
+class and_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = parse_logical_operand<DecimalType>(test.operands[0]);
+        auto y = parse_logical_operand<DecimalType>(test.operands[1]);
+        auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
+        align_logical_operands(x, y);
+        std::string result_digits(x.size(), '0');
+        for (size_t i = 0; i < x.size(); ++i) {
+            result_digits[i] = (x[i] == '1' && y[i] == '1') ? '1' : '0';
+        }
+        auto actual = boost::lexical_cast<DecimalType>(result_digits);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class or_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = parse_logical_operand<DecimalType>(test.operands[0]);
+        auto y = parse_logical_operand<DecimalType>(test.operands[1]);
+        auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
+        align_logical_operands(x, y);
+        std::string result_digits(x.size(), '0');
+        for (size_t i = 0; i < x.size(); ++i) {
+            result_digits[i] = (x[i] == '1' || y[i] == '1') ? '1' : '0';
+        }
+        auto actual = boost::lexical_cast<DecimalType>(result_digits);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class xor_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = parse_logical_operand<DecimalType>(test.operands[0]);
+        auto y = parse_logical_operand<DecimalType>(test.operands[1]);
+        auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
+        align_logical_operands(x, y);
+        std::string result_digits(x.size(), '0');
+        for (size_t i = 0; i < x.size(); ++i) {
+            result_digits[i] = (x[i] != y[i]) ? '1' : '0';
+        }
+        auto actual = boost::lexical_cast<DecimalType>(result_digits);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+// invert (unary) has no second operand to align against, so it complements over the type's own
+// full precision width - confirmed via invert.decTest's invx001 "invert 0 -> 111111111" (nine
+// ones, matching that file's declared 9-digit precision context; each type instead uses its own
+// native precision here, consistent with every other operation in this session).
+template<typename DecimalType>
+class invert_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = parse_logical_operand<DecimalType>(test.operands[0]);
+        auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
+        auto width = static_cast<size_t>(std::decimal::numeric_limits<DecimalType>::digits);
+        if (x.size() < width) {
+            x.insert(0, width - x.size(), '0');
+        }
+        std::string result_digits(width, '0');
+        for (size_t i = 0; i < width; ++i) {
+            result_digits[i] = (x[i] == '1') ? '0' : '1';
+        }
+        auto actual = boost::lexical_cast<DecimalType>(result_digits);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+// Unlike and/or/xor/invert, rotate/shift are *not* restricted to 0/1 "logical operand" digits -
+// they rotate/shift the ordinary decimal digits of any non-negative plain integer (confirmed via
+// rotate.decTest's rotx004 "rotate 34 8 -> 400000003" and rotx007 "rotate 123456789 -1 ->
+// 912345678", both using digits well outside 0/1). Otherwise the same operand rules apply:
+// exponent exactly 0, sign non-negative except -0.
+template<typename DecimalType>
+std::string parse_digit_string_operand(const std::string& text)
+{
+    auto value = boost::lexical_cast<DecimalType>(text);
+    auto parts = decompose(value);
+    if (parts.is_nan || parts.is_infinity) {
+        throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+    }
+    if (parts.exponent != 0) {
+        throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+    }
+    if (parts.negative && !parts.is_zero) {
+        throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+    }
+    return parts.digits;
+}
+
+// rotate/shift operate over the type's own full precision width (like invert), with the count
+// operand validated via parse_plain_integer_operand and bounded to [-width, +width] inclusive
+// (confirmed via rotate.decTest's rotx005 "rotate 1 9 -> 1" succeeding at count==width, exactly
+// matching precision 9, versus rotx022 "rotate 1 10 -> Invalid_operation" at count>width).
+// Rotate wraps digits around; shift discards digits that fall off the end and zero-fills the
+// vacated end - both confirmed by hand-tracing rotx004/006/007 and shix003/006/007 against the
+// formula new[i] = old[(i + count) mod width] (rotate) / old[i + count] or '0' if out of bounds
+// (shift), using 0-indexed left-to-right digit arrays and a positive count meaning "left".
+template<typename DecimalType>
+class rotate_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = parse_digit_string_operand<DecimalType>(test.operands[0]);
+        auto count = parse_plain_integer_operand<DecimalType>(test.operands[1]);
+        auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
+        auto width = static_cast<long>(std::decimal::numeric_limits<DecimalType>::digits);
+        if (count < -width || count > width) {
+            throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+        }
+        if (static_cast<long>(x.size()) < width) {
+            x.insert(0, static_cast<size_t>(width) - x.size(), '0');
+        }
+        std::string result_digits(static_cast<size_t>(width), '0');
+        for (long i = 0; i < width; ++i) {
+            long src = ((i + count) % width + width) % width;
+            result_digits[static_cast<size_t>(i)] = x[static_cast<size_t>(src)];
+        }
+        auto actual = boost::lexical_cast<DecimalType>(result_digits);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
+template<typename DecimalType>
+class shift_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = parse_digit_string_operand<DecimalType>(test.operands[0]);
+        auto count = parse_plain_integer_operand<DecimalType>(test.operands[1]);
+        auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
+        auto width = static_cast<long>(std::decimal::numeric_limits<DecimalType>::digits);
+        if (count < -width || count > width) {
+            throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+        }
+        if (static_cast<long>(x.size()) < width) {
+            x.insert(0, static_cast<size_t>(width) - x.size(), '0');
+        }
+        std::string result_digits(static_cast<size_t>(width), '0');
+        for (long i = 0; i < width; ++i) {
+            long src = i + count;
+            result_digits[static_cast<size_t>(i)] = (src >= 0 && src < width) ? x[static_cast<size_t>(src)] : '0';
+        }
+        auto actual = boost::lexical_cast<DecimalType>(result_digits);
+        return evaluate_result(test, expected, actual);
+    }
+
+};
+
 // rescale's second operand is nominally "an integer", but the corpus also feeds it decimal
 // strings that merely *represent* a whole number (e.g. "+2.00000000", which should succeed,
 // same as "2") as well as ones with a genuine fractional part or garbage like "#" (which parses
@@ -916,6 +1741,83 @@ int parse_rescale_exponent(const std::string& text)
     int magnitude = std::stoi(reduced.digits + std::string(static_cast<size_t>(reduced.exponent), '0'));
     return reduced.negative ? -magnitude : magnitude;
 }
+
+template<typename DecimalType>
+class scaleb_test;
+
+// scaleb's operand precedence (confirmed against scaleb.decTest's NaN-payload cases like
+// "scaleb NaN01 -Inf -> NaN1" and "scaleb NaN05 NaN61 -> NaN5"): if x is NaN (quiet or
+// signaling), it propagates/quiets immediately regardless of n - even when n would otherwise be
+// invalid (e.g. Infinity). Only once x is known not to be NaN does n get validated; if n is a
+// quiet NaN, *that* propagates (e.g. "scaleb 4 NaN -> NaN"), with no exception either.
+template<>
+class scaleb_test<std::decimal::decimal32>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal32>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal32>(test.expected_result);
+        if (std::isnan(x)) {
+            return evaluate_result(test, expected, std::decimal::scalblnd32(x, 0));
+        }
+        auto n_value = boost::lexical_cast<std::decimal::decimal32>(test.operands[1]);
+        if (std::isnan(n_value) && !decompose(n_value).is_signaling) {
+            return evaluate_result(test, expected, n_value);
+        }
+        auto n = parse_plain_integer_operand<std::decimal::decimal32>(test.operands[1]);
+        return evaluate_result(test, expected, std::decimal::scalblnd32(x, n));
+    }
+
+};
+
+template<>
+class scaleb_test<std::decimal::decimal64>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal64>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal64>(test.expected_result);
+        if (std::isnan(x)) {
+            return evaluate_result(test, expected, std::decimal::scalblnd64(x, 0));
+        }
+        auto n_value = boost::lexical_cast<std::decimal::decimal64>(test.operands[1]);
+        if (std::isnan(n_value) && !decompose(n_value).is_signaling) {
+            return evaluate_result(test, expected, n_value);
+        }
+        auto n = parse_plain_integer_operand<std::decimal::decimal64>(test.operands[1]);
+        return evaluate_result(test, expected, std::decimal::scalblnd64(x, n));
+    }
+
+};
+
+template<>
+class scaleb_test<std::decimal::decimal128>
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<std::decimal::decimal128>(test.operands[0]);
+        auto expected = boost::lexical_cast<std::decimal::decimal128>(test.expected_result);
+        if (std::isnan(x)) {
+            return evaluate_result(test, expected, std::decimal::scalblnd128(x, 0));
+        }
+        auto n_value = boost::lexical_cast<std::decimal::decimal128>(test.operands[1]);
+        if (std::isnan(n_value) && !decompose(n_value).is_signaling) {
+            return evaluate_result(test, expected, n_value);
+        }
+        auto n = parse_plain_integer_operand<std::decimal::decimal128>(test.operands[1]);
+        return evaluate_result(test, expected, std::decimal::scalblnd128(x, n));
+    }
+
+};
 
 // "rescale x n" sets x's exponent to the integer n - exactly what quantize(x, y) already does
 // when y has exponent n, so this reuses quantize rather than needing a new library primitive.

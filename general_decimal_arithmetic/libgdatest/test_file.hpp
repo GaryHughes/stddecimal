@@ -63,11 +63,6 @@ public:
 
                 if (line.is_test()) {
 
-                    if (context.clamp()) {
-                        m_results.record(result::skip);
-                        continue;
-                    }
-
                     test test;
                     test.id = line.id();
                     test.operation = line.operation();
@@ -188,7 +183,7 @@ private:
             return remainder_test<typename traits::decimal_type>::run(test);
         }
 
-        if (test.operation == "remaindernear") {
+        if (test.operation == "remaindernear" || test.operation == "remainderNear") {
             return remainder_near_test<typename traits::decimal_type>::run(test);
         }
 
@@ -224,7 +219,7 @@ private:
             return tointegral_test<typename traits::decimal_type>::run(test);
         }
 
-        if (test.operation == "toSci") {
+        if (test.operation == "toSci" || test.operation == "tosci") {
             return to_sci_test<typename traits::decimal_type>::run(test);
         }
 
@@ -242,6 +237,86 @@ private:
 
         if (test.operation == "divideint") {
             return divideint_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "copy") {
+            return copy_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "copyabs") {
+            return copyabs_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "copynegate") {
+            return copynegate_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "copysign") {
+            return copysign_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "class") {
+            return class_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "maxmag") {
+            return maxmag_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "minmag") {
+            return minmag_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "nextplus") {
+            return nextplus_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "nextminus") {
+            return nextminus_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "nexttoward") {
+            return nexttoward_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "logb") {
+            return logb_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "tointegralx") {
+            return tointegralx_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "comparesig") {
+            return comparesig_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "scaleb") {
+            return scaleb_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "and") {
+            return and_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "or") {
+            return or_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "xor") {
+            return xor_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "invert") {
+            return invert_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "rotate") {
+            return rotate_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "shift") {
+            return shift_test<typename traits::decimal_type>::run(test);
         }
 
         // randoms0.decTest
