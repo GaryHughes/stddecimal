@@ -232,12 +232,18 @@ private:
             return to_eng_test<typename traits::decimal_type>::run(test);
         }
 
+        if (test.operation == "reduce") {
+            return reduce_test<typename traits::decimal_type>::run(test);
+        }
+
+        if (test.operation == "trim") {
+            return trim_test<typename traits::decimal_type>::run(test);
+        }
+
         // randoms0.decTest
         // inexact0.decTest
-        // reduce0.decTest
         // testall0.decTest
         // divideint0.decTest
-        // trim0.decTest
 
         std::cerr << "skipping: " << test.id << '\n';
 

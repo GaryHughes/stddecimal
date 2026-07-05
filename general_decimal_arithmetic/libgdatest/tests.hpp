@@ -315,6 +315,108 @@ public:
 
 };
 
+// "reduce" and "trim" both strip trailing zero coefficient digits (bumping the exponent to
+// compensate), so they need a comparison that's sensitive to the exact quantum (coefficient +
+// exponent), not just the represented value - operator== on DecimalType is quantum-*insensitive*
+// (100 == 1E+2), so a generic evaluate_result<DecimalType> would pass even if the wrong quantum
+// were produced. Comparing decomposed parts directly sidesteps that.
+result evaluate_quantum_result(const test& test, const decimal_string_parts& expected, const decimal_string_parts& actual)
+{
+    bool matches;
+    if (expected.is_nan || actual.is_nan) {
+        matches = expected.is_nan && actual.is_nan && expected.negative == actual.negative && expected.is_signaling == actual.is_signaling;
+    }
+    else if (expected.is_infinity || actual.is_infinity) {
+        matches = expected.is_infinity && actual.is_infinity && expected.negative == actual.negative;
+    }
+    else if (expected.is_zero || actual.is_zero) {
+        // reduce/trim canonicalize every zero (any sign/exponent) to unsigned "0".
+        matches = expected.is_zero && actual.is_zero;
+    }
+    else {
+        matches = expected.negative == actual.negative && expected.digits == actual.digits && expected.exponent == actual.exponent;
+    }
+
+    if (!matches) {
+        std::cerr << "RESULT FAILURE " << test.id << " " << test.operation << " ";
+        for (const auto& operand : test.operands) {
+            std::cerr << operand << " ";
+        }
+        std::cerr << "-> " << test.expected_result << " (actual quantum/value mismatch)\n";
+        return result::fail;
+    }
+
+    return result::pass;
+}
+
+// Strips all trailing zero coefficient digits, unconditionally (exponent increases to compensate).
+// This is "reduce"'s full behaviour, and also what "trim" does once its own starting exponent is
+// already positive.
+decimal_string_parts strip_trailing_zeros_unbounded(decimal_string_parts parts)
+{
+    while (parts.digits.size() > 1 && parts.digits.back() == '0') {
+        parts.digits.pop_back();
+        parts.exponent += 1;
+    }
+    return parts;
+}
+
+// "trim" - like reduce, but empirically (verified against trim0.decTest) it only ever strips
+// zeros while doing so keeps the exponent negative; if the exponent is already exactly 0 it does
+// nothing at all, and if it's already positive it strips fully (same as reduce, unbounded).
+decimal_string_parts trim_digits(decimal_string_parts parts)
+{
+    if (parts.exponent > 0) {
+        return strip_trailing_zeros_unbounded(parts);
+    }
+    if (parts.exponent == 0) {
+        return parts;
+    }
+    while (parts.exponent < 0 && parts.digits.size() > 1 && parts.digits.back() == '0') {
+        parts.digits.pop_back();
+        parts.exponent += 1;
+    }
+    return parts;
+}
+
+template<typename DecimalType>
+class reduce_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
+        auto parts = decompose(x);
+        if (!parts.is_nan && !parts.is_infinity && !parts.is_zero) {
+            parts = strip_trailing_zeros_unbounded(parts);
+        }
+        return evaluate_quantum_result(test, decompose(expected), parts);
+    }
+
+};
+
+template<typename DecimalType>
+class trim_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(1);
+        auto x = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
+        auto parts = decompose(x);
+        if (!parts.is_nan && !parts.is_infinity && !parts.is_zero) {
+            parts = trim_digits(parts);
+        }
+        return evaluate_quantum_result(test, decompose(expected), parts);
+    }
+
+};
+
 template<typename DecimalType>
 class compare_test
 {
