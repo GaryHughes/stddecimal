@@ -4,7 +4,8 @@
 #include <vector>
 #include <set>
 #include <decimal.hpp>
-#include <decimal_cmath.hpp> 
+#include <decimal_cmath.hpp>
+#include <decimal_numeric_limits.hpp>
 #include "test_results.hpp"
 
 namespace gda
@@ -413,6 +414,89 @@ public:
             parts = trim_digits(parts);
         }
         return evaluate_quantum_result(test, decompose(expected), parts);
+    }
+
+};
+
+// GDA's "divideint" returns the integer part of x/y, truncated toward zero, and signals
+// Division_impossible (mapped to FE_DEC_INVALID) if that integer needs more digits than the
+// type's own precision. There's no direct Intel primitive for this.
+//
+// It's tempting to just widen to decimal128, divide there for headroom, and truncate that - but
+// that's subtly wrong: dividing at the *type's own* precision can round in a way that carries into
+// the integer part (e.g. at 9-digit precision, 1234567896/10 = 123456789.6, which rounds to
+// 123456790 - not truncated to 123456789 - confirmed against divideint0.decTest's dvi411, which
+// expects exactly that). A plain wide-then-truncate approach misses this carry.
+//
+// So instead: divide widened to decimal128 (near-exact, comfortably more precision than any
+// narrower type needs), then explicitly round *that* down to this type's own number of
+// significant digits (mimicking what the type's own division would have produced) before
+// truncating toward zero. Only then check the truncated result's reduced digit count against the
+// type's precision, for Division_impossible.
+template<typename DecimalType>
+class divideint_test
+{
+public:
+
+    static result run(const test& test)
+    {
+        test.validate_operands(2);
+        auto x = boost::lexical_cast<DecimalType>(test.operands[0]);
+        auto y = boost::lexical_cast<DecimalType>(test.operands[1]);
+
+        if (y == DecimalType(0)) {
+            if (x == DecimalType(0)) {
+                throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+            }
+            throw std::decimal::exception(std::decimal::FE_DEC_DIVBYZERO);
+        }
+
+        std::decimal::decimal128 wide_x(x);
+        std::decimal::decimal128 wide_y(y);
+        unsigned int flags = 0;
+        auto quotient = bid128_div(wide_x.value(), wide_y.value(), std::decimal::FE_DEC_TONEAREST, &flags);
+        std::decimal::decimal128 wide_quotient;
+        wide_quotient.value(quotient);
+
+        auto wide_parts = decompose(wide_quotient);
+        if (wide_parts.is_nan || wide_parts.is_infinity) {
+            throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+        }
+
+        DecimalType actual;
+        if (wide_parts.is_zero) {
+            actual = DecimalType(0);
+        }
+        else {
+            constexpr int precision = std::decimal::numeric_limits<DecimalType>::digits;
+            int num_digits = static_cast<int>(wide_parts.digits.size());
+            int adjusted_exponent = wide_parts.exponent + num_digits - 1;
+            int target_exponent = adjusted_exponent - precision + 1;
+            auto target_quantum = boost::lexical_cast<std::decimal::decimal128>("1E" + std::to_string(target_exponent));
+            // Raw bid128_quantize (not std::decimal::quantize) deliberately bypasses the checked
+            // wrapper's automatic check_exceptions() - rounding to fewer significant digits here
+            // routinely (and correctly) raises Inexact, which must not propagate as a divideint
+            // exception.
+            auto rounded_raw = bid128_quantize(wide_quotient.value(), target_quantum.value(), std::decimal::FE_DEC_TONEAREST, &flags);
+            auto truncated_raw = bid128_round_integral_zero(rounded_raw, &flags);
+            std::decimal::decimal128 truncated_value;
+            truncated_value.value(truncated_raw);
+
+            auto parts = decompose(truncated_value);
+            if (parts.is_zero) {
+                actual = DecimalType(0);
+            }
+            else {
+                parts = strip_trailing_zeros_unbounded(parts);
+                if (static_cast<int>(parts.digits.size()) > precision) {
+                    throw std::decimal::exception(std::decimal::FE_DEC_INVALID);
+                }
+                actual = boost::lexical_cast<DecimalType>((parts.negative ? "-" : "") + parts.digits + "E" + std::to_string(parts.exponent));
+            }
+        }
+
+        auto expected = boost::lexical_cast<DecimalType>(test.expected_result);
+        return evaluate_result(test, expected, actual);
     }
 
 };

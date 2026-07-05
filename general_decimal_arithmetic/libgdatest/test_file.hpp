@@ -240,10 +240,13 @@ private:
             return trim_test<typename traits::decimal_type>::run(test);
         }
 
+        if (test.operation == "divideint") {
+            return divideint_test<typename traits::decimal_type>::run(test);
+        }
+
         // randoms0.decTest
         // inexact0.decTest
         // testall0.decTest
-        // divideint0.decTest
 
         std::cerr << "skipping: " << test.id << '\n';
 
